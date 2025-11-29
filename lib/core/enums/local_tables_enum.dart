@@ -1,0 +1,1 @@
+enum LocalTablesEnum { category , meal }
