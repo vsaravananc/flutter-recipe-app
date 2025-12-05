@@ -3,7 +3,7 @@ import 'package:sqflite/sqlite_api.dart';
 
 class MealTable implements CreateTable {
    @override
-    Future<void> createTable(Database db) async {
+    Future<void> createTable(Database db , int version) async {
     await db.execute('''
     CREATE TABLE meal (
     idMeal INTEGER PRIMARY KEY,
