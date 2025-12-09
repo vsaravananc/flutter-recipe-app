@@ -1,10 +1,13 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:recipe/core/route/app_router_config.dart';
 import 'package:recipe/core/services/dependency_injection.dart';
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  await DependencyInjection.init();
   runApp(DependencyInjection.intialize(const MyApp()));
 }
 

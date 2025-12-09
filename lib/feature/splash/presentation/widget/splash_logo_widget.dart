@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:recipe/core/images/app_images.dart';
 import 'package:recipe/core/route/app_router_config.dart';
+import 'package:recipe/feature/user_sugestion/presentation/bloc/userprefrences_bloc.dart';
 
 class SplashLogoWidget extends StatefulWidget {
   const SplashLogoWidget({super.key});
@@ -28,6 +30,7 @@ class _SplashLogoWidgetState extends State<SplashLogoWidget> {
   @override
   void initState() {
     super.initState();
+    context.read<UserprefrencesBloc>().add(UserprefrencesGetData());
     hideKeyBoard();
     Future.delayed(const Duration(seconds: 2), initalizeMove);
   }

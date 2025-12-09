@@ -1,11 +1,13 @@
 import 'package:recipe/core/database/tables/category_table.dart';
 import 'package:recipe/core/database/tables/meal_table.dart';
+import 'package:recipe/core/database/tables/user_table.dart';
 import 'package:sqflite/sqflite.dart';
 
 class CreateDatabase {
   final CategoryTable categoryTable;
   final MealTable mealTable;
-  CreateDatabase({required this.categoryTable, required this.mealTable});
+  final UserTable userTable;
+  CreateDatabase({required this.categoryTable, required this.mealTable, required this.userTable});
   Database? _database;
 
   Future<Database> createInstance() async {
@@ -24,6 +26,7 @@ class CreateDatabase {
   Future<void> _onCreate(Database db, int version) async {
     await categoryTable.createTable(db,version);
     await mealTable.createTable(db,version);
+    await userTable.createTable(db, version);
   }
 
   Future<Database> get database async {
