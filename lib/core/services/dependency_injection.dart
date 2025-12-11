@@ -49,6 +49,8 @@ class DependencyInjection {
 
     /// ~~~~ Auth bloc's ~~~~ implementation
     _auth();
+
+    /// ~~~~~ User Sugestion ~~~~~ implementation
     _userSugestion();
   }
 
@@ -95,10 +97,10 @@ class DependencyInjection {
     );
 
     sl.registerFactory<AreaListUseCase>(
-      () => AreaListUseCase(userSugestionRepo: sl()),
+      () => AreaListUseCase(userSugestionRepo: sl<UserSugestionRepo>()),
     );
     sl.registerFactory<CategoryListUseCase>(
-      () => CategoryListUseCase(userSugestionRepo: sl()),
+      () => CategoryListUseCase(userSugestionRepo: sl<UserSugestionRepo>()),
     );
 
     sl.registerFactory<UserprefrencesBloc>(
@@ -115,9 +117,7 @@ class DependencyInjection {
         BlocProvider<PagecurrentindexCubit>(create: (context) => sl()),
         BlocProvider<AuthUIBloc>(create: (context) => sl()),
         BlocProvider<AuthBloc>(create: (context) => sl()),
-        BlocProvider<UserprefrencesBloc>(
-          create: (context) => sl<UserprefrencesBloc>(),
-        ),
+        BlocProvider<UserprefrencesBloc>(create: (context) => sl()),
       ],
       child: child,
     );

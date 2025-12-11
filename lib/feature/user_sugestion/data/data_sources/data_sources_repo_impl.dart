@@ -24,6 +24,9 @@ class DataSourcesRepoImpl implements DataSourcesRepo {
         _convertAreaModel,
         response.data as Map<String, dynamic>,
       );
+      for (AreaModel i in convertedValue) {
+        debugPrint("\u001B[32 m category model : ${i.area} \u001B[0m");
+      }
       return Right(SuccessHandlerImpl(convertedValue));
     } on DioException catch (e) {
       debugPrint("DioException ${e.toString()}");
@@ -52,16 +55,52 @@ class DataSourcesRepoImpl implements DataSourcesRepo {
   @override
   Future<Either<FailerHandler, SuccessHandler<List<CategoryModel>>>>
   getListOfCategory() async {
-    return Left(
-      ServerFailure(
-        "We’re unable to reach the server right now. Please check your connection or try again later.",
-      ),
-    );
+    try {
+      final response = await dio.get(ApiEndpoints.listOfCategory);
+      if (response.statusCode != 200) {
+        return Left(NotValideCodeFailer("Oops! Something went wrong."));
+      }
+      List<CategoryModel> convertedValue = await compute(
+        _convertCategoryModel,
+        response.data as Map<String, dynamic>,
+      );
+      for (CategoryModel i in convertedValue) {
+        debugPrint("\u001B[32 m category model : ${i.category} \u001B[0m");
+      }
+      return Right(SuccessHandlerImpl(convertedValue));
+    } on DioException catch (e) {
+      debugPrint("DioException ${e.toString()}");
+      return Left(
+        ServerFailure(
+          "Couldn't reach the server. Please check your connection or try again later",
+        ),
+      );
+    } on TypeError catch (e) {
+      debugPrint("typeError ${e.toString()}");
+      return Left(
+        TypeErrorFailer(
+          "Unexpected data from server received. Please check your connection or try again later.",
+        ),
+      );
+    } catch (e) {
+      debugPrint("catch ${e.toString()}");
+      return Left(
+        CacheFailure(
+          "We’re unable to reach the server right now. Please check your connection or try again later.",
+        ),
+      );
+    }
   }
 }
 
 List<AreaModel> _convertAreaModel(Map<String, dynamic> json) {
   return (json['meals'] as List? ?? [])
       .map((e) => AreaModel.fromJson(e))
+      .toList();
+}
+
+List<CategoryModel> _convertCategoryModel(Map<String, dynamic> json) {
+  return (json['meals'] as List? ?? [])
+      .map((e) => CategoryModel.fromJson(e))
       .toList();
 }
