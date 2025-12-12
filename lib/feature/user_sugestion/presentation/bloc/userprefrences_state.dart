@@ -20,3 +20,10 @@ class UserprefrencesLoaded extends UserprefrencesState {
 class UserprefrencesError extends UserprefrencesState {}
 
 class UserprefrencesLoading extends UserprefrencesState {}
+
+class SelectedAreaUserPrefrencesState extends UserprefrencesState {
+  final AreaEntities area;
+  const SelectedAreaUserPrefrencesState({required this.area});
+  @override
+  List<Object> get props => [area];
+}

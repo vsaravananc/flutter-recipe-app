@@ -19,6 +19,8 @@ class UserprefrencesBloc
     extends Bloc<UserprefrencesEvent, UserprefrencesState> {
   final AreaListUseCase areaListUseCase;
   final CategoryListUseCase categoryListUseCase;
+
+  AreaEntities? selectedArea;
   UserprefrencesBloc({
     required this.areaListUseCase,
     required this.categoryListUseCase,
@@ -31,7 +33,7 @@ class UserprefrencesBloc
         categoryListUseCase.call(),
       ]);
 
-      final areaResluts = result[0] as FirstResult ;
+      final areaResluts = result[0] as FirstResult;
       final categoryResluts = result[1] as SecondResult;
 
       final List<AreaEntities> areas = areaResluts.fold(
@@ -43,13 +45,16 @@ class UserprefrencesBloc
         (failer) => <CategoryEntities>[],
         (success) => success.data,
       );
-      
 
       if (areas.isEmpty || categories.isEmpty) {
         emit(UserprefrencesError());
       } else {
         emit(UserprefrencesLoaded(areas: areas, categories: categories));
       }
+    });
+    on<SelectAreaUserPrefrencesEvent>((event, emit) {
+      selectedArea = event.areaEntities;
+      emit(SelectedAreaUserPrefrencesState(area: event.areaEntities));
     });
   }
 }

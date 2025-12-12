@@ -20,7 +20,9 @@ import 'package:recipe/feature/user_sugestion/data/repo_impl/user_sugestion_repo
 import 'package:recipe/feature/user_sugestion/domain/repo/user_sugestion_repo.dart';
 import 'package:recipe/feature/user_sugestion/domain/use_cases/area_list_use_case.dart';
 import 'package:recipe/feature/user_sugestion/domain/use_cases/category_list_use_case.dart';
+import 'package:recipe/feature/user_sugestion/domain/use_cases/select_area_use_case.dart';
 import 'package:recipe/feature/user_sugestion/presentation/bloc/userprefrences_bloc.dart';
+import 'package:recipe/feature/user_sugestion/presentation/selectedarea/selectedarea_cubit.dart';
 import 'package:recipe/feature/welcome/presentation/cubit/pagecurrentindex_cubit.dart';
 import 'package:get_it/get_it.dart';
 
@@ -90,7 +92,10 @@ class DependencyInjection {
 
   static void _userSugestion() {
     sl.registerLazySingleton<DataSourcesRepo>(
-      () => DataSourcesRepoImpl(dio: sl<DioClient>().dio),
+      () => DataSourcesRepoImpl(
+        dio: sl<DioClient>().dio,
+        firebaseFirestore: sl<FirebaseFirestore>(),
+      ),
     );
     sl.registerLazySingleton<UserSugestionRepo>(
       () => UserSugestionRepoImpl(dataSourcesRepo: sl()),
@@ -102,12 +107,18 @@ class DependencyInjection {
     sl.registerFactory<CategoryListUseCase>(
       () => CategoryListUseCase(userSugestionRepo: sl<UserSugestionRepo>()),
     );
+    sl.registerFactory<SelectAreaUseCase>(
+      () => SelectAreaUseCase(userSugestionRepo: sl<UserSugestionRepo>()),
+    );
 
     sl.registerFactory<UserprefrencesBloc>(
       () => UserprefrencesBloc(
         areaListUseCase: sl<AreaListUseCase>(),
         categoryListUseCase: sl<CategoryListUseCase>(),
       ),
+    );
+    sl.registerFactory<SelectedareaCubit>(
+      () => SelectedareaCubit(selectAreaUseCase: sl<SelectAreaUseCase>()),
     );
   }
 
@@ -118,6 +129,7 @@ class DependencyInjection {
         BlocProvider<AuthUIBloc>(create: (context) => sl()),
         BlocProvider<AuthBloc>(create: (context) => sl()),
         BlocProvider<UserprefrencesBloc>(create: (context) => sl()),
+        BlocProvider<SelectedareaCubit>(create: (context) => sl()),
       ],
       child: child,
     );

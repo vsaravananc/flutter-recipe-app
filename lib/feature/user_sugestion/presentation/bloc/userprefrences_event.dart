@@ -7,3 +7,11 @@ abstract class UserprefrencesEvent extends Equatable {
 }
 
 class UserprefrencesGetData extends UserprefrencesEvent {}
+
+class SelectAreaUserPrefrencesEvent extends UserprefrencesEvent {
+  final AreaEntities areaEntities;
+  const SelectAreaUserPrefrencesEvent({required this.areaEntities});
+
+  @override
+  List<Object> get props => [areaEntities];
+}

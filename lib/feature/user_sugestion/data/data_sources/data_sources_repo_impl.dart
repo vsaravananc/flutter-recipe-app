@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
@@ -10,8 +11,9 @@ import 'package:recipe/feature/user_sugestion/data/model/category_model.dart';
 
 class DataSourcesRepoImpl implements DataSourcesRepo {
   final Dio dio;
+  final FirebaseFirestore firebaseFirestore;
 
-  DataSourcesRepoImpl({required this.dio});
+  DataSourcesRepoImpl({required this.dio, required this.firebaseFirestore});
   @override
   Future<Either<FailerHandler, SuccessHandler<List<AreaModel>>>>
   getListOfArea() async {
@@ -82,6 +84,20 @@ class DataSourcesRepoImpl implements DataSourcesRepo {
           "Unexpected data from server received. Please check your connection or try again later.",
         ),
       );
+    } catch (e) {
+      debugPrint("catch ${e.toString()}");
+      return Left(
+        CacheFailure(
+          "We’re unable to reach the server right now. Please check your connection or try again later.",
+        ),
+      );
+    }
+  }
+
+  @override
+  SelectedArea selectedArea(AreaModel category) async {
+    try {
+      return Right(SuccessHandlerImpl(true));
     } catch (e) {
       debugPrint("catch ${e.toString()}");
       return Left(

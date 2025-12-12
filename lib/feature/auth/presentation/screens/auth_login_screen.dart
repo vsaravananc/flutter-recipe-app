@@ -2,8 +2,10 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:recipe/core/extensions/padding_extension.dart';
+import 'package:recipe/core/route/app_router_config.dart';
 import 'package:recipe/core/validator/validation.dart';
 import 'package:recipe/feature/auth/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'package:recipe/feature/auth/presentation/bloc/auth_ui_bloc/auth_ui_bloc.dart';
@@ -119,6 +121,11 @@ class _AuthLoginInScreenState extends State<AuthLoginInScreen> {
                             ),
                           );
                         }
+                        ///
+                        /// we want to move the navigation to listener
+                        /// once it authSuccess it will move to area
+                        ///
+                        context.pushReplacement(AppRouterConfig.areaRoute);
                       },
                 text: "Log In",
               ),
