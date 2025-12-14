@@ -6,10 +6,9 @@ class CategoryTable implements CreateTable {
   Future<void> createTable(Database db, int verison) async {
     await db.execute('''
      CREATE TABLE category (
-     idCategory INTEGER PRIMARY KEY,
-     strCategory TEXT,
-     strCategoryThumb TEXT,
-     strCategoryDescription TEXT
+     idCategory INTEGER PRIMARY KEY AUTOINCREMENT,
+     strCategory TEXT NOT NULL UNIQUE,
+     inserted_at INTEGER NOT NULL
      );
     ''');
   }

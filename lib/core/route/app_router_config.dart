@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:recipe/feature/auth/presentation/screens/auth_screen.dart';
 import 'package:recipe/feature/splash/presentation/screen/splash_screen.dart';
 import 'package:recipe/feature/user_sugestion/presentation/screen/select_area_screen.dart';
+import 'package:recipe/feature/user_sugestion/presentation/screen/select_category_screen.dart';
 import 'package:recipe/feature/welcome/presentation/screens/welcome_screen.dart';
 
 class AppRouterConfig {
@@ -11,6 +12,7 @@ class AppRouterConfig {
   static const String welcomeRoute = '/welcome';
   static const String authRoute = '$welcomeRoute/auth';
   static const String areaRoute = '$authRoute/area';
+  static const String categoryRoute = '$areaRoute/category';
 
   /// gorouter config of the app
   static GoRouter router = GoRouter(
@@ -38,6 +40,12 @@ class AppRouterConfig {
         name: areaRoute,
         builder: (context, state) =>
             const SelectAreaScreen(key: ValueKey("select_area_screen")),
+      ),
+       GoRoute(
+        path: categoryRoute,
+        name: categoryRoute,
+        builder: (context, state) =>
+            const SelectCategoryScreen(key: ValueKey("select_category_screen")),
       ),
     ],
     initialLocation: initialRoute,

@@ -8,7 +8,7 @@ typedef GetListOfArea =
     Future<Either<FailerHandler, SuccessHandler<List<AreaEntities>>>>;
 typedef GetListOfCategory =
     Future<Either<FailerHandler, SuccessHandler<List<CategoryEntities>>>>;
-typedef SelectedArea = Future<Either<FailerHandler, SuccessHandler<bool>>>;
+typedef SelectedArea = Future<void>;
 
 abstract class UserSugestionRepo {
   GetListOfCategory getListOfCategory();

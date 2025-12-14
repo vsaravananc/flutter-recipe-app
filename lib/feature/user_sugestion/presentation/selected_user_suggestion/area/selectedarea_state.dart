@@ -10,7 +10,6 @@ abstract class SelectedareaState extends Equatable {
 }
 
 class SelectedareaInitial extends SelectedareaState {
-
   const SelectedareaInitial({super.areaEntities});
 }
 

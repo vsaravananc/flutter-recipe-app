@@ -19,10 +19,14 @@ class FireBaseFailure extends FailerHandler {
   FireBaseFailure(super.message);
 }
 
-class TypeErrorFailer extends FailerHandler{
+class TypeErrorFailer extends FailerHandler {
   TypeErrorFailer(super.message);
 }
 
-class NotValideCodeFailer extends FailerHandler{
+class NotValideCodeFailer extends FailerHandler {
   NotValideCodeFailer(super.message);
+}
+
+class LocalDataBaseFailure extends FailerHandler {
+  LocalDataBaseFailure(super.message);
 }

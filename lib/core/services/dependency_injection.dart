@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:recipe/core/api/clients/dio_client.dart';
 import 'package:recipe/core/database/create/create_database.dart';
+import 'package:recipe/core/database/tables/area_table.dart';
 import 'package:recipe/core/database/tables/category_table.dart';
 import 'package:recipe/core/database/tables/meal_table.dart';
 import 'package:recipe/core/database/tables/user_table.dart';
@@ -24,13 +25,17 @@ import 'package:recipe/feature/auth/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'package:recipe/feature/auth/presentation/bloc/auth_ui_bloc/auth_ui_bloc.dart';
 import 'package:recipe/feature/user_sugestion/data/data_sources/data_sources_repo.dart';
 import 'package:recipe/feature/user_sugestion/data/data_sources/data_sources_repo_impl.dart';
+import 'package:recipe/feature/user_sugestion/data/data_sources/local_data_source/local_data_impl_user_sugestion.dart';
+import 'package:recipe/feature/user_sugestion/data/data_sources/local_data_source/local_data_repo_user_sugestion.dart';
+import 'package:recipe/feature/user_sugestion/data/data_sources/remote_data_source/remote_data_impl_user_sugestion.dart';
 import 'package:recipe/feature/user_sugestion/data/repo_impl/user_sugestion_repo_impl.dart';
 import 'package:recipe/feature/user_sugestion/domain/repo/user_sugestion_repo.dart';
 import 'package:recipe/feature/user_sugestion/domain/use_cases/area_list_use_case.dart';
 import 'package:recipe/feature/user_sugestion/domain/use_cases/category_list_use_case.dart';
 import 'package:recipe/feature/user_sugestion/domain/use_cases/select_area_use_case.dart';
 import 'package:recipe/feature/user_sugestion/presentation/bloc/userprefrences_bloc.dart';
-import 'package:recipe/feature/user_sugestion/presentation/selectedarea/selectedarea_cubit.dart';
+import 'package:recipe/feature/user_sugestion/presentation/selected_user_suggestion/area/selectedarea_cubit.dart';
+import 'package:recipe/feature/user_sugestion/presentation/selected_user_suggestion/category/selectedcategory_cubit.dart';
 import 'package:recipe/feature/welcome/presentation/cubit/pagecurrentindex_cubit.dart';
 import 'package:get_it/get_it.dart';
 import 'package:sqflite/sqflite.dart';
@@ -46,13 +51,17 @@ class DependencyInjection {
     );
 
     /// ~~~~~ Local database ~~~~~
-
-    sl.registerSingletonAsync<Database>(
-      () async => await CreateDatabase(
+    sl.registerLazySingleton<CreateDatabase>(
+      () => CreateDatabase(
         categoryTable: CategoryTable(),
         mealTable: MealTable(),
         userTable: UserTable(),
-      ).database,
+        areaTable: AreaTable(),
+      ),
+    );
+
+    sl.registerSingletonAsync<Database>(
+      () async => await sl<CreateDatabase>().database,
     );
 
     // ~~~~~ Google sign ~~~~~~~
@@ -123,10 +132,21 @@ class DependencyInjection {
   }
 
   static void _userSugestion() {
-    sl.registerLazySingleton<DataSourcesRepo>(
-      () => DataSourcesRepoImpl(
+    sl.registerLazySingleton<LocalDataRepoUserSugestion>(
+      () => LocalDataImplUserSugestion(database: sl<Database>()),
+    );
+
+    sl.registerLazySingleton(
+      () => RemoteDataImplUserSugestion(
         dio: sl<DioClient>().dio,
         firebaseFirestore: sl<FirebaseFirestore>(),
+      ),
+    );
+
+    sl.registerLazySingleton<DataSourcesRepo>(
+      () => DataSourcesRepoImpl(
+        localData: sl<LocalDataRepoUserSugestion>(),
+        remoteData: sl<RemoteDataImplUserSugestion>(),
       ),
     );
     sl.registerLazySingleton<UserSugestionRepo>(
@@ -152,6 +172,9 @@ class DependencyInjection {
     sl.registerFactory<SelectedareaCubit>(
       () => SelectedareaCubit(selectAreaUseCase: sl<SelectAreaUseCase>()),
     );
+    sl.registerFactory<SelectedcategoryCubit>(
+      () => SelectedcategoryCubit(),
+    );
   }
 
   static Widget intialize(Widget child) {
@@ -162,6 +185,7 @@ class DependencyInjection {
         BlocProvider<AuthBloc>(create: (context) => sl()),
         BlocProvider<UserprefrencesBloc>(create: (context) => sl()),
         BlocProvider<SelectedareaCubit>(create: (context) => sl()),
+        BlocProvider<SelectedcategoryCubit>(create: (context) => sl()),
       ],
       child: child,
     );

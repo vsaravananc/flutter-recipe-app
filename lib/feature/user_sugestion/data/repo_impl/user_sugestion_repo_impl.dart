@@ -24,9 +24,7 @@ class UserSugestionRepoImpl implements UserSugestionRepo {
   }
 
   @override
-  Future<Either<FailerHandler, SuccessHandler<bool>>> selectedArea(
-    AreaEntities area,
-  ) async {
-    return await dataSourcesRepo.selectedArea(AreaModel(area: area.area));
+  Future<void> selectedArea(AreaEntities area) async {
+    await dataSourcesRepo.selectedArea(AreaModel(area: area.area));
   }
 }

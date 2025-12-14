@@ -12,7 +12,6 @@ class SelectedareaCubit extends Cubit<SelectedareaState> {
 
   Future<void> selectArea(AreaEntities area) async {
     emit(SelectedAreaState(areaEntities: area));
-    final reslut = await selectAreaUseCase.selectArea(area);
-    reslut.fold((failer) {}, (success) {});
+    await selectAreaUseCase.selectArea(area);
   }
 }

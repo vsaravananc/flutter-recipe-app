@@ -6,9 +6,12 @@ class UserTable implements CreateTable {
     Future<void> createTable(Database db , int version) async {
     await db.execute('''
     CREATE TABLE user (
+     id INTEGER PRIMARY KEY CHECK (id = 1),
      uuid TEXT,
      name TEXT,
      email TEXT,
+     selectedArea TEXT,
+     selectedCategory TEXT
     );
     ''');
   }

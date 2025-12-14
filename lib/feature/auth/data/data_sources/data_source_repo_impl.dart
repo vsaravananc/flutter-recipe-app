@@ -1,11 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/widgets.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:recipe/core/handler/failer_handler.dart';
 import 'package:recipe/core/handler/success_handler.dart';
-import 'package:recipe/core/messages/error_messages.dart';
 import 'package:recipe/feature/auth/data/data_sources/data_source_repo.dart';
 import 'package:recipe/feature/auth/data/data_sources/local_data_source/local_data_repo.dart';
 import 'package:recipe/feature/auth/data/data_sources/remote_data_source/remote_data_repo.dart';
@@ -17,7 +12,7 @@ typedef GetUser = Either<FailerHandler, SuccessHandler<UserModel>>;
 typedef EitherBoolOrInt = Either<bool, int>;
 
 class AuthDataSourceRepoImpl implements AuthDataRepo {
-  
+
   final RemoteDataRepo remoteData;
   final LocalDataRepo localData;
 

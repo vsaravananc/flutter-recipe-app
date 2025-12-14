@@ -121,11 +121,6 @@ class _AuthLoginInScreenState extends State<AuthLoginInScreen> {
                             ),
                           );
                         }
-                        ///
-                        /// we want to move the navigation to listener
-                        /// once it authSuccess it will move to area
-                        ///
-                        context.pushReplacement(AppRouterConfig.areaRoute);
                       },
                 text: "Log In",
               ),
@@ -144,6 +139,8 @@ class _AuthLoginInScreenState extends State<AuthLoginInScreen> {
           ScaffoldMessenger.of(
             context,
           ).showSnackBar(SnackBar(content: Text(s.user.uid)));
+          Future.delayed(const Duration(milliseconds: 200));
+          context.pushReplacement(AppRouterConfig.areaRoute);
         }
       },
     );

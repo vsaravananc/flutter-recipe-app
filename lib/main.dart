@@ -8,6 +8,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   await DependencyInjection.init();
+  await sl.allReady();
   runApp(DependencyInjection.intialize(const MyApp()));
 }
 

@@ -35,10 +35,15 @@ class RemoteDataImpl implements RemoteDataRepo {
       Map<String, dynamic> userData = await getCurrentUser(
         uid: result.user!.uid,
       );
+      await addUser(
+        uid: result.user!.uid,
+        email: userData["email"],
+        name: userData["name"],
+      );
       return Right(
         SuccessHandlerImpl<UserModel>(
           UserModel(
-            uid: userData["uid"],
+            uid: result.user!.uid,
             email: userData["email"],
             name: userData["name"],
           ),
@@ -71,6 +76,12 @@ class RemoteDataImpl implements RemoteDataRepo {
 
       Map<String, dynamic> userData = await getCurrentUser(
         uid: result.user!.uid,
+      );
+
+      await addUser(
+        uid: result.user?.uid ?? "",
+        email: userData["email"],
+        name: userData["name"],
       );
       return Right(
         SuccessHandlerImpl<UserModel>(
@@ -113,11 +124,6 @@ class RemoteDataImpl implements RemoteDataRepo {
         email: entities.email,
         password: entities.password,
       );
-      await addUser(
-        uid: result.user?.uid ?? "",
-        email: entities.email,
-        name: entities.name,
-      );
       return Right(
         SuccessHandlerImpl<UserModel>(
           UserModel(
@@ -151,12 +157,6 @@ class RemoteDataImpl implements RemoteDataRepo {
         idToken: userInteraction.authentication.idToken,
       );
       final result = await firebaseAuth.signInWithCredential(authProvider);
-
-      await addUser(
-        uid: result.user?.uid ?? "",
-        email: userInteraction.email,
-        name: userInteraction.displayName ?? "",
-      );
 
       return Right(
         SuccessHandlerImpl<UserModel>(
@@ -199,6 +199,7 @@ class RemoteDataImpl implements RemoteDataRepo {
         "name": name,
       });
     } catch (e) {
+      debugPrint('add Error : $e');
       rethrow;
     }
   }

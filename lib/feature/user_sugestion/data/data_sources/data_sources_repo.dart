@@ -8,7 +8,7 @@ typedef GetListOfArea =
     Future<Either<FailerHandler, SuccessHandler<List<AreaModel>>>>;
 typedef GetListOfCategory =
     Future<Either<FailerHandler, SuccessHandler<List<CategoryModel>>>>;
-typedef SelectedArea = Future<Either<FailerHandler, SuccessHandler<bool>>>;
+typedef SelectedArea = Future<void>;
 
 abstract class DataSourcesRepo {
   GetListOfArea getListOfArea();

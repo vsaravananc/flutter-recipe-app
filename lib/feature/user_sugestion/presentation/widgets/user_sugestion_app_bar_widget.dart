@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:recipe/core/extensions/color_extension.dart';
 import 'package:recipe/core/extensions/textstyle_extension.dart';
 
 class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
@@ -16,11 +18,20 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
       title: Text(
         title,
         style: context.titleLarge,
-        maxLines: 1,
+        textAlign: TextAlign.center,
+        maxLines: 2,
         overflow: TextOverflow.ellipsis,
       ),
       centerTitle: true,
+      surfaceTintColor: context.scaffoldBackgroundColor,
+      backgroundColor: context.scaffoldBackgroundColor,
       automaticallyImplyLeading: leadingIcon,
+      leading: leadingIcon
+          ? IconButton(
+              onPressed: () => context.pop(),
+              icon: const Icon(Icons.arrow_back),
+            )
+          : null,
     );
   }
 
