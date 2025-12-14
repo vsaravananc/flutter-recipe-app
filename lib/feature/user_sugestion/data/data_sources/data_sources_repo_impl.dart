@@ -45,4 +45,10 @@ class DataSourcesRepoImpl implements DataSourcesRepo {
     final String uuid = await localData.selectedArea(category);
     await remoteData.selectedArea(category, uuid);
   }
+
+  @override
+  SelectedCategory selectedCategory(CategoryModel category) async {
+    final String uuid = await localData.selectedCategory(category);
+    await remoteData.selectedCategory(category, uuid);
+  }
 }

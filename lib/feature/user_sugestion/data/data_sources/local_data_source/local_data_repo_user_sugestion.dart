@@ -14,5 +14,5 @@ abstract class LocalDataRepoUserSugestion {
   Future<void> insertListOfArea(List<AreaModel> listOfAreaModel);
   Future<void> insertListOfCategory(List<CategoryModel> listOfCategoryModel);
   Future<String> selectedArea(AreaModel area);
-
+  Future<String> selectedCategory(CategoryModel category);
 }

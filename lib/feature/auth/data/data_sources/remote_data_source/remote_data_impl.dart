@@ -197,7 +197,7 @@ class RemoteDataImpl implements RemoteDataRepo {
       await firebaseFirestore.collection("users").doc(uid).set({
         "email": email,
         "name": name,
-      });
+      }, SetOptions(merge: true));
     } catch (e) {
       debugPrint('add Error : $e');
       rethrow;

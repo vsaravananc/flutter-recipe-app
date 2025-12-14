@@ -104,6 +104,14 @@ class RemoteDataImplUserSugestion implements RemoteDataRepoUserSugestion {
         .doc(uuid)
         .update(area.addArea());
   }
+
+  @override
+  Future<void> selectedCategory(CategoryModel category, String uuid) async {
+    await firebaseFirestore
+        .collection("users")
+        .doc(uuid)
+        .update(category.addCategory());
+  }
 }
 
 List<AreaModel> _convertAreaModel(Map<String, dynamic> json) {

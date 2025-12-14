@@ -9,9 +9,11 @@ typedef GetListOfArea =
 typedef GetListOfCategory =
     Future<Either<FailerHandler, SuccessHandler<List<CategoryEntities>>>>;
 typedef SelectedArea = Future<void>;
+typedef SelectedCategory = Future<void>;
 
 abstract class UserSugestionRepo {
   GetListOfCategory getListOfCategory();
   GetListOfArea getListOfArea();
   SelectedArea selectedArea(AreaEntities category);
+  SelectedCategory selectedCategory(CategoryEntities category);
 }

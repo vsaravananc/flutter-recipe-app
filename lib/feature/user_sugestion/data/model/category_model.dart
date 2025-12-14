@@ -1,10 +1,8 @@
-
-
 import 'package:recipe/feature/user_sugestion/domain/entities/category_entities.dart';
 
 class CategoryModel extends CategoryEntities {
- const CategoryModel({required super.category});
-  
+  const CategoryModel({required super.category});
+
   factory CategoryModel.fromJson(Map<String, dynamic> json) {
     return CategoryModel(category: json['strCategory']);
   }
@@ -20,4 +18,8 @@ class CategoryModel extends CategoryEntities {
     data['inserted_at'] = millSecond;
     return data;
   }
+
+  Map<String, dynamic> toJsonForDatabase() => {"selectedCategory": category};
+
+  Map<String, dynamic> addCategory() => {"selectedCategory": category};
 }

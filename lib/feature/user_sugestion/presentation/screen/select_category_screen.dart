@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:recipe/core/extensions/textstyle_extension.dart';
 import 'package:recipe/feature/user_sugestion/domain/entities/category_entities.dart';
 import 'package:recipe/feature/user_sugestion/presentation/bloc/userprefrences_bloc.dart';
-import 'package:recipe/feature/user_sugestion/presentation/selected_user_suggestion/area/selectedarea_cubit.dart';
 import 'package:recipe/feature/user_sugestion/presentation/selected_user_suggestion/category/selectedcategory_cubit.dart';
 import 'package:recipe/feature/user_sugestion/presentation/widgets/user_sugestion_app_bar_widget.dart';
 import 'package:recipe/feature/user_sugestion/presentation/widgets/user_sugestion_bottom_info_widget.dart';
@@ -22,6 +21,26 @@ class SelectCategoryScreen extends StatelessWidget {
       bottomNavigationBar: const UserSugestionBottomInfoWidget(
         title: "category",
       ),
+      floatingActionButton:
+          BlocBuilder<SelectedcategoryCubit, SelectedcategoryState>(
+            builder: (context, state) {
+              return AnimatedSwitcher(
+                duration: const Duration(milliseconds: 300),
+                transitionBuilder: (child, animation) =>
+                    FadeTransition(opacity: animation, child: child),
+                child: state.categoryEntities != null
+                    ? FloatingActionButton(
+                        key: const ValueKey('floating_button'),
+                        shape: const CircleBorder(),
+                        onPressed: () {},
+                        child: const Icon(Icons.arrow_forward),
+                      )
+                    : const SizedBox.shrink(
+                        key: ValueKey('empty_floating_button'),
+                      ),
+              );
+            },
+          ),
       body: BlocBuilder<UserprefrencesBloc, UserprefrencesState>(
         builder: (context, state) {
           if (state is UserprefrencesLoaded) {
@@ -35,7 +54,7 @@ class SelectCategoryScreen extends StatelessWidget {
               ),
               itemCount: state.categories.length,
               itemBuilder: (con, index) {
-                CategoryEntities areaEntities = state.categories[index];
+                CategoryEntities categoryEntities = state.categories[index];
                 bool isSelected =
                     (con
                             .watch<SelectedcategoryCubit>()
@@ -43,11 +62,15 @@ class SelectCategoryScreen extends StatelessWidget {
                             .categoryEntities
                             ?.category ??
                         "") ==
-                    areaEntities.category;
+                    categoryEntities.category;
                 return UserSugestionSelectButtonWidget(
                   isSelected: isSelected,
-                  title: areaEntities.category,
-                  onTap: () {},
+                  title: categoryEntities.category,
+                  onTap: () {
+                    context.read<SelectedcategoryCubit>().selectCategory(
+                      categoryEntities,
+                    );
+                  },
                 );
               },
             );

@@ -11,4 +11,5 @@ abstract class RemoteDataRepoUserSugestion {
   Future<Getlistofarearemote> getListOfArea();
   Future<Getlistofcategoryremote> getListOfCategory();
   Future<void> selectedArea(AreaModel area, String uuid);
+  Future<void> selectedCategory(CategoryModel category, String uuid);
 }

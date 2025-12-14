@@ -9,9 +9,11 @@ typedef GetListOfArea =
 typedef GetListOfCategory =
     Future<Either<FailerHandler, SuccessHandler<List<CategoryModel>>>>;
 typedef SelectedArea = Future<void>;
+typedef SelectedCategory = Future<void>;
 
 abstract class DataSourcesRepo {
   GetListOfArea getListOfArea();
   GetListOfCategory getListOfCategory();
   SelectedArea selectedArea(AreaModel category);
+  SelectedCategory selectedCategory(CategoryModel category);
 }

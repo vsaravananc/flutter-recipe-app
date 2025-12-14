@@ -33,6 +33,7 @@ import 'package:recipe/feature/user_sugestion/domain/repo/user_sugestion_repo.da
 import 'package:recipe/feature/user_sugestion/domain/use_cases/area_list_use_case.dart';
 import 'package:recipe/feature/user_sugestion/domain/use_cases/category_list_use_case.dart';
 import 'package:recipe/feature/user_sugestion/domain/use_cases/select_area_use_case.dart';
+import 'package:recipe/feature/user_sugestion/domain/use_cases/select_category_use_case.dart';
 import 'package:recipe/feature/user_sugestion/presentation/bloc/userprefrences_bloc.dart';
 import 'package:recipe/feature/user_sugestion/presentation/selected_user_suggestion/area/selectedarea_cubit.dart';
 import 'package:recipe/feature/user_sugestion/presentation/selected_user_suggestion/category/selectedcategory_cubit.dart';
@@ -159,6 +160,9 @@ class DependencyInjection {
     sl.registerFactory<CategoryListUseCase>(
       () => CategoryListUseCase(userSugestionRepo: sl<UserSugestionRepo>()),
     );
+    sl.registerFactory<SelectCategoryUseCase>(
+      () => SelectCategoryUseCase(userSugestionRepo: sl<UserSugestionRepo>()),
+    );
     sl.registerFactory<SelectAreaUseCase>(
       () => SelectAreaUseCase(userSugestionRepo: sl<UserSugestionRepo>()),
     );
@@ -172,8 +176,11 @@ class DependencyInjection {
     sl.registerFactory<SelectedareaCubit>(
       () => SelectedareaCubit(selectAreaUseCase: sl<SelectAreaUseCase>()),
     );
+
     sl.registerFactory<SelectedcategoryCubit>(
-      () => SelectedcategoryCubit(),
+      () => SelectedcategoryCubit(
+        selectCategoryUseCase: sl<SelectCategoryUseCase>(),
+      ),
     );
   }
 

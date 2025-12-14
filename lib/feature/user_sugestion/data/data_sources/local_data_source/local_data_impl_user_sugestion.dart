@@ -117,4 +117,16 @@ class LocalDataImplUserSugestion implements LocalDataRepoUserSugestion {
     final result = await database.query('user');
     return result.first['uuid'] as String? ?? "";
   }
+
+  @override
+  Future<String> selectedCategory(CategoryModel category) async {
+    await database.update(
+      'user',
+      category.toJsonForDatabase(),
+      where: 'id = ?',
+      whereArgs: [1],
+    );
+    final result = await database.query('user');
+    return result.first['uuid'] as String? ?? "";
+  }
 }
