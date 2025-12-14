@@ -18,15 +18,5 @@ abstract class AuthDataRepo {
 
   Future<Either<FailerHandler, SuccessHandler<UserModel>>> registerWithGoogle();
 
-  Future<Map<String,dynamic>> getCurrentUser({
-    required String uid,
-  });
-
-  Future<void> addUser({
-    required String uid,
-    required String email,
-    required String name,
-  });
-
   Future<Either<bool, int>> logout();
 }

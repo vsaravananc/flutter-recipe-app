@@ -4,8 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:recipe/core/api/clients/dio_client.dart';
+import 'package:recipe/core/database/create/create_database.dart';
+import 'package:recipe/core/database/tables/category_table.dart';
+import 'package:recipe/core/database/tables/meal_table.dart';
+import 'package:recipe/core/database/tables/user_table.dart';
 import 'package:recipe/feature/auth/data/data_sources/data_source_repo.dart';
 import 'package:recipe/feature/auth/data/data_sources/data_source_repo_impl.dart';
+import 'package:recipe/feature/auth/data/data_sources/local_data_source/local_data_impl.dart';
+import 'package:recipe/feature/auth/data/data_sources/local_data_source/local_data_repo.dart';
+import 'package:recipe/feature/auth/data/data_sources/remote_data_source/remote_data_impl.dart';
+import 'package:recipe/feature/auth/data/data_sources/remote_data_source/remote_data_repo.dart';
 import 'package:recipe/feature/auth/data/repo_impl/auth_repo_impl.dart';
 import 'package:recipe/feature/auth/domain/repo/auth_repo.dart';
 import 'package:recipe/feature/auth/domain/use_cases/login_with_email_usecase.dart';
@@ -25,6 +33,7 @@ import 'package:recipe/feature/user_sugestion/presentation/bloc/userprefrences_b
 import 'package:recipe/feature/user_sugestion/presentation/selectedarea/selectedarea_cubit.dart';
 import 'package:recipe/feature/welcome/presentation/cubit/pagecurrentindex_cubit.dart';
 import 'package:get_it/get_it.dart';
+import 'package:sqflite/sqflite.dart';
 
 final sl = GetIt.instance;
 
@@ -34,6 +43,16 @@ class DependencyInjection {
     sl.registerLazySingleton<FirebaseAuth>(() => FirebaseAuth.instance);
     sl.registerLazySingleton<FirebaseFirestore>(
       () => FirebaseFirestore.instance,
+    );
+
+    /// ~~~~~ Local database ~~~~~
+
+    sl.registerSingletonAsync<Database>(
+      () async => await CreateDatabase(
+        categoryTable: CategoryTable(),
+        mealTable: MealTable(),
+        userTable: UserTable(),
+      ).database,
     );
 
     // ~~~~~ Google sign ~~~~~~~
@@ -57,11 +76,24 @@ class DependencyInjection {
   }
 
   static void _auth() {
-    sl.registerLazySingleton<AuthDataRepo>(
-      () => AuthDataSourceRepoImpl(
+    /// ~~~~~~ Remote data source ~~~~~~
+    sl.registerLazySingleton<RemoteDataRepo>(
+      () => RemoteDataImpl(
         firebaseAuth: sl(),
         googleSignIn: sl(),
         firebaseFirestore: sl<FirebaseFirestore>(),
+      ),
+    );
+
+    /// ~~~~~~~~~ Local Data source ~~~~~~~
+    sl.registerLazySingleton<LocalDataRepo>(
+      () => LocalDataImpl(database: sl<Database>()),
+    );
+
+    sl.registerLazySingleton<AuthDataRepo>(
+      () => AuthDataSourceRepoImpl(
+        remoteData: sl<RemoteDataRepo>(),
+        localData: sl<LocalDataRepo>(),
       ),
     );
     sl.registerLazySingleton<AuthRepo>(() => AuthRepoImpl(dataRepo: sl()));

@@ -7,204 +7,61 @@ import 'package:recipe/core/handler/failer_handler.dart';
 import 'package:recipe/core/handler/success_handler.dart';
 import 'package:recipe/core/messages/error_messages.dart';
 import 'package:recipe/feature/auth/data/data_sources/data_source_repo.dart';
+import 'package:recipe/feature/auth/data/data_sources/local_data_source/local_data_repo.dart';
+import 'package:recipe/feature/auth/data/data_sources/remote_data_source/remote_data_repo.dart';
 import 'package:recipe/feature/auth/data/model/login_with_email_model.dart';
 import 'package:recipe/feature/auth/data/model/user_model.dart';
 import 'package:recipe/feature/auth/domain/entities/sign_with_email_entities.dart';
 
+typedef GetUser = Either<FailerHandler, SuccessHandler<UserModel>>;
+typedef EitherBoolOrInt = Either<bool, int>;
+
 class AuthDataSourceRepoImpl implements AuthDataRepo {
-  final FirebaseAuth firebaseAuth;
-  final FirebaseFirestore firebaseFirestore;
-  final GoogleSignIn googleSignIn;
+  
+  final RemoteDataRepo remoteData;
+  final LocalDataRepo localData;
 
-  AuthDataSourceRepoImpl({
-    required this.firebaseAuth,
-    required this.googleSignIn,
-    required this.firebaseFirestore,
-  });
+  AuthDataSourceRepoImpl({required this.remoteData, required this.localData});
 
   @override
-  Future<Either<FailerHandler, SuccessHandler<UserModel>>> loginWithEmail(
-    LoginWithEmailModel entities,
-  ) async {
-    try {
-      debugPrint("${entities.email} ${entities.password}");
-      final result = await firebaseAuth.signInWithEmailAndPassword(
-        email: entities.email,
-        password: entities.password,
-      );
-      Map<String, dynamic> userData = await getCurrentUser(
-        uid: result.user!.uid,
-      );
-      return Right(
-        SuccessHandlerImpl<UserModel>(
-          UserModel(uid: userData["uid"], email: userData["email"]),
-        ),
-      );
-    } on FirebaseAuthException catch (e) {
-      debugPrint(e.code);
-      return Left(
-        FireBaseFailure(ErrorMessages.getFirebaseErrorMessage(e.code)),
-      );
-    } catch (m) {
-      debugPrint(m.toString());
-      return Left(
-        ServerFailure(
-          "We’re unable to reach the server right now. Please check your connection or try again later.",
-        ),
-      );
-    }
+  Future<GetUser> loginWithEmail(LoginWithEmailModel entities) async {
+    final result = await remoteData.loginWithEmail(entities);
+    return await result.fold((failer) => Left(failer), (success) async {
+      await localData.addUser(success.data);
+      return Right(success);
+    });
   }
 
   @override
-  Future<Either<FailerHandler, SuccessHandler<UserModel>>>
-  loginWithGoogle() async {
-    try {
-      final userInteraction = await googleSignIn.authenticate();
-
-      final authProvider = GoogleAuthProvider.credential(
-        idToken: userInteraction.authentication.idToken,
-      );
-      final result = await firebaseAuth.signInWithCredential(authProvider);
-
-      Map<String, dynamic> userData = await getCurrentUser(
-        uid: result.user!.uid,
-      );
-      return Right(
-        SuccessHandlerImpl<UserModel>(
-          UserModel(uid: userData["uid"], email: userData["email"]),
-        ),
-      );
-    } on GoogleSignInException catch (e) {
-      debugPrint(e.code.toString());
-      return Left(
-        FireBaseFailure(ErrorMessages.getGoogleSignInErrorMessage(e.code)),
-      );
-    } on FirebaseException catch (e) {
-      debugPrint(e.code);
-      return Left(
-        FireBaseFailure(ErrorMessages.getFirebaseErrorMessage(e.code)),
-      );
-    } catch (m) {
-      debugPrint(m.toString());
-      return Left(
-        ServerFailure(
-          "We’re unable to reach the server right now. Please check your connection or try again later.",
-        ),
-      );
-    }
+  Future<GetUser> loginWithGoogle() async {
+    final result = await remoteData.loginWithGoogle();
+    return await result.fold((failer) => Left(failer), (success) async {
+      await localData.addUser(success.data);
+      return Right(success);
+    });
   }
 
   @override
-  Future<Either<bool, int>> logout() {
-    throw UnimplementedError();
+  Future<EitherBoolOrInt> logout() async{
+   return await remoteData.logout();
   }
 
   @override
-  Future<Either<FailerHandler, SuccessHandler<UserModel>>> registerWithEmail(
-    SignWithEmailEntities entities,
-  ) async {
-    try {
-      final result = await firebaseAuth.createUserWithEmailAndPassword(
-        email: entities.email,
-        password: entities.password,
-      );
-      await addUser(
-        uid: result.user?.uid ?? "",
-        email: entities.email,
-        name: entities.name,
-      );
-      return Right(
-        SuccessHandlerImpl<UserModel>(
-          UserModel(uid: result.user!.uid, email: result.user!.email ?? ""),
-        ),
-      );
-    } on FirebaseException catch (e) {
-      debugPrint(e.code);
-      return Left(
-        FireBaseFailure(ErrorMessages.getFirebaseErrorMessage(e.code)),
-      );
-    } catch (m) {
-      debugPrint(m.toString());
-      return Left(
-        ServerFailure(
-          "We’re unable to reach the server right now. Please check your connection or try again later.",
-        ),
-      );
-    }
+  Future<GetUser> registerWithEmail(SignWithEmailEntities entities) async {
+    final result = await remoteData.registerWithEmail(entities);
+    return await result.fold((failer) => Left(failer), (success) async {
+      await localData.addUser(success.data);
+      return Right(success);
+    });
   }
 
   @override
-  Future<Either<FailerHandler, SuccessHandler<UserModel>>>
-  registerWithGoogle() async {
-    try {
-      final userInteraction = await googleSignIn.authenticate();
-
-      final authProvider = GoogleAuthProvider.credential(
-        idToken: userInteraction.authentication.idToken,
-      );
-      final result = await firebaseAuth.signInWithCredential(authProvider);
-
-      await addUser(
-        uid: result.user?.uid ?? "",
-        email: userInteraction.email,
-        name: userInteraction.displayName ?? "",
-      );
-
-      return Right(
-        SuccessHandlerImpl<UserModel>(
-          UserModel(
-            uid: result.user?.uid ?? "",
-            email: result.user?.email ?? "",
-          ),
-        ),
-      );
-    } on GoogleSignInException catch (e) {
-      debugPrint(e.code.toString());
-      return Left(
-        FireBaseFailure(ErrorMessages.getGoogleSignInErrorMessage(e.code)),
-      );
-    } on FirebaseException catch (e) {
-      debugPrint(e.code);
-      return Left(
-        FireBaseFailure(ErrorMessages.getFirebaseErrorMessage(e.code)),
-      );
-    } catch (m) {
-      debugPrint(m.toString());
-      return Left(
-        ServerFailure(
-          "We’re unable to reach the server right now. Please check your connection or try again later.",
-        ),
-      );
-    }
+  Future<GetUser> registerWithGoogle() async {
+    final result = await remoteData.registerWithGoogle();
+    return await result.fold((failer) => Left(failer), (success) async {
+      await localData.addUser(success.data);
+      return Right(success);
+    });
   }
 
-  @override
-  Future<void> addUser({
-    required String uid,
-    required String email,
-    required String name,
-  }) async {
-    try {
-      await firebaseFirestore.collection("users").doc(uid).set({
-        "email": email,
-        "name": name,
-      });
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  @override
-  Future<Map<String, dynamic>> getCurrentUser({required String uid}) async {
-    try {
-      final doc = await firebaseFirestore.collection("users").doc(uid).get();
-      if (!doc.exists) {
-        throw Exception("No such user found");
-      }
-      final data = doc.data()!;
-      return data;
-    } catch (e) {
-      rethrow;
-    }
-  }
 }
