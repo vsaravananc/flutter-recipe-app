@@ -1,0 +1,9 @@
+import 'package:dartz/dartz.dart';
+import 'package:recipe/core/handler/failer_handler.dart';
+import 'package:recipe/core/handler/success_handler.dart';
+import 'package:recipe/feature/home/data/model/home_category_model.dart';
+
+abstract class DataSourceRepo {
+  Future<Either<FailerHandler, SuccessHandler<List<HomeCategoryModel>>>>
+  fetchCategoryData();
+}

@@ -5,8 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:recipe/core/api/clients/dio_client.dart';
 import 'package:recipe/core/database/create/create_database.dart';
-import 'package:recipe/core/database/tables/area_table.dart';
-import 'package:recipe/core/database/tables/category_table.dart';
+import 'package:recipe/core/database/tables/areas_table.dart';
+import 'package:recipe/core/database/tables/categorys_table.dart';
+import 'package:recipe/core/database/tables/foodtypes_table.dart';
 import 'package:recipe/core/database/tables/meal_table.dart';
 import 'package:recipe/core/database/tables/user_table.dart';
 import 'package:recipe/feature/auth/data/data_sources/data_source_repo.dart';
@@ -23,6 +24,16 @@ import 'package:recipe/feature/auth/domain/use_cases/signup_with_email_usecase.d
 import 'package:recipe/feature/auth/domain/use_cases/signup_with_google_usecase.dart';
 import 'package:recipe/feature/auth/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'package:recipe/feature/auth/presentation/bloc/auth_ui_bloc/auth_ui_bloc.dart';
+import 'package:recipe/feature/dashboard/presentation/dashboard/dashboard_cubit.dart';
+import 'package:recipe/feature/home/data/data_source/data_source_repo_impl.dart';
+import 'package:recipe/feature/home/data/data_source/local_data_source/local_data_source_repo.dart';
+import 'package:recipe/feature/home/data/data_source/local_data_source/local_data_source_repo_impl.dart';
+import 'package:recipe/feature/home/data/data_source/remote_data_source/remote_data_source_repo.dart';
+import 'package:recipe/feature/home/data/data_source/remote_data_source/remote_data_source_repo_impl.dart';
+import 'package:recipe/feature/home/data/repo_impl/home_repo_impl.dart';
+import 'package:recipe/feature/home/domain/repo/home_repo.dart';
+import 'package:recipe/feature/home/domain/use_cases/home_category.dart';
+import 'package:recipe/feature/home/presentation/bloc/home_category_bloc/homecategory_bloc.dart';
 import 'package:recipe/feature/user_sugestion/data/data_sources/data_sources_repo.dart';
 import 'package:recipe/feature/user_sugestion/data/data_sources/data_sources_repo_impl.dart';
 import 'package:recipe/feature/user_sugestion/data/data_sources/local_data_source/local_data_impl_user_sugestion.dart';
@@ -54,10 +65,11 @@ class DependencyInjection {
     /// ~~~~~ Local database ~~~~~
     sl.registerLazySingleton<CreateDatabase>(
       () => CreateDatabase(
-        categoryTable: CategoryTable(),
+        categorysTable: CategorysTable(),
         mealTable: MealTable(),
         userTable: UserTable(),
-        areaTable: AreaTable(),
+        areaTable: AreasTable(),
+        foodtypesTable: FoodtypesTable(),
       ),
     );
 
@@ -83,6 +95,12 @@ class DependencyInjection {
 
     /// ~~~~~ User Sugestion ~~~~~ implementation
     _userSugestion();
+
+    /// ~~~~~~~ Dash Board ~~~~~~~~ implementation
+    sl.registerFactory<DashboardCubit>(() => DashboardCubit());
+
+    /// ~~~~~~~ Home ~~~~~~~~ implementation
+    _home();
   }
 
   static void _auth() {
@@ -184,6 +202,33 @@ class DependencyInjection {
     );
   }
 
+  static void _home() {
+    sl.registerLazySingleton<RemoteDataSourceHomeRepo>(
+      () => RemoteDataSourceHomeRepoImpl(dio: sl<DioClient>().dio),
+    );
+    sl.registerLazySingleton<LocalDataSourceHomeRepo>(
+      () => LocalDataSourceHomeRepoImpl(database: sl<Database>()),
+    );
+
+    sl.registerLazySingleton<DataSourceHomeRepoImpl>(
+      () => DataSourceHomeRepoImpl(
+        localDataRepo: sl<LocalDataSourceHomeRepo>(),
+        remoteDataRepo: sl<RemoteDataSourceHomeRepo>(),
+      ),
+    );
+
+    sl.registerLazySingleton<HomeRepo>(
+      () => HomeRepoImpl(dataSourceRepo: sl<DataSourceHomeRepoImpl>()),
+    );
+
+    sl.registerFactory<HomeCategoryUseCase>(
+      () => HomeCategoryUseCase(homeRepo: sl<HomeRepo>()),
+    );
+    sl.registerFactory<HomecategoryBloc>(
+      () => HomecategoryBloc(homeCategoryUseCase: sl<HomeCategoryUseCase>()),
+    );
+  }
+
   static Widget intialize(Widget child) {
     return MultiBlocProvider(
       providers: [
@@ -193,6 +238,8 @@ class DependencyInjection {
         BlocProvider<UserprefrencesBloc>(create: (context) => sl()),
         BlocProvider<SelectedareaCubit>(create: (context) => sl()),
         BlocProvider<SelectedcategoryCubit>(create: (context) => sl()),
+        BlocProvider<DashboardCubit>(create: (context) => sl()),
+        BlocProvider<HomecategoryBloc>(create: (context) => sl()),
       ],
       child: child,
     );

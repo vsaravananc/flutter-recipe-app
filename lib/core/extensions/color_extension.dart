@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 
 ///
@@ -21,6 +23,7 @@ extension ColorExtension on BuildContext{
   Color get highlightColor => Theme.of(this).highlightColor;
   Color get splashColor => Theme.of(this).splashColor;
   Color get disabledColor => Theme.of(this).disabledColor;
+  Color get hintColor => Theme.of(this).hintColor;
 
   // -----------------------------
   // ColorScheme Colors

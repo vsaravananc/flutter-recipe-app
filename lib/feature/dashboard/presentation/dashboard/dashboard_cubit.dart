@@ -1,0 +1,7 @@
+import 'package:bloc/bloc.dart';
+
+class DashboardCubit extends Cubit<int> {
+  DashboardCubit() : super(0);
+
+  void onTap(int index) => emit(index);
+}

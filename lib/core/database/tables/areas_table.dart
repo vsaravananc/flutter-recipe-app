@@ -1,7 +1,7 @@
 import 'package:recipe/core/database/repo/repo_table.dart';
 import 'package:sqflite/sqflite.dart';
 
-class AreaTable implements CreateTable {
+class AreasTable implements CreateTable {
   @override
   Future<void> createTable(Database db, int version) async {
     await db.execute('''

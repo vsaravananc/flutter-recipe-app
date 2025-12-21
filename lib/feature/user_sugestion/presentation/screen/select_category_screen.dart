@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:recipe/core/extensions/textstyle_extension.dart';
+import 'package:recipe/core/route/app_router_config.dart';
 import 'package:recipe/feature/user_sugestion/domain/entities/category_entities.dart';
 import 'package:recipe/feature/user_sugestion/presentation/bloc/userprefrences_bloc.dart';
 import 'package:recipe/feature/user_sugestion/presentation/selected_user_suggestion/category/selectedcategory_cubit.dart';
@@ -32,7 +34,9 @@ class SelectCategoryScreen extends StatelessWidget {
                     ? FloatingActionButton(
                         key: const ValueKey('floating_button'),
                         shape: const CircleBorder(),
-                        onPressed: () {},
+                        onPressed: () {
+                          context.go(AppRouterConfig.dashBoardRoute);
+                        },
                         child: const Icon(Icons.arrow_forward),
                       )
                     : const SizedBox.shrink(

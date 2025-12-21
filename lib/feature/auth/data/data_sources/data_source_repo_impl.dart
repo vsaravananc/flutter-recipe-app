@@ -37,6 +37,7 @@ class AuthDataSourceRepoImpl implements AuthDataRepo {
   }
 
   @override
+
   Future<EitherBoolOrInt> logout() async{
    return await remoteData.logout();
   }

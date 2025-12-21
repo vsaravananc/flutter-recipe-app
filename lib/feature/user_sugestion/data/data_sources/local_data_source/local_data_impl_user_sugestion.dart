@@ -17,7 +17,7 @@ class LocalDataImplUserSugestion implements LocalDataRepoUserSugestion {
       final int timetolive = DateTime.now()
           .subtract(const Duration(days: 2))
           .millisecondsSinceEpoch;
-      final response = await database.query(
+      final response = await database.query(  
         "area",
         where: "inserted_at >= ?",
         whereArgs: [timetolive],

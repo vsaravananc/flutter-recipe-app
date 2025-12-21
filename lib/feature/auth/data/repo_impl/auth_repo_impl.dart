@@ -27,7 +27,6 @@ class AuthRepoImpl implements AuthRepo {
 
   @override
   Future<Either<bool, int>> logout() {
-    // TODO: implement logout
     throw UnimplementedError();
   }
 

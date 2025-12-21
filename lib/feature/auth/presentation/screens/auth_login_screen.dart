@@ -120,6 +120,8 @@ class _AuthLoginInScreenState extends State<AuthLoginInScreen> {
                               password: _passwordController.text.trim(),
                             ),
                           );
+                          //? remove the below code
+                          context.pushReplacement(AppRouterConfig.areaRoute);
                         }
                       },
                 text: "Log In",

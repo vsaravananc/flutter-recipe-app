@@ -30,3 +30,7 @@ class NotValideCodeFailer extends FailerHandler {
 class LocalDataBaseFailure extends FailerHandler {
   LocalDataBaseFailure(super.message);
 }
+
+class UnexpectedFailure extends FailerHandler {
+  UnexpectedFailure(super.message);
+}

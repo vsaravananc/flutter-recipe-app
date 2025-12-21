@@ -1,7 +1,7 @@
 import 'package:recipe/core/database/repo/repo_table.dart';
 import 'package:sqflite/sqflite.dart';
 
-class CategoryTable implements CreateTable {
+class CategorysTable implements CreateTable {
   @override
   Future<void> createTable(Database db, int verison) async {
     await db.execute('''

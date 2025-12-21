@@ -2,7 +2,7 @@ class ApiEndpoints {
   static const String baseUrl = "https://www.themealdb.com/api/json/v1/1/";
   static const String searchByName = "search.php?s=";
   static const String searchByfirstLetter = "search.php?f=";
-  static const String category = "categories.php";
+  static const String foodType = "categories.php";
   // filter by area, category and integration
   static const String filterByIntegration = "filter.php?i=";
   static const String filterByCategory = "filter.php?c=";
@@ -14,3 +14,5 @@ class ApiEndpoints {
   // detial of meal
   static const String detailView = "lookup.php?i=";
 }
+
+// https://www.themealdb.com/api/json/v1/1/categories.php
