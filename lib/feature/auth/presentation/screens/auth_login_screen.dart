@@ -13,6 +13,7 @@ import 'package:recipe/feature/auth/presentation/widgets/auth_button_widget.dart
 import 'package:recipe/feature/auth/presentation/widgets/auth_divider_holder_widget.dart';
 import 'package:recipe/feature/auth/presentation/widgets/auth_icon_button_widget.dart';
 import 'package:recipe/feature/auth/presentation/widgets/auth_textformfield_widget.dart';
+import 'package:recipe/feature/home/presentation/bloc/home_category_bloc/homecategory_bloc.dart';
 
 class AuthLoginInScreen extends StatefulWidget {
   const AuthLoginInScreen({super.key});
@@ -121,7 +122,9 @@ class _AuthLoginInScreenState extends State<AuthLoginInScreen> {
                             ),
                           );
                           //? remove the below code
-                          context.pushReplacement(AppRouterConfig.areaRoute);
+                          context.pushReplacement(
+                            AppRouterConfig.dashBoardRoute,
+                          );
                         }
                       },
                 text: "Log In",
@@ -137,12 +140,13 @@ class _AuthLoginInScreenState extends State<AuthLoginInScreen> {
           ).showSnackBar(SnackBar(content: Text(s.message)));
         }
         if (s is AuthSuccess) {
+          context.read<HomecategoryBloc>().add(FetchHomeCategories());
           _clearText();
           ScaffoldMessenger.of(
             context,
           ).showSnackBar(SnackBar(content: Text(s.user.uid)));
           Future.delayed(const Duration(milliseconds: 200));
-          context.pushReplacement(AppRouterConfig.areaRoute);
+          context.pushReplacement(AppRouterConfig.dashBoardRoute);
         }
       },
     );

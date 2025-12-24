@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:recipe/core/images/app_images.dart';
 import 'package:recipe/core/route/app_router_config.dart';
-import 'package:recipe/feature/user_sugestion/presentation/bloc/userprefrences_bloc.dart';
+import 'package:recipe/feature/home/presentation/bloc/home_category_bloc/homecategory_bloc.dart';
 
 class SplashLogoWidget extends StatefulWidget {
   const SplashLogoWidget({super.key});
@@ -30,7 +30,7 @@ class _SplashLogoWidgetState extends State<SplashLogoWidget> {
   @override
   void initState() {
     super.initState();
-    context.read<UserprefrencesBloc>().add(UserprefrencesGetData());
+    context.read<HomecategoryBloc>().add(FetchHomeCategories());
     hideKeyBoard();
     Future.delayed(const Duration(seconds: 2), initalizeMove);
   }
@@ -39,7 +39,8 @@ class _SplashLogoWidgetState extends State<SplashLogoWidget> {
       await SystemChannels.textInput.invokeMethod('TextInput.hide');
 
   void initalizeMove() {
-    context.pushNamed(AppRouterConfig.welcomeRoute);
+    // Navigate to Welcome Screen after Splash
+    context.pushNamed(AppRouterConfig.dashBoardRoute);
   }
 
   @override

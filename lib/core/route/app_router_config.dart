@@ -59,6 +59,6 @@ class AppRouterConfig {
     ///! here i have changed the initalLocation route to dashBoardRoute for development purpose.
     ///! you can change it back to initialRoute when needed.
     ///! actually it should be initialRoute
-    initialLocation: dashBoardRoute,
+    initialLocation: initialRoute,
   );
 }

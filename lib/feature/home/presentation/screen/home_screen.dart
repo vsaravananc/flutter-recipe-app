@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:recipe/feature/home/presentation/bloc/home_category_bloc/homecategory_bloc.dart';
 import 'package:recipe/feature/home/presentation/widget/home_category_widget.dart';
 import 'package:recipe/feature/home/presentation/widget/home_header_widget.dart';
+import 'package:recipe/feature/home/presentation/widget/home_recipe_widget.dart';
 import 'package:recipe/feature/home/presentation/widget/home_search_widget.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -20,7 +21,9 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void getData() {
-    if (mounted) {
+    if (mounted &&
+            context.read<HomecategoryBloc>().state is HomecategoryInitial ||
+        context.read<HomecategoryBloc>().state is HomecategoryError) {
       context.read<HomecategoryBloc>().add(FetchHomeCategories());
     }
   }
@@ -31,23 +34,10 @@ class _HomeScreenState extends State<HomeScreen> {
       body: SafeArea(
         child: CustomScrollView(
           slivers: [
-            const HomeHeaderWidget(),
-            HomeSearchWidget(),
-            const SliverToBoxAdapter(
-              child: SizedBox(
-                height: 100,
-                width: double.infinity,
-                child: HomeCategoryWidget(
-                  key:  ValueKey("home_category_widget"),
-                ),
-              ),
-            ),
-            SliverList(
-              delegate: SliverChildBuilderDelegate(
-                (context, index) => ListTile(title: Text('Item #$index')),
-                childCount: 50,
-              ),
-            ),
+            const HomeHeaderWidget(key: ValueKey("home_header_widget")),
+            HomeSearchWidget(key: const ValueKey("home_search_widget")),
+            const HomeCategoryWidget(key: ValueKey("home_category_widget")),
+            const HomeRecipeWidget(key: ValueKey("home_recipe_widget")),
           ],
         ),
       ),
