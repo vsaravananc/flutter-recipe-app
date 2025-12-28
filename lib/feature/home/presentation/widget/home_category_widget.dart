@@ -69,30 +69,43 @@ class CategoryPlaceHolderWidget extends StatelessWidget {
 }
 
 /// Widget for displaying individual category items
-class CategoryDisplayWidget extends StatelessWidget {
+class CategoryDisplayWidget extends StatefulWidget {
   final HomecategoryLoaded result;
   const CategoryDisplayWidget({super.key, required this.result});
 
   @override
+  State<CategoryDisplayWidget> createState() => _CategoryDisplayWidgetState();
+}
+
+class _CategoryDisplayWidgetState extends State<CategoryDisplayWidget> {
+  final ScrollController scrollController = ScrollController();
+
+  @override
+  void dispose() {
+    super.dispose();
+    scrollController.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SliverToBoxAdapter(
-      child: GestureDetector(
-        onTap: () {},
-        child: SizedBox(
-          height: 110,
-          child: ListView.builder(
-            padding: const .only(left: Dimensions.p4),
-            shrinkWrap: true,
-            itemCount: result.categories.length,
-            scrollDirection: Axis.horizontal,
-            itemBuilder: (context, index) {
-              final category = result.categories[index];
-              return IndividualCategoryItem(
-                category: category,
-                key: ValueKey(category.id),
-              );
-            },
-          ),
+      child: SizedBox(
+        height: 110,
+        child: ListView.builder(
+          controller: scrollController,
+          padding: const .only(left: Dimensions.p4),
+          shrinkWrap: true,
+          itemCount: widget.result.categories.length,
+          scrollDirection: Axis.horizontal,
+          itemBuilder: (context, index) {
+            final category = widget.result.categories[index];
+            return IndividualCategoryItem(
+              category: category,
+              scrollController: scrollController,
+              index: index,
+              key: ValueKey(index),
+            );
+          },
         ),
       ),
     );
@@ -102,41 +115,83 @@ class CategoryDisplayWidget extends StatelessWidget {
 /// Widget for individual category item
 class IndividualCategoryItem extends StatelessWidget {
   final HomeCategoryEntities category;
-  const IndividualCategoryItem({super.key, required this.category});
+  final ScrollController scrollController;
+  final int index;
+  const IndividualCategoryItem({
+    super.key,
+    required this.category,
+    required this.scrollController,
+    required this.index,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const .symmetric(horizontal: 8, vertical: 8),
-      child: Column(
-        spacing: 5,
-        children: [
-          CachedNetworkImage(
-            imageBuilder: (context, imageProvider) => Container(
-              padding: const EdgeInsets.all(5),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadiusGeometry.circular(35),
-                color: context.tertiary,
-              ),
-              child: Container(
-                width: 55,
-                height: 55,
+    return GestureDetector(
+      onTap: () {
+        if (index < 2) return;
+        final double itemWidth =
+            (context.findRenderObject() as RenderBox).size.width;
+        final double screenWidth = MediaQuery.of(context).size.width;
+
+        final double position =
+            (itemWidth * index) + (itemWidth / 2) - (screenWidth / 2);
+        scrollController.animateTo(
+          position,
+          duration: const Duration(milliseconds: 200),
+          curve: Curves.ease,
+        );
+      },
+      child: Padding(
+        padding: const .symmetric(horizontal: 8, vertical: 8),
+        child: Column(
+          spacing: 5,
+          children: [
+            CachedNetworkImage(
+              imageBuilder: (context, imageProvider) => Container(
+                padding: const EdgeInsets.all(5),
                 decoration: BoxDecoration(
-                  color: context.transprent,
-                  borderRadius: BorderRadiusGeometry.circular(30),
-                  image: DecorationImage(
-                    image: imageProvider,
-                    fit: BoxFit.cover,
+                  borderRadius: BorderRadiusGeometry.circular(35),
+                  color: context.tertiary,
+                ),
+                child: Container(
+                  width: 55,
+                  height: 55,
+                  decoration: BoxDecoration(
+                    color: context.transprent,
+                    borderRadius: BorderRadiusGeometry.circular(30),
+                    image: DecorationImage(
+                      image: imageProvider,
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
               ),
+              progressIndicatorBuilder: (context, url, progress) =>
+                  const ImagePlaceholder(key: ValueKey("progress_indicator")),
+              imageUrl: category.imageUrl,
+              fit: BoxFit.cover,
             ),
-            imageUrl: category.imageUrl,
-            fit: BoxFit.cover,
-          ),
-          Text(category.name, style: context.bodyMedium),
-        ],
+            Text(category.name, style: context.bodyMedium),
+          ],
+        ),
       ),
+    );
+  }
+}
+
+/// placeholder and progressindicator widget
+class ImagePlaceholder extends StatelessWidget {
+  const ImagePlaceholder({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(5),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(35),
+        color: context.cardColor,
+      ),
+      child: const SizedBox(width: 55, height: 55),
     );
   }
 }

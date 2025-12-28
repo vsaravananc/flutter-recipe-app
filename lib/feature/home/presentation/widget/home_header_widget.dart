@@ -13,7 +13,12 @@ class HomeHeaderWidget extends StatelessWidget {
     return const SliverToBoxAdapter(
       key: ValueKey("home_header_widget"),
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: Dimensions.p16),
+        padding: EdgeInsets.fromLTRB(
+          Dimensions.p16,
+          Dimensions.p8,
+          Dimensions.p16,
+          0,
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

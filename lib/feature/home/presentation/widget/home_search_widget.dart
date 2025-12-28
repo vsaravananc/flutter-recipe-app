@@ -5,11 +5,15 @@ import 'package:recipe/core/extensions/textstyle_extension.dart';
 import 'package:recipe/core/services/dimensions.dart';
 
 class HomeSearchWidget extends SliverPersistentHeader {
-  HomeSearchWidget({super.key})
-    : super(delegate: HomeSearchDelegate(), pinned: true);
+  const HomeSearchWidget({
+    super.key,
+    super.delegate = const HomeSearchDelegate(),
+    super.pinned = true,
+  });
 }
 
 class HomeSearchDelegate extends SliverPersistentHeaderDelegate {
+  const HomeSearchDelegate();
   @override
   Widget build(
     BuildContext context,

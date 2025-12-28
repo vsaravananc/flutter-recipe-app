@@ -3,6 +3,7 @@ import 'package:recipe/core/handler/failer_handler.dart';
 import 'package:recipe/core/handler/success_handler.dart';
 import 'package:recipe/feature/home/data/data_source/data_source_repo.dart';
 import 'package:recipe/feature/home/domain/entities/home_category_entities.dart';
+import 'package:recipe/feature/home/domain/entities/home_recipe_entities.dart';
 import 'package:recipe/feature/home/domain/repo/home_repo.dart';
 
 class HomeRepoImpl implements HomeRepo {
@@ -10,7 +11,10 @@ class HomeRepoImpl implements HomeRepo {
   HomeRepoImpl({required this.dataSourceRepo});
   @override
   Future<Either<FailerHandler, SuccessHandler<List<HomeCategoryEntities>>>>
-  fetchCategoryData() async {
-    return await dataSourceRepo.fetchCategoryData();
-  }
+  fetchCategoryData() async => await dataSourceRepo.fetchCategoryData();
+
+  @override
+  Future<Either<FailerHandler, SuccessHandler<List<HomeRecipeEntities>>>>
+  fetchRecipeData(String category) async =>
+      await dataSourceRepo.fetchRecipeData(category);
 }

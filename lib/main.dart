@@ -1,8 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
+import 'package:recipe/core/extensions/color_extension.dart';
 import 'package:recipe/core/route/app_router_config.dart';
 import 'package:recipe/core/services/dependency_injection.dart';
+import 'package:recipe/core/theme/theme_extenstion/gradint_theme_extenstion.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,7 +20,18 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-      theme: FlexThemeData.light(scheme: FlexScheme.mango),
+      theme: FlexThemeData.light(
+        scheme: FlexScheme.mango,
+        extensions: [
+          GradintThemeExtenstion(
+            colors: [
+              context.transprent,
+              context.shadowColor.withValues(alpha: 0.1),
+              context.shadowColor.withValues(alpha: 0.8),
+            ],
+          ),
+        ],
+      ),
       darkTheme: FlexThemeData.dark(
         scheme: FlexScheme.mango,
         subThemesData: const FlexSubThemesData(
@@ -45,6 +58,15 @@ class MyApp extends StatelessWidget {
           alignedDropdown: true,
           navigationRailUseIndicator: true,
         ),
+        extensions: [
+          GradintThemeExtenstion(
+            colors: [
+              context.transprent,
+              Colors.white.withValues(alpha: 0.1),
+              Colors.white.withValues(alpha: 0.8),
+            ],
+          ),
+        ],
       ),
       themeMode: ThemeMode.system,
       debugShowCheckedModeBanner: false,

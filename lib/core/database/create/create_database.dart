@@ -2,6 +2,7 @@ import 'package:recipe/core/database/tables/areas_table.dart';
 import 'package:recipe/core/database/tables/categorys_table.dart';
 import 'package:recipe/core/database/tables/foodtypes_table.dart';
 import 'package:recipe/core/database/tables/meal_table.dart';
+import 'package:recipe/core/database/tables/recipes_table.dart';
 import 'package:recipe/core/database/tables/user_table.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -11,12 +12,14 @@ class CreateDatabase {
   final UserTable userTable;
   final AreasTable areaTable;
   final FoodtypesTable foodtypesTable;
+  final RecipesTable recipesTable;
   CreateDatabase({
     required this.categorysTable,
     required this.mealTable,
     required this.userTable,
     required this.areaTable,
     required this.foodtypesTable,
+    required this.recipesTable,
   });
   Database? _database;
 
@@ -39,6 +42,7 @@ class CreateDatabase {
     await userTable.createTable(db, version);
     await areaTable.createTable(db, version);
     await foodtypesTable.createTable(db, version);
+    await recipesTable.createTable(db, version);
   }
 
   Future<Database> get database async {

@@ -15,6 +15,7 @@ class AppRouterConfig {
   static const String areaRoute = '$authRoute/userprefrence/area';
   static const String categoryRoute = '$areaRoute/userprefrence/category';
   static const String dashBoardRoute = "${initialRoute}logedin/dashboard";
+  static const String detailsRoute = '$dashBoardRoute/details';
 
   /// gorouter config of the app
   static GoRouter router = GoRouter(
@@ -55,7 +56,9 @@ class AppRouterConfig {
         builder: (context, state) =>
             const DashboardScreen(key: ValueKey("dash_doard_screen")),
       ),
+     
     ],
+
     ///! here i have changed the initalLocation route to dashBoardRoute for development purpose.
     ///! you can change it back to initialRoute when needed.
     ///! actually it should be initialRoute

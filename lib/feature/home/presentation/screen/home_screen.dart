@@ -30,14 +30,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: SafeArea(
         child: CustomScrollView(
           slivers: [
-            const HomeHeaderWidget(key: ValueKey("home_header_widget")),
-            HomeSearchWidget(key: const ValueKey("home_search_widget")),
-            const HomeCategoryWidget(key: ValueKey("home_category_widget")),
-            const HomeRecipeWidget(key: ValueKey("home_recipe_widget")),
+            HomeHeaderWidget(key: ValueKey("home_header_widget")),
+            HomeSearchWidget(key: ValueKey("home_search_widget")),
+            HomeCategoryWidget(key: ValueKey("home_category_widget")),
+            HomeRecipeWidget(key: ValueKey("home_recipe_widget")),
           ],
         ),
       ),

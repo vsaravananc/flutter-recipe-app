@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:recipe/core/images/app_images.dart';
 import 'package:recipe/core/route/app_router_config.dart';
 import 'package:recipe/feature/home/presentation/bloc/home_category_bloc/homecategory_bloc.dart';
+import 'package:recipe/feature/home/presentation/bloc/home_recipe_bloc/recipe_bloc.dart';
 
 class SplashLogoWidget extends StatefulWidget {
   const SplashLogoWidget({super.key});
@@ -31,6 +32,9 @@ class _SplashLogoWidgetState extends State<SplashLogoWidget> {
   void initState() {
     super.initState();
     context.read<HomecategoryBloc>().add(FetchHomeCategories());
+    context.read<HomeRecipeBloc>().add(
+      const GetRecipeEvent(categoryName: "beef"),
+    );
     hideKeyBoard();
     Future.delayed(const Duration(seconds: 2), initalizeMove);
   }

@@ -9,6 +9,7 @@ import 'package:recipe/core/database/tables/areas_table.dart';
 import 'package:recipe/core/database/tables/categorys_table.dart';
 import 'package:recipe/core/database/tables/foodtypes_table.dart';
 import 'package:recipe/core/database/tables/meal_table.dart';
+import 'package:recipe/core/database/tables/recipes_table.dart';
 import 'package:recipe/core/database/tables/user_table.dart';
 import 'package:recipe/feature/auth/data/data_sources/data_source_repo.dart';
 import 'package:recipe/feature/auth/data/data_sources/data_source_repo_impl.dart';
@@ -33,7 +34,9 @@ import 'package:recipe/feature/home/data/data_source/remote_data_source/remote_d
 import 'package:recipe/feature/home/data/repo_impl/home_repo_impl.dart';
 import 'package:recipe/feature/home/domain/repo/home_repo.dart';
 import 'package:recipe/feature/home/domain/use_cases/home_category.dart';
+import 'package:recipe/feature/home/domain/use_cases/home_recipe.dart';
 import 'package:recipe/feature/home/presentation/bloc/home_category_bloc/homecategory_bloc.dart';
+import 'package:recipe/feature/home/presentation/bloc/home_recipe_bloc/recipe_bloc.dart';
 import 'package:recipe/feature/user_sugestion/data/data_sources/data_sources_repo.dart';
 import 'package:recipe/feature/user_sugestion/data/data_sources/data_sources_repo_impl.dart';
 import 'package:recipe/feature/user_sugestion/data/data_sources/local_data_source/local_data_impl_user_sugestion.dart';
@@ -70,6 +73,7 @@ class DependencyInjection {
         userTable: UserTable(),
         areaTable: AreasTable(),
         foodtypesTable: FoodtypesTable(),
+        recipesTable: RecipesTable(),
       ),
     );
 
@@ -227,6 +231,13 @@ class DependencyInjection {
     sl.registerFactory<HomecategoryBloc>(
       () => HomecategoryBloc(homeCategoryUseCase: sl<HomeCategoryUseCase>()),
     );
+
+    sl.registerFactory<HomeRecipeUseCase>(
+      () => HomeRecipeUseCase(repo: sl<HomeRepo>()),
+    );
+    sl.registerFactory<HomeRecipeBloc>(
+      () => HomeRecipeBloc(recipeUseCase: sl<HomeRecipeUseCase>()),
+    );
   }
 
   static Widget intialize(Widget child) {
@@ -240,6 +251,7 @@ class DependencyInjection {
         BlocProvider<SelectedcategoryCubit>(create: (context) => sl()),
         BlocProvider<DashboardCubit>(create: (context) => sl()),
         BlocProvider<HomecategoryBloc>(create: (context) => sl()),
+        BlocProvider<HomeRecipeBloc>(create: (context) => sl()),
       ],
       child: child,
     );

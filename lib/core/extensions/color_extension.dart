@@ -1,6 +1,7 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
+import 'package:recipe/core/theme/theme_extenstion/gradint_theme_extenstion.dart';
 
 ///
 /// This extension will provide as short cut to use Color in our project
@@ -73,4 +74,9 @@ extension ColorExtension on BuildContext{
 
   Color get transprent => Colors.transparent;
 
+  //----------------------------------------------------------------------
+  // Theme extension colors
+  //----------------------------------------------------------------------
+
+  List<Color> get gradint => Theme.of(this).extension<GradintThemeExtenstion>()!.colors;
 }
