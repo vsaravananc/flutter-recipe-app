@@ -14,7 +14,11 @@ class HomecategoryLoading extends HomecategoryState {}
 
 class HomecategoryLoaded extends HomecategoryState {
   final List<HomeCategoryEntities> categories;
-  const HomecategoryLoaded(this.categories);
+  final HomeCategoryEntities selectedCategories;
+  const HomecategoryLoaded(this.categories,this.selectedCategories);
+
+  @override
+  List<Object> get props => [categories,selectedCategories];
 }
 
 class HomecategoryError extends HomecategoryState {

@@ -23,11 +23,6 @@ class RemoteDataSourceHomeRepoImpl implements RemoteDataSourceHomeRepo {
         _convertCategoryModel,
         response.data as Map<String, dynamic>,
       );
-      for (HomeCategoryModel i in convertedValue) {
-        debugPrint(
-          "\u001B[32m HomeCategory remote model : ${i.id} : ${i.name} : ${i.imageUrl} \u001B[0m",
-        );
-      }
       return Right(SuccessHandlerImpl(convertedValue));
     } on DioException catch (e) {
       debugPrint("DioException ${e.toString()}");
@@ -65,11 +60,6 @@ class RemoteDataSourceHomeRepoImpl implements RemoteDataSourceHomeRepo {
         _convertRecipeModel,
         response.data as Map<String, dynamic>,
       );
-      for (HomeRecipeModel i in convertedValue) {
-        debugPrint(
-          "\u001B[32m HomeCategory remote model : ${i.id} : ${i.name} : ${i.imageUrl} \u001B[0m",
-        );
-      }
       return Right(SuccessHandlerImpl(convertedValue));
     } on DioException catch (e) {
       debugPrint("DioException ${e.toString()}");
@@ -79,7 +69,7 @@ class RemoteDataSourceHomeRepoImpl implements RemoteDataSourceHomeRepo {
         ),
       );
     } on TypeError catch (e) {
-      debugPrint("typeError ${e.toString()}");
+      debugPrint("typeError on Recipe : ${e.toString()}");
       return Left(
         TypeErrorFailer(
           "Unexpected data from server received. Please check your connection or try again later.",
@@ -111,6 +101,6 @@ List<HomeCategoryModel> _convertCategoryModel(Map<String, dynamic> data) {
 List<HomeRecipeModel> _convertRecipeModel(Map<String, dynamic> json) {
   final List<dynamic> meals = json['meals'];
   return meals
-      .map<HomeRecipeModel>((e) => HomeRecipeModel.fromJson(json))
+      .map<HomeRecipeModel>((e) => HomeRecipeModel.fromJson(e))
       .toList();
 }

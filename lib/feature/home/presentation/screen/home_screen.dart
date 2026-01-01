@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:recipe/feature/home/domain/entities/home_category_entities.dart';
 import 'package:recipe/feature/home/presentation/bloc/home_category_bloc/homecategory_bloc.dart';
+import 'package:recipe/feature/home/presentation/bloc/home_recipe_bloc/recipe_bloc.dart';
 import 'package:recipe/feature/home/presentation/widget/home_category_widget.dart';
 import 'package:recipe/feature/home/presentation/widget/home_header_widget.dart';
 import 'package:recipe/feature/home/presentation/widget/home_recipe_widget.dart';
@@ -17,14 +19,17 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    getData();
+    _initFirstCall();
   }
 
-  void getData() {
-    if (mounted &&
-            context.read<HomecategoryBloc>().state is HomecategoryInitial ||
-        context.read<HomecategoryBloc>().state is HomecategoryError) {
-      context.read<HomecategoryBloc>().add(FetchHomeCategories());
+  void _initFirstCall() {
+    if (context.read<HomecategoryBloc>().state is HomecategoryLoaded) {
+      final HomeCategoryEntities categoryEntities =
+          (context.read<HomecategoryBloc>().state as HomecategoryLoaded)
+              .selectedCategories;
+      context.read<HomeRecipeBloc>().add(
+        GetRecipeEvent(categoryName: categoryEntities.name),
+      );
     }
   }
 

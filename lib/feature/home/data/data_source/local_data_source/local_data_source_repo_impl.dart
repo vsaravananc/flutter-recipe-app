@@ -70,6 +70,7 @@ class LocalDataSourceHomeRepoImpl implements LocalDataSourceHomeRepo {
       whereArgs: [category],
     );
     if (categoryItem.isEmpty) return;
+
     final int id = categoryItem.first['id'] as int;
     final batch = database.batch();
     final int timetolive = DateTime.now().millisecondsSinceEpoch;
@@ -95,6 +96,7 @@ class LocalDataSourceHomeRepoImpl implements LocalDataSourceHomeRepo {
       if (categoryModel.isEmpty) {
         return Left(LocalDataBaseFailure("Cache expired or empty"));
       }
+
       final int categoryId = categoryModel.first['id'] as int;
       final int timetoDie = DateTime.now()
           .subtract(const Duration(days: 2))
@@ -136,7 +138,6 @@ List<HomeCategoryModel> _mapToModelList(List<Map<String, Object?>> result) {
 
 List<HomeRecipeModel> _maptoRecipeList(List<Map<String, Object?>> result) {
   return result.map<HomeRecipeModel>((e) {
-    Map<String, dynamic> map = e.values as Map<String, dynamic>;
-    return HomeRecipeModel.fromJson(map);
+    return HomeRecipeModel.fromLocalDataJson(e);
   }).toList();
 }

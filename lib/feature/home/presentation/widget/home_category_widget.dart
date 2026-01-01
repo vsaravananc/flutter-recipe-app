@@ -6,6 +6,7 @@ import 'package:recipe/core/extensions/textstyle_extension.dart';
 import 'package:recipe/core/services/dimensions.dart';
 import 'package:recipe/feature/home/domain/entities/home_category_entities.dart';
 import 'package:recipe/feature/home/presentation/bloc/home_category_bloc/homecategory_bloc.dart';
+import 'package:recipe/feature/home/presentation/bloc/home_recipe_bloc/recipe_bloc.dart';
 
 class HomeCategoryWidget extends StatelessWidget {
   const HomeCategoryWidget({super.key});
@@ -92,6 +93,7 @@ class _CategoryDisplayWidgetState extends State<CategoryDisplayWidget> {
       child: SizedBox(
         height: 110,
         child: ListView.builder(
+          physics: const ClampingScrollPhysics(),
           controller: scrollController,
           padding: const .only(left: Dimensions.p4),
           shrinkWrap: true,
@@ -126,55 +128,75 @@ class IndividualCategoryItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        if (index < 2) return;
-        final double itemWidth =
-            (context.findRenderObject() as RenderBox).size.width;
-        final double screenWidth = MediaQuery.of(context).size.width;
+    return BlocBuilder<HomecategoryBloc, HomecategoryState>(
+      builder: (context, selectedCategory) {
+        final HomeCategoryEntities selected =
+            (selectedCategory as HomecategoryLoaded).selectedCategories;
+        return GestureDetector(
+          onTap: () {
+            if (selected != category) _selectData(context);
+            if (index < 2) return;
+            final double itemWidth =
+                (context.findRenderObject() as RenderBox).size.width;
+            final double screenWidth = MediaQuery.of(context).size.width;
 
-        final double position =
-            (itemWidth * index) + (itemWidth / 2) - (screenWidth / 2);
-        scrollController.animateTo(
-          position,
-          duration: const Duration(milliseconds: 200),
-          curve: Curves.ease,
-        );
-      },
-      child: Padding(
-        padding: const .symmetric(horizontal: 8, vertical: 8),
-        child: Column(
-          spacing: 5,
-          children: [
-            CachedNetworkImage(
-              imageBuilder: (context, imageProvider) => Container(
-                padding: const EdgeInsets.all(5),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadiusGeometry.circular(35),
-                  color: context.tertiary,
-                ),
-                child: Container(
-                  width: 55,
-                  height: 55,
-                  decoration: BoxDecoration(
-                    color: context.transprent,
-                    borderRadius: BorderRadiusGeometry.circular(30),
-                    image: DecorationImage(
-                      image: imageProvider,
-                      fit: BoxFit.cover,
+            final double position =
+                (itemWidth * index) + (itemWidth / 2) - (screenWidth / 2);
+            scrollController.animateTo(
+              position,
+              duration: const Duration(milliseconds: 200),
+              curve: Curves.ease,
+            );
+          },
+          child: Padding(
+            padding: const .symmetric(horizontal: 8, vertical: 8),
+            child: Column(
+              spacing: 5,
+              children: [
+                CachedNetworkImage(
+                  imageBuilder: (context, imageProvider) => Container(
+                    padding: const EdgeInsets.all(5),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadiusGeometry.circular(35),
+                      color: category == selected
+                          ? context.primary
+                          : context.tertiary,
+                    ),
+                    child: Container(
+                      width: 55,
+                      height: 55,
+                      decoration: BoxDecoration(
+                        color: context.transprent,
+                        borderRadius: BorderRadiusGeometry.circular(30),
+                        image: DecorationImage(
+                          image: imageProvider,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
                     ),
                   ),
+                  progressIndicatorBuilder: (context, url, progress) =>
+                      const ImagePlaceholder(
+                        key: ValueKey("progress_indicator"),
+                      ),
+                  imageUrl: category.imageUrl,
+                  fit: BoxFit.cover,
                 ),
-              ),
-              progressIndicatorBuilder: (context, url, progress) =>
-                  const ImagePlaceholder(key: ValueKey("progress_indicator")),
-              imageUrl: category.imageUrl,
-              fit: BoxFit.cover,
+                Text(category.name, style: context.bodyMedium),
+              ],
             ),
-            Text(category.name, style: context.bodyMedium),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
+    );
+  }
+
+  void _selectData(BuildContext context) {
+    context.read<HomecategoryBloc>().add(
+      SelectHomeCategori(homeCategoryEntities: category),
+    );
+    context.read<HomeRecipeBloc>().add(
+      GetRecipeEvent(categoryName: category.name),
     );
   }
 }

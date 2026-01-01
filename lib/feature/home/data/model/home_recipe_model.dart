@@ -15,12 +15,20 @@ class HomeRecipeModel extends HomeRecipeEntities {
     );
   }
 
-  Map<String, dynamic> toJsonLocalDatabse(int insertedAt,int foodId) {
+   factory HomeRecipeModel.fromLocalDataJson(Map<String, dynamic> json) {
+    return HomeRecipeModel(
+      id: json['idMeal'].toString(),
+      name: json['strMeal'],
+      imageUrl: json['strMealThumb'],
+    );
+  }
+
+  Map<String, dynamic> toJsonLocalDatabse(int insertedAt, int foodId) {
     return {
-      "foodtype_id":foodId,
-      "strMeal": id,
+      "foodtype_id": foodId,
+      "strMeal": name,
       "strMealThumb": imageUrl,
-      "idMeal": name,
+      "idMeal": id,
       "inserted_at": insertedAt,
     };
   }

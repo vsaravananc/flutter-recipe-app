@@ -16,8 +16,15 @@ class HomecategoryBloc extends Bloc<HomecategoryEvent, HomecategoryState> {
       final result = await homeCategoryUseCase.fetchHomeCategories();
       result.fold(
         (failer) => emit(HomecategoryError(failer)),
-        (success) => emit(HomecategoryLoaded(success.data)),
+        (success) => emit(HomecategoryLoaded(success.data, success.data.first)),
       );
+    });
+    on<SelectHomeCategori>((event, emit) {
+      if (state is HomecategoryLoaded) {
+        List<HomeCategoryEntities> data =
+            (state as HomecategoryLoaded).categories;
+        emit(HomecategoryLoaded(data, event.homeCategoryEntities));
+      }
     });
   }
 }

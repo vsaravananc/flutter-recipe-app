@@ -43,7 +43,6 @@ class _SplashLogoWidgetState extends State<SplashLogoWidget> {
       await SystemChannels.textInput.invokeMethod('TextInput.hide');
 
   void initalizeMove() {
-    // Navigate to Welcome Screen after Splash
     context.pushNamed(AppRouterConfig.dashBoardRoute);
   }
 
