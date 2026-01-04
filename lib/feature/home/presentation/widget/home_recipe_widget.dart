@@ -1,9 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:recipe/core/extensions/color_extension.dart';
 import 'package:recipe/core/extensions/textstyle_extension.dart';
+import 'package:recipe/core/route/app_router_config.dart';
 import 'package:recipe/core/services/dimensions.dart';
+import 'package:recipe/feature/details/domain/entities/detail_screenl_entitie.dart';
 import 'package:recipe/feature/home/domain/entities/home_recipe_entities.dart';
 import 'package:recipe/feature/home/presentation/bloc/home_recipe_bloc/recipe_bloc.dart';
 
@@ -67,7 +71,16 @@ class ImagePlaceHolderWidget extends StatelessWidget {
       imageUrl: recipe.imageUrl,
       fit: .cover,
       imageBuilder: (context, imageProvider) => GestureDetector(
-        onTap: () {},
+        onTap: () {
+          DetailScreenlEntitie detail = DetailScreenlEntitie(
+            id: recipe.id,
+            title: recipe.name,
+            titleTag: "recipe_title${recipe.id}",
+            image: recipe.imageUrl,
+            imageTag: "recipe_image${recipe.id}",
+          );
+          context.push(AppRouterConfig.detailsRoute, extra: detail);
+        },
         child: Stack(
           children: [
             Hero(
@@ -99,14 +112,18 @@ class ImagePlaceHolderWidget extends StatelessWidget {
                 alignment: const Alignment(0.0, 0.9),
                 child: Hero(
                   tag: "recipe_title${recipe.id}",
-                  child: Text(
-                    recipe.name,
-                    maxLines: 1,
-                    style: context.titleLarge?.copyWith(
-                      color: context.onPrimary,
-                      fontWeight: .bold,
+                  transitionOnUserGestures: true,
+                  child: Material(
+                    color: context.transprent,
+                    child: Text(
+                      recipe.name,
+                      maxLines: 1,
+                      style: context.titleLarge?.copyWith(
+                        color: context.onPrimary,
+                        fontWeight: .bold,
+                      ),
+                      textAlign: .center,
                     ),
-                    textAlign: .center,
                   ),
                 ),
               ),

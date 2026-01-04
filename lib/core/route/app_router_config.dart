@@ -1,7 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:recipe/feature/auth/presentation/screens/auth_screen.dart';
 import 'package:recipe/feature/dashboard/presentation/screen/dashboard_screen.dart';
+import 'package:recipe/feature/details/domain/entities/detail_screenl_entitie.dart';
+import 'package:recipe/feature/details/presentation/screens/detail_screen.dart';
 import 'package:recipe/feature/splash/presentation/screen/splash_screen.dart';
 import 'package:recipe/feature/user_sugestion/presentation/screen/select_area_screen.dart';
 import 'package:recipe/feature/user_sugestion/presentation/screen/select_category_screen.dart';
@@ -56,7 +60,14 @@ class AppRouterConfig {
         builder: (context, state) =>
             const DashboardScreen(key: ValueKey("dash_doard_screen")),
       ),
-     
+      GoRoute(
+        path: detailsRoute,
+        name: 'detail_screen',
+        builder: (context, state) {
+          DetailScreenlEntitie detail = state.extra as DetailScreenlEntitie;
+          return DetailScreen(foodDetail: detail, key: ValueKey(detail.id));
+        },
+      ),
     ],
 
     ///! here i have changed the initalLocation route to dashBoardRoute for development purpose.
