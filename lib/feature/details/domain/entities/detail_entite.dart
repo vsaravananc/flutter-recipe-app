@@ -51,6 +51,10 @@ class MealIntegration extends Equatable {
 
   const MealIntegration({required this.integration});
 
+  Map<String, dynamic> toJson() {
+    return {'integration': integration};
+  }
+
   @override
   List<Object> get props => [integration];
 }
@@ -58,6 +62,11 @@ class MealIntegration extends Equatable {
 class MealMeasure extends Equatable {
   final String measure;
   const MealMeasure({required this.measure});
+
+  Map<String, dynamic> toJson() {
+    return {'measure': measure};
+  }
+
   @override
   List<Object?> get props => [];
 }

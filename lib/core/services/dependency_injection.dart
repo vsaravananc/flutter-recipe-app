@@ -26,6 +26,16 @@ import 'package:recipe/feature/auth/domain/use_cases/signup_with_google_usecase.
 import 'package:recipe/feature/auth/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'package:recipe/feature/auth/presentation/bloc/auth_ui_bloc/auth_ui_bloc.dart';
 import 'package:recipe/feature/dashboard/presentation/dashboard/dashboard_cubit.dart';
+import 'package:recipe/feature/details/data/data_source/detail_datasource_repo.dart';
+import 'package:recipe/feature/details/data/data_source/detail_datasource_repo_impl.dart';
+import 'package:recipe/feature/details/data/data_source/local_data_source/local_data_source_repo.dart';
+import 'package:recipe/feature/details/data/data_source/local_data_source/local_data_source_repo_impl.dart';
+import 'package:recipe/feature/details/data/data_source/reomte_data_source/remote_data_source_repo.dart';
+import 'package:recipe/feature/details/data/data_source/reomte_data_source/remote_data_source_repo_impl.dart';
+import 'package:recipe/feature/details/data/repo_impl/detail_repo_impl.dart';
+import 'package:recipe/feature/details/domain/repo/detail_repo.dart';
+import 'package:recipe/feature/details/domain/usecase/get_detail_usecase.dart';
+import 'package:recipe/feature/details/presentation/bloc/detail_bloc.dart';
 import 'package:recipe/feature/home/data/data_source/data_source_repo_impl.dart';
 import 'package:recipe/feature/home/data/data_source/local_data_source/local_data_source_repo.dart';
 import 'package:recipe/feature/home/data/data_source/local_data_source/local_data_source_repo_impl.dart';
@@ -105,6 +115,9 @@ class DependencyInjection {
 
     /// ~~~~~~~ Home ~~~~~~~~ implementation
     _home();
+
+    /// ~~~~~~~~ detail ~~~~~~~~~~~~~ implementaiton
+    _detail();
   }
 
   static void _auth() {
@@ -240,6 +253,33 @@ class DependencyInjection {
     );
   }
 
+  static void _detail() {
+    sl.registerLazySingleton<LocalDataSourceRepo>(
+      () => LocalDataSourceRepoImpl(database: sl<Database>().database),
+    );
+    sl.registerLazySingleton<RemoteDataSourceRepo>(
+      () => RemoteDataSourceRepoImpl(dio: sl<DioClient>().dio),
+    );
+    sl.registerLazySingleton<DetailDatasourceRepo>(
+      () => DetailDatasourceRepoImpl(
+        localDataSourceRepo: sl<LocalDataSourceRepo>(),
+        remoteDataSourceRepo: sl<RemoteDataSourceRepo>(),
+      ),
+    );
+
+    sl.registerLazySingleton<GetFoodDetailRepo>(
+      () => DetailRepoImpl(datasourceRepo: sl<DetailDatasourceRepo>()),
+    );
+
+    sl.registerFactory<GetDetailUsecase>(
+      () => GetDetailUsecase(getFoodDetailRepo: sl<GetFoodDetailRepo>()),
+    );
+
+    sl.registerFactory<DetailBloc>(
+      () => DetailBloc(getDetailUseCase: sl<GetDetailUsecase>()),
+    );
+  }
+
   static Widget intialize(Widget child) {
     return MultiBlocProvider(
       providers: [
@@ -252,6 +292,7 @@ class DependencyInjection {
         BlocProvider<DashboardCubit>(create: (context) => sl()),
         BlocProvider<HomecategoryBloc>(create: (context) => sl()),
         BlocProvider<HomeRecipeBloc>(create: (context) => sl()),
+        BlocProvider<DetailBloc>(create: (context) => sl()),
       ],
       child: child,
     );

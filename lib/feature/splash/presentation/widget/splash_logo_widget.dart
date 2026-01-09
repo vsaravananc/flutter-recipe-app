@@ -36,11 +36,16 @@ class _SplashLogoWidgetState extends State<SplashLogoWidget> {
       const GetRecipeEvent(categoryName: "beef"),
     );
     hideKeyBoard();
+    changeStatusColor();
     Future.delayed(const Duration(seconds: 2), initalizeMove);
   }
 
   Future<void> hideKeyBoard() async =>
       await SystemChannels.textInput.invokeMethod('TextInput.hide');
+
+  void changeStatusColor() => SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(statusBarColor: Colors.transparent),
+  );
 
   void initalizeMove() {
     context.pushNamed(AppRouterConfig.dashBoardRoute);

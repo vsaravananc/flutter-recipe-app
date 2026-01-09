@@ -9,4 +9,5 @@ typedef GetFoodDetailLocal = Either<FailerHandler,SuccessHandler<DetailFoodModel
 
 abstract class LocalDataSourceRepo {
   Future<GetFoodDetailLocal> getFoodDetail({required String id});
+  Future<void> addFoodDetail({required DetailFoodModel foodModel});
 }

@@ -20,6 +20,8 @@ class HomeSearchDelegate extends SliverPersistentHeaderDelegate {
     double shrinkOffset,
     bool overlapsContent,
   ) {
+    final double elevationProgress = (shrinkOffset / maxExtent).clamp(0.0, 1.0);
+
     return GestureDetector(
       onTap: () {
         // Handle search tap
@@ -30,7 +32,17 @@ class HomeSearchDelegate extends SliverPersistentHeaderDelegate {
           horizontal: Dimensions.p12,
           vertical: Dimensions.p10,
         ),
-        color: context.scaffoldBackgroundColor,
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.20 * elevationProgress),
+              blurRadius: 8 * elevationProgress,
+              spreadRadius: 1 * elevationProgress,
+              offset: const Offset(0, 2),
+            ),
+          ],
+          color: context.scaffoldBackgroundColor,
+        ),
         child: Container(
           padding: const EdgeInsets.only(
             left: Dimensions.p16,
