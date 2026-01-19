@@ -16,7 +16,7 @@ class FooddetailTable extends CreateTable {
         strYoutube TEXT,
         strSource TEXT,
         strImageSource TEXT,
-        inserted_at INTERGER NOT NULL
+        inserted_at INTEGER NOT NULL
       );
     ''');
 
@@ -25,7 +25,7 @@ class FooddetailTable extends CreateTable {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         idMeal TEXT NOT NULL,
         strIngredient TEXT NOT NULL,
-        inserted_at INTERGER NOT NULL,
+        inserted_at INTEGER NOT NULL,
         FOREIGN KEY (idMeal) REFERENCES foodTable(idMeal) ON DELETE CASCADE
       );
     ''');
@@ -35,7 +35,7 @@ class FooddetailTable extends CreateTable {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         idMeal TEXT NOT NULL,
         strMeasure TEXT NOT NULL,
-        inserted_at INTERGER NOT NULL,
+        inserted_at INTEGER NOT NULL,
         FOREIGN KEY (idMeal) REFERENCES foodTable(idMeal) ON DELETE CASCADE
       );
     ''');

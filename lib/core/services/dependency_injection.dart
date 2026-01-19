@@ -7,6 +7,7 @@ import 'package:recipe/core/api/clients/dio_client.dart';
 import 'package:recipe/core/database/create/create_database.dart';
 import 'package:recipe/core/database/tables/areas_table.dart';
 import 'package:recipe/core/database/tables/categorys_table.dart';
+import 'package:recipe/core/database/tables/fooddetail_table.dart';
 import 'package:recipe/core/database/tables/foodtypes_table.dart';
 import 'package:recipe/core/database/tables/meal_table.dart';
 import 'package:recipe/core/database/tables/recipes_table.dart';
@@ -84,6 +85,7 @@ class DependencyInjection {
         areaTable: AreasTable(),
         foodtypesTable: FoodtypesTable(),
         recipesTable: RecipesTable(),
+        fooddetailTable: FooddetailTable(),
       ),
     );
 

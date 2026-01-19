@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:recipe/core/extensions/color_extension.dart';
 import 'package:recipe/core/extensions/textstyle_extension.dart';
+import 'package:recipe/core/route/app_router_config.dart';
 import 'package:recipe/core/services/dimensions.dart';
 
 class HomeSearchWidget extends SliverPersistentHeader {
-  const HomeSearchWidget({
-    super.key,
-    super.delegate = const HomeSearchDelegate(),
-    super.pinned = true,
-  });
+  final ScrollController scrollController;
+  HomeSearchWidget({super.key, required this.scrollController})
+    : super(delegate: HomeSearchDelegate(scrollController), pinned: true);
 }
 
 class HomeSearchDelegate extends SliverPersistentHeaderDelegate {
-  const HomeSearchDelegate();
+  final ScrollController scrollController;
+  const HomeSearchDelegate(this.scrollController);
   @override
   Widget build(
     BuildContext context,
@@ -24,8 +25,12 @@ class HomeSearchDelegate extends SliverPersistentHeaderDelegate {
 
     return GestureDetector(
       onTap: () {
-        // Handle search tap
-        debugPrint("Search tapped");
+        scrollController.animateTo(
+          250,
+          duration: const Duration(milliseconds: 380),
+          curve: Curves.easeIn,
+        );
+        context.push(AppRouterConfig.searchRoute);
       },
       child: Container(
         padding: const EdgeInsets.symmetric(

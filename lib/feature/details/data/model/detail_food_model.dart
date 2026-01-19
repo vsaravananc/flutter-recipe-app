@@ -19,7 +19,7 @@ class DetailFoodModel extends DetailEntite {
   });
   Map<String, dynamic> toFoodDataJson(int insertAt) {
     return {
-      'idMeal': mealId,
+      'idMeal': mealId ,
       'strMeal': mealName,
       'strMealAlternate': mealAlternate,
       'strArea': mealArea,
@@ -67,8 +67,8 @@ class DetailFoodModel extends DetailEntite {
       mealThumbImage: json['strMealThumb'],
       mealTag: json['strTags'],
       mealCookingVideo: json['strYoutube'],
-      mealIntegrationCollection: json['ingredient_model'],
-      mealMeasureCollection: json['measure_model'],
+      mealIntegrationCollection: json['ingredient_model'] ?? [],
+      mealMeasureCollection: json['measure_model'] ?? [],
       mealSource: json['strSource'],
       mealSourceImage: json['strImageSource'],
     );
@@ -95,7 +95,7 @@ class DetailFoodModel extends DetailEntite {
     List<IngredientModel> model = [];
     for (int i = 1; i <= 20; i++) {
       final value = json['strIngredient$i'];
-      if (value is String && value.isNotEmpty) {
+      if (value is String && value.trim().isNotEmpty) {
         model.add(IngredientModel.fromJson({"strIngredient": value}));
       }
     }
@@ -105,8 +105,8 @@ class DetailFoodModel extends DetailEntite {
   static List<MeasureModel> _converToMeasure(Map<String, dynamic> json) {
     List<MeasureModel> model = [];
     for (int i = 1; i <= 20; i++) {
-      final value = json['strIngredient$i'];
-      if (value is String && value.isNotEmpty) {
+      final value = json['strMeasure$i'];
+      if (value is String && value.trim().isNotEmpty) {
         model.add(MeasureModel.fromJson({"strMeasure": value}));
       }
     }

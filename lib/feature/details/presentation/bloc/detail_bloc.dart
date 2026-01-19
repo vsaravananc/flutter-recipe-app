@@ -21,5 +21,8 @@ class DetailBloc extends Bloc<DetailEvent, DetailState> {
         },
       );
     });
+    on<JustChangeState>((event,emit){
+      emit(DetailInitialLoading());
+    });
   }
 }

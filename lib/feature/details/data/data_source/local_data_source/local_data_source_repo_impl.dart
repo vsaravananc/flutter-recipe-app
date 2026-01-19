@@ -51,12 +51,12 @@ class LocalDataSourceRepoImpl implements LocalDataSourceRepo {
         measureModel,
       );
 
-      Map<String, dynamic> foodDetail = foodDetailModel.first;
+      Map<String, dynamic> foodDetail = Map<String, dynamic>.from(
+        foodDetailModel.first as Map,
+      );
 
-      foodDetail.addAll({
-        "ingredient_model": fromIngredientModel,
-        "measure_model": fromMeasureModel,
-      });
+      foodDetail['ingredient_model'] = fromIngredientModel;
+      foodDetail['measure_model'] = fromMeasureModel;
 
       return Right(
         SuccessHandlerImpl(await compute(_convertFromFoodModel, foodDetail)),

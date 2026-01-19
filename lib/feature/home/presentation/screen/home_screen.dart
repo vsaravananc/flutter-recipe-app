@@ -16,9 +16,11 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  late ScrollController scrollController;
   @override
   void initState() {
     super.initState();
+    scrollController = ScrollController();
     _initFirstCall();
   }
 
@@ -34,15 +36,26 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    scrollController.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       body: SafeArea(
+        bottom: false,
         child: CustomScrollView(
+          controller: scrollController,
           slivers: [
-            HomeHeaderWidget(key: ValueKey("home_header_widget")),
-            HomeSearchWidget(key: ValueKey("home_search_widget")),
-            HomeCategoryWidget(key: ValueKey("home_category_widget")),
-            HomeRecipeWidget(key: ValueKey("home_recipe_widget")),
+            const HomeHeaderWidget(key: ValueKey("home_header_widget")),
+            HomeSearchWidget(
+              key: const ValueKey("home_search_widget"),
+              scrollController: scrollController,
+            ),
+            const HomeCategoryWidget(key: ValueKey("home_category_widget")),
+            const HomeRecipeWidget(key: ValueKey("home_recipe_widget")),
           ],
         ),
       ),

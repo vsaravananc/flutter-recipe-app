@@ -4,7 +4,7 @@ class MeasureModel extends MealMeasure {
   const MeasureModel({required super.measure});
 
   factory MeasureModel.fromJson(Map<String, dynamic> json) {
-    return json['strMeasure'];
+    return MeasureModel(measure: json['strMeasure']);
   }
   static List<MeasureModel> fromLocalData(
     List<Map<String, dynamic>> localData,

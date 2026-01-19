@@ -14,3 +14,5 @@ class GetDetailData extends DetailEvent {
   @override
   List<Object> get props => [detailId];
 }
+
+class JustChangeState extends DetailEvent {}

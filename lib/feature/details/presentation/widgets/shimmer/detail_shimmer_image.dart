@@ -14,3 +14,5 @@ class DetailShimmerImage extends StatelessWidget {
     );
   }
 }
+
+

@@ -1,8 +1,10 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:recipe/core/services/dimensions.dart';
-import 'package:recipe/feature/details/presentation/widgets/detail_shimmer_image.dart';
+import 'package:recipe/feature/details/presentation/widgets/shimmer/detail_shimmer_image.dart';
 
 class DetailFoodImage extends StatelessWidget {
   final String imageUrl;
@@ -20,7 +22,12 @@ class DetailFoodImage extends StatelessWidget {
               height: MediaQuery.sizeOf(context).height / 2,
               decoration: BoxDecoration(
                 image: DecorationImage(image: imageprovider, fit: BoxFit.cover),
-                borderRadius: .circular(Dimensions.p24),
+                borderRadius:  .only(
+                  topLeft: .circular( Platform.isIOS ? Dimensions.p48 : Dimensions.p32),
+                  topRight: .circular(Platform.isIOS ? Dimensions.p48 : Dimensions.p32),
+                  bottomLeft: const .circular(Dimensions.p24),
+                  bottomRight: const .circular(Dimensions.p24),
+                ),
               ),
             ),
             errorWidget: (context, url, error) =>

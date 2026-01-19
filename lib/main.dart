@@ -1,4 +1,4 @@
-import 'package:firebase_core/firebase_core.dart';
+// import 'package:firebase_core/firebase_core.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:recipe/core/extensions/color_extension.dart';
@@ -8,7 +8,7 @@ import 'package:recipe/core/theme/theme_extenstion/gradint_theme_extenstion.dart
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  // await Firebase.initializeApp();
   await DependencyInjection.init();
   await sl.allReady();
   runApp(DependencyInjection.intialize(const MyApp()));
