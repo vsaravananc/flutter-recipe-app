@@ -7,7 +7,7 @@ class SearchScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.transparent,
+      backgroundColor: const Color(0x0C000000),
       body: CustomScrollView(
         slivers: [SliverPersistentHeader(delegate: SliverAppBarWidget())],
       ),

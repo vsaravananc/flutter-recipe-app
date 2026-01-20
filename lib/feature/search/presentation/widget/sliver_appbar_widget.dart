@@ -46,9 +46,15 @@ class SliverAppBarWidget extends SliverPersistentHeaderDelegate {
           Padding(
             padding: const .symmetric(horizontal: 12),
             child: TextFormField(
-              
+              keyboardType: .text,
+              onChanged: (search)async{
+               await Future.delayed(const Duration(milliseconds: 800));
+               if(context.mounted){
+                
+               }
+              },
               decoration: InputDecoration(
-                hintText: "Search Recipe",
+                hintText: "Briyani Recipe",
                 border: _inputBorder(context),
                 enabledBorder: _inputBorder(context),
                 disabledBorder: _inputBorder(context),
