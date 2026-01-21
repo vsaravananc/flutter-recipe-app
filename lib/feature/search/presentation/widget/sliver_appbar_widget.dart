@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:recipe/core/extensions/color_extension.dart';
 import 'package:recipe/core/extensions/textstyle_extension.dart';
+import 'package:recipe/core/services/beral_container.dart';
 
 class SliverAppBarWidget extends SliverPersistentHeaderDelegate {
   InputBorder _inputBorder(BuildContext context) => OutlineInputBorder(
@@ -24,12 +24,12 @@ class SliverAppBarWidget extends SliverPersistentHeaderDelegate {
             offset: const Offset(0, 5),
             blurRadius: 8,
             spreadRadius: 8,
-          )
+          ),
         ],
         color: Theme.of(context).cardColor,
         borderRadius: const .vertical(bottom: Radius.circular(30)),
       ),
-     
+
       child: Column(
         spacing: 5,
         crossAxisAlignment: .start,
@@ -42,16 +42,18 @@ class SliverAppBarWidget extends SliverPersistentHeaderDelegate {
             title: Text("Search Recipe", style: context.titleLarge),
             centerTitle: true,
           ),
-      
+
           Padding(
             padding: const .symmetric(horizontal: 12),
             child: TextFormField(
               keyboardType: .text,
-              onChanged: (search)async{
-               await Future.delayed(const Duration(milliseconds: 800));
-               if(context.mounted){
-                
-               }
+              onChanged: (search) async {
+                await Future.delayed(const Duration(milliseconds: 800));
+                if (context.mounted) {
+                  context.read<SearchBloc>().add(
+                    TriggerSearchEvent(search: search),
+                  );
+                }
               },
               decoration: InputDecoration(
                 hintText: "Briyani Recipe",
@@ -63,7 +65,6 @@ class SliverAppBarWidget extends SliverPersistentHeaderDelegate {
               ),
             ),
           ),
-
         ],
       ),
     );

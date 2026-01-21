@@ -1,70 +1,10 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:recipe/core/api/clients/dio_client.dart';
-import 'package:recipe/core/database/create/create_database.dart';
-import 'package:recipe/core/database/tables/areas_table.dart';
-import 'package:recipe/core/database/tables/categorys_table.dart';
-import 'package:recipe/core/database/tables/fooddetail_table.dart';
-import 'package:recipe/core/database/tables/foodtypes_table.dart';
-import 'package:recipe/core/database/tables/meal_table.dart';
-import 'package:recipe/core/database/tables/recipes_table.dart';
-import 'package:recipe/core/database/tables/user_table.dart';
-import 'package:recipe/feature/auth/data/data_sources/data_source_repo.dart';
-import 'package:recipe/feature/auth/data/data_sources/data_source_repo_impl.dart';
-import 'package:recipe/feature/auth/data/data_sources/local_data_source/local_data_impl.dart';
-import 'package:recipe/feature/auth/data/data_sources/local_data_source/local_data_repo.dart';
 import 'package:recipe/feature/auth/data/data_sources/remote_data_source/remote_data_impl.dart';
 import 'package:recipe/feature/auth/data/data_sources/remote_data_source/remote_data_repo.dart';
-import 'package:recipe/feature/auth/data/repo_impl/auth_repo_impl.dart';
-import 'package:recipe/feature/auth/domain/repo/auth_repo.dart';
-import 'package:recipe/feature/auth/domain/use_cases/login_with_email_usecase.dart';
-import 'package:recipe/feature/auth/domain/use_cases/login_with_google_usecase.dart';
-import 'package:recipe/feature/auth/domain/use_cases/signup_with_email_usecase.dart';
-import 'package:recipe/feature/auth/domain/use_cases/signup_with_google_usecase.dart';
-import 'package:recipe/feature/auth/presentation/bloc/auth_bloc/auth_bloc.dart';
-import 'package:recipe/feature/auth/presentation/bloc/auth_ui_bloc/auth_ui_bloc.dart';
-import 'package:recipe/feature/dashboard/presentation/dashboard/dashboard_cubit.dart';
-import 'package:recipe/feature/details/data/data_source/detail_datasource_repo.dart';
-import 'package:recipe/feature/details/data/data_source/detail_datasource_repo_impl.dart';
-import 'package:recipe/feature/details/data/data_source/local_data_source/local_data_source_repo.dart';
-import 'package:recipe/feature/details/data/data_source/local_data_source/local_data_source_repo_impl.dart';
-import 'package:recipe/feature/details/data/data_source/reomte_data_source/remote_data_source_repo.dart';
-import 'package:recipe/feature/details/data/data_source/reomte_data_source/remote_data_source_repo_impl.dart';
-import 'package:recipe/feature/details/data/repo_impl/detail_repo_impl.dart';
 import 'package:recipe/feature/details/domain/repo/detail_repo.dart';
 import 'package:recipe/feature/details/domain/usecase/get_detail_usecase.dart';
-import 'package:recipe/feature/details/presentation/bloc/detail_bloc.dart';
-import 'package:recipe/feature/home/data/data_source/data_source_repo_impl.dart';
-import 'package:recipe/feature/home/data/data_source/local_data_source/local_data_source_repo.dart';
-import 'package:recipe/feature/home/data/data_source/local_data_source/local_data_source_repo_impl.dart';
-import 'package:recipe/feature/home/data/data_source/remote_data_source/remote_data_source_repo.dart';
-import 'package:recipe/feature/home/data/data_source/remote_data_source/remote_data_source_repo_impl.dart';
-import 'package:recipe/feature/home/data/repo_impl/home_repo_impl.dart';
-import 'package:recipe/feature/home/domain/repo/home_repo.dart';
-import 'package:recipe/feature/home/domain/use_cases/home_category.dart';
-import 'package:recipe/feature/home/domain/use_cases/home_recipe.dart';
-import 'package:recipe/feature/home/presentation/bloc/home_category_bloc/homecategory_bloc.dart';
-import 'package:recipe/feature/home/presentation/bloc/home_recipe_bloc/recipe_bloc.dart';
-import 'package:recipe/feature/user_sugestion/data/data_sources/data_sources_repo.dart';
-import 'package:recipe/feature/user_sugestion/data/data_sources/data_sources_repo_impl.dart';
-import 'package:recipe/feature/user_sugestion/data/data_sources/local_data_source/local_data_impl_user_sugestion.dart';
-import 'package:recipe/feature/user_sugestion/data/data_sources/local_data_source/local_data_repo_user_sugestion.dart';
-import 'package:recipe/feature/user_sugestion/data/data_sources/remote_data_source/remote_data_impl_user_sugestion.dart';
-import 'package:recipe/feature/user_sugestion/data/repo_impl/user_sugestion_repo_impl.dart';
 import 'package:recipe/feature/user_sugestion/domain/repo/user_sugestion_repo.dart';
-import 'package:recipe/feature/user_sugestion/domain/use_cases/area_list_use_case.dart';
-import 'package:recipe/feature/user_sugestion/domain/use_cases/category_list_use_case.dart';
-import 'package:recipe/feature/user_sugestion/domain/use_cases/select_area_use_case.dart';
-import 'package:recipe/feature/user_sugestion/domain/use_cases/select_category_use_case.dart';
-import 'package:recipe/feature/user_sugestion/presentation/bloc/userprefrences_bloc.dart';
-import 'package:recipe/feature/user_sugestion/presentation/selected_user_suggestion/area/selectedarea_cubit.dart';
-import 'package:recipe/feature/user_sugestion/presentation/selected_user_suggestion/category/selectedcategory_cubit.dart';
-import 'package:recipe/feature/welcome/presentation/cubit/pagecurrentindex_cubit.dart';
-import 'package:get_it/get_it.dart';
 import 'package:sqflite/sqflite.dart';
+import 'beral_container.dart';
 
 final sl = GetIt.instance;
 
@@ -120,6 +60,9 @@ class DependencyInjection {
 
     /// ~~~~~~~~ detail ~~~~~~~~~~~~~ implementaiton
     _detail();
+
+    //// ~~~~~~~~~~~~ Search ~~~~~~~~~~~~ implementation
+    _search();
   }
 
   static void _auth() {
@@ -282,6 +225,33 @@ class DependencyInjection {
     );
   }
 
+  static void _search() {
+    sl.registerLazySingleton<RemoteSearchDataSourceRepo>(
+      () => RemoteSearchDataSourceRepoImpl(dio: sl<DioClient>().dio),
+    );
+    sl.registerLazySingleton<LocalSearchDataSourceRepo>(
+      () => LocalSearchDataSourceRepoImpl(database: sl<Database>().database),
+    );
+    sl.registerLazySingleton<SearchDataSourceRepo>(
+      () => SearchDataSourceRepoImpl(
+        localData: sl<LocalSearchDataSourceRepo>(),
+        remoteData: sl<RemoteSearchDataSourceRepo>(),
+      ),
+    );
+
+    sl.registerLazySingleton<SearchDomainRepo>(
+      () => SearchDataRepoImpl(dataSourceRepo: sl<SearchDataSourceRepo>()),
+    );
+
+    sl.registerFactory<SearchUsecase>(
+      () => SearchUsecase(searchDomainRepo: sl<SearchDomainRepo>()),
+    );
+
+    sl.registerFactory<SearchBloc>(
+      () => SearchBloc(searchUsecase: sl<SearchUsecase>()),
+    );
+  }
+
   static Widget intialize(Widget child) {
     return MultiBlocProvider(
       providers: [
@@ -295,6 +265,7 @@ class DependencyInjection {
         BlocProvider<HomecategoryBloc>(create: (context) => sl()),
         BlocProvider<HomeRecipeBloc>(create: (context) => sl()),
         BlocProvider<DetailBloc>(create: (context) => sl()),
+        BlocProvider<SearchBloc>(create: (context) => sl()),
       ],
       child: child,
     );

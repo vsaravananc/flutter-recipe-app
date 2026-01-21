@@ -1,7 +1,6 @@
 class ApiEndpoints {
   static const String baseUrl = "https://www.themealdb.com/api/json/v1/1/";
   static const String searchByName = "search.php?s=";
-  static const String searchByfirstLetter = "search.php?f=";
   static const String foodType = "categories.php";
   // filter by area, category and integration
   static const String filterByIntegration = "filter.php?i=";
