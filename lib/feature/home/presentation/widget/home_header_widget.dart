@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:recipe/core/extensions/color_extension.dart';
 import 'package:recipe/core/extensions/textstyle_extension.dart';
 import 'package:recipe/core/images/app_images.dart';
+import 'package:recipe/core/route/app_router_config.dart';
 import 'package:recipe/core/services/dimensions.dart';
 
 class HomeHeaderWidget extends StatelessWidget {
@@ -27,6 +29,7 @@ class HomeHeaderWidget extends StatelessWidget {
             GreetingText(key: ValueKey("greeting_text")),
             SizedBox(height: Dimensions.p4),
             HeaderDescription(key: ValueKey("header_description")),
+
             /// Here i have added extra space for better UI
             SizedBox(height: Dimensions.p10),
           ],
@@ -45,7 +48,18 @@ class HeaderTopBar extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        CircleAvatar(radius: 18, child: Image.asset(AppImages.avatar)),
+        GestureDetector(
+          onTap: () {
+            context.push(AppRouterConfig.profileRoute);
+          },
+          child: Hero(
+            tag: 'profile_avatar',
+            child: CircleAvatar(
+              radius: 18,
+              child: Image.asset(AppImages.avatar),
+            ),
+          ),
+        ),
         const HugeIcon(icon: HugeIcons.strokeRoundedNotification01, size: 30),
       ],
     );

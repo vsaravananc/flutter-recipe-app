@@ -5,6 +5,7 @@ import 'package:recipe/feature/auth/presentation/screens/auth_screen.dart';
 import 'package:recipe/feature/dashboard/presentation/screen/dashboard_screen.dart';
 import 'package:recipe/feature/details/domain/entities/detail_screenl_entitie.dart';
 import 'package:recipe/feature/details/presentation/screens/detail_screen.dart';
+import 'package:recipe/feature/profile/presentation/screen/profile_screen.dart';
 import 'package:recipe/feature/search/presentation/screen/search_screen.dart';
 import 'package:recipe/feature/splash/presentation/screen/splash_screen.dart';
 import 'package:recipe/feature/user_sugestion/presentation/screen/select_area_screen.dart';
@@ -21,6 +22,7 @@ class AppRouterConfig {
   static const String dashBoardRoute = "${initialRoute}logedin/dashboard";
   static const String detailsRoute = '$dashBoardRoute/details';
   static const String searchRoute = '$dashBoardRoute/Search';
+  static const String profileRoute = '$dashBoardRoute/profile';
 
   /// gorouter config of the app
   static GoRouter router = GoRouter(
@@ -78,7 +80,7 @@ class AppRouterConfig {
                 (context, animation, secondaryAnimation, child) {
                   Animation<Offset> position =
                       Tween<Offset>(
-                        begin:const Offset(0, -1),
+                        begin: const Offset(0, -1),
                         end: const Offset(0, 0),
                       ).animate(
                         CurvedAnimation(
@@ -96,8 +98,14 @@ class AppRouterConfig {
           return const SearchScreen(key: ValueKey('search_screen'));
         },
       ),
+      GoRoute(
+        path: profileRoute,
+        name: 'profile_screen',
+        builder: (context, state) {
+          return const ProfileScreen(key: ValueKey('profile_screen'));
+        },
+      ),
     ],
-
     ///! here i have changed the initalLocation route to dashBoardRoute for development purpose.
     ///! you can change it back to initialRoute when needed.
     ///! actually it should be initialRoute

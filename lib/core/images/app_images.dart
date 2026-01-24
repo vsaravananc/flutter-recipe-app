@@ -10,4 +10,10 @@ class AppImages {
   static const List<String> welcomeImages = [welcome1, welcome2, welcome3];
   static const String goole = 'assets/images/google.png';
   static const String avatar = 'assets/images/avatar.png';
+  static const String avatar1 = 'assets/images/avatar1.png';
+  static const String avatar2 = 'assets/images/avatar2.png';
+  static const String avatar3 = 'assets/images/avatar3.png';
+  static const String avatar4 = 'assets/images/avatar4.png';
+  static const String avatar5 = 'assets/images/avatar5.png';
+
 }
