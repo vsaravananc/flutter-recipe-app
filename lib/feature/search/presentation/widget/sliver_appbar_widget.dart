@@ -20,10 +20,10 @@ class SliverAppBarWidget extends SliverPersistentHeaderDelegate {
       decoration: BoxDecoration(
         boxShadow: [
           BoxShadow(
-            color: context.shadowColor.withValues(alpha: 0.3),
+            color: context.shadowColor.withValues(alpha: 0.2),
             offset: const Offset(0, 5),
-            blurRadius: 8,
-            spreadRadius: 8,
+            blurRadius: 4,
+            spreadRadius: 4,
           ),
         ],
         color: Theme.of(context).cardColor,
@@ -46,6 +46,7 @@ class SliverAppBarWidget extends SliverPersistentHeaderDelegate {
           Padding(
             padding: const .symmetric(horizontal: 12),
             child: TextFormField(
+              autofocus: true,
               keyboardType: .text,
               onChanged: (search) async {
                 await Future.delayed(const Duration(milliseconds: 800));

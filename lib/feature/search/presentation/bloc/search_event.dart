@@ -15,3 +15,9 @@ class TriggerSearchEvent extends SearchEvent {
   @override
   List<Object> get props => [search];
 }
+
+
+class TriggerInitalEvent extends SearchEvent {
+   @override
+  List<Object> get props => [];
+}

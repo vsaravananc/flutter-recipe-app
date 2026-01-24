@@ -4,6 +4,7 @@ import 'package:hugeicons/hugeicons.dart';
 import 'package:recipe/core/extensions/color_extension.dart';
 import 'package:recipe/core/extensions/textstyle_extension.dart';
 import 'package:recipe/core/route/app_router_config.dart';
+import 'package:recipe/core/services/beral_container.dart';
 import 'package:recipe/core/services/dimensions.dart';
 
 class HomeSearchWidget extends SliverPersistentHeader {
@@ -25,6 +26,7 @@ class HomeSearchDelegate extends SliverPersistentHeaderDelegate {
 
     return GestureDetector(
       onTap: () {
+        context.read<SearchBloc>().add(TriggerInitalEvent());
         scrollController.animateTo(
           250,
           duration: const Duration(milliseconds: 380),

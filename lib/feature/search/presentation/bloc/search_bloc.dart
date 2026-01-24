@@ -9,6 +9,8 @@ part 'search_state.dart';
 class SearchBloc extends Bloc<SearchEvent, SearchState> {
   final SearchUsecase searchUsecase;
   SearchBloc({required this.searchUsecase}) : super(SearchInitial()) {
+    on<TriggerInitalEvent>((event, emit) => emit(SearchInitial()));
+
     on<TriggerSearchEvent>((event, emit) async {
       if (event.search.isEmpty) return;
       final response = await searchUsecase.searchRecipe(event.search);
