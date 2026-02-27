@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:recipe/core/extensions/textstyle_extension.dart';
 import 'package:recipe/feature/home/domain/entities/home_category_entities.dart';
+import 'package:recipe/feature/home/presentation/bloc/home_backtotop_cubit/bactotop_cubit.dart';
 import 'package:recipe/feature/home/presentation/bloc/home_category_bloc/homecategory_bloc.dart';
 import 'package:recipe/feature/home/presentation/bloc/home_recipe_bloc/recipe_bloc.dart';
 import 'package:recipe/feature/home/presentation/widget/home_category_widget.dart';
@@ -21,6 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     scrollController = ScrollController();
+    scrollController.addListener(_listenScrollController);
     _initFirstCall();
   }
 
@@ -32,6 +35,14 @@ class _HomeScreenState extends State<HomeScreen> {
       context.read<HomeRecipeBloc>().add(
         GetRecipeEvent(categoryName: categoryEntities.name),
       );
+    }
+  }
+
+  void _listenScrollController() {
+    if (scrollController.position.pixels > 600) {
+      context.read<BactotopCubit>().show();
+    } else {
+      context.read<BactotopCubit>().hide();
     }
   }
 
@@ -58,6 +69,75 @@ class _HomeScreenState extends State<HomeScreen> {
             const HomeRecipeWidget(key: ValueKey("home_recipe_widget")),
           ],
         ),
+      ),
+      floatingActionButtonLocation: .centerDocked,
+      floatingActionButton: BlocBuilder<BactotopCubit, BactotopState>(
+        builder: (_, state) {
+          debugPrint("BACK TO TOP : ${(state is BactotopShow)}");
+          return AnimatedSwitcher(
+            duration: const Duration(milliseconds: 350),
+            reverseDuration: const Duration(milliseconds: 350),
+            switchInCurve: Curves.easeIn,
+            switchOutCurve: Curves.easeOut,
+            transitionBuilder: (child, animation) {
+              Animation<Offset> position = Tween<Offset>(
+                begin: const Offset(0, 1),
+                end: Offset.zero,
+              ).animate(animation);
+              Animation<double> scale = Tween<double>(
+                begin: .9,
+                end: 1,
+              ).animate(animation);
+              return ScaleTransition(
+                scale: scale,
+                child: SlideTransition(position: position, child: child),
+              );
+            },
+            child: (state is BactotopShow)
+                ? GestureDetector(
+                  onTap: () => scrollController.animateTo(
+                    0,
+                    duration: const Duration(milliseconds: 500),
+                    curve: Curves.easeInOut,
+                  ),
+                  child: Container(
+                      height: 50,
+                      padding: const .symmetric(horizontal: 14),
+                      decoration: BoxDecoration(
+                        color: Colors.black,
+                        borderRadius: .circular(25),
+                        boxShadow: [
+                         const  BoxShadow(
+                            color: Colors.black38,
+                            blurRadius: 4,
+                            spreadRadius: 4
+                          )
+                        ],
+                      ),
+                      key: const ValueKey("show_button"),
+                      child: Row(
+                        mainAxisSize: .min,
+                        spacing: 8,
+                        children: [
+                          const Icon(
+                            Icons.arrow_upward,
+                            color: Colors.white,
+                            size: 19,
+                          ),
+                          Text(
+                            "Back to Top",
+                            style: context.bodyLarge?.copyWith(
+                              color: Colors.white,
+                              fontWeight: .w600,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                )
+                : const SizedBox.shrink(key: ValueKey("hide_button")),
+          );
+        },
       ),
     );
   }

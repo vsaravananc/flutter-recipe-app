@@ -7,6 +7,7 @@ import 'package:recipe/core/services/dimensions.dart';
 import 'package:recipe/feature/home/domain/entities/home_category_entities.dart';
 import 'package:recipe/feature/home/presentation/bloc/home_category_bloc/homecategory_bloc.dart';
 import 'package:recipe/feature/home/presentation/bloc/home_recipe_bloc/recipe_bloc.dart';
+import 'package:recipe/feature/home/presentation/widget/home_category_placeholder_widget.dart';
 
 class HomeCategoryWidget extends StatelessWidget {
   const HomeCategoryWidget({super.key});
@@ -175,10 +176,16 @@ class IndividualCategoryItem extends StatelessWidget {
                       ),
                     ),
                   ),
-                  progressIndicatorBuilder: (context, url, progress) =>
-                      const ImagePlaceholder(
-                        key: ValueKey("progress_indicator"),
+                  placeholder: (context, url) => 
+                      const HomeCategoryPlaceholderWidget(
+                        key: ValueKey("placeholder_homecategory_placeholder"),
                       ),
+
+                  errorWidget: (context, url, error) =>
+                      const HomeCategoryPlaceholderWidget(
+                        key: ValueKey("error_homecategory_placeholder"),
+                      ),
+
                   imageUrl: category.imageUrl,
                   fit: BoxFit.cover,
                 ),

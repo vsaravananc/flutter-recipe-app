@@ -11,6 +11,7 @@ import 'package:recipe/feature/details/domain/entities/detail_screenl_entitie.da
 import 'package:recipe/feature/details/presentation/bloc/detail_bloc.dart';
 import 'package:recipe/feature/home/domain/entities/home_recipe_entities.dart';
 import 'package:recipe/feature/home/presentation/bloc/home_recipe_bloc/recipe_bloc.dart';
+import 'package:recipe/feature/home/presentation/widget/home_recipe_placeholder_widget.dart';
 
 class HomeRecipeWidget extends StatelessWidget {
   const HomeRecipeWidget({super.key});
@@ -133,11 +134,12 @@ class ImagePlaceHolderWidget extends StatelessWidget {
           ],
         ),
       ),
-      placeholder: (context, _) => Container(
-        decoration: BoxDecoration(
-          borderRadius: .circular(Dimensions.p16),
-          color: context.cardColor,
-        ),
+      placeholder: (context, _) => const HomeRecipePlaceholderWidget(
+        key: ValueKey("placeholder_recipe_placeHolder_widget"),
+      ),
+
+      errorWidget: (context, url, error) => const HomeRecipePlaceholderWidget(
+        key: ValueKey("error_recipe_placeHolder_widget"),
       ),
     );
   }

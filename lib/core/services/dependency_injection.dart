@@ -2,6 +2,7 @@ import 'package:recipe/feature/auth/data/data_sources/remote_data_source/remote_
 import 'package:recipe/feature/auth/data/data_sources/remote_data_source/remote_data_repo.dart';
 import 'package:recipe/feature/details/domain/repo/detail_repo.dart';
 import 'package:recipe/feature/details/domain/usecase/get_detail_usecase.dart';
+import 'package:recipe/feature/home/presentation/bloc/home_backtotop_cubit/bactotop_cubit.dart';
 import 'package:recipe/feature/user_sugestion/domain/repo/user_sugestion_repo.dart';
 import 'package:sqflite/sqflite.dart';
 import 'beral_container.dart';
@@ -196,6 +197,8 @@ class DependencyInjection {
     sl.registerFactory<HomeRecipeBloc>(
       () => HomeRecipeBloc(recipeUseCase: sl<HomeRecipeUseCase>()),
     );
+
+    sl.registerFactory<BactotopCubit>(() => BactotopCubit());
   }
 
   static void _detail() {
@@ -266,6 +269,7 @@ class DependencyInjection {
         BlocProvider<HomeRecipeBloc>(create: (context) => sl()),
         BlocProvider<DetailBloc>(create: (context) => sl()),
         BlocProvider<SearchBloc>(create: (context) => sl()),
+        BlocProvider<BactotopCubit>(create: (context) => sl())
       ],
       child: child,
     );
