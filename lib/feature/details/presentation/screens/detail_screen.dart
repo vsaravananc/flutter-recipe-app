@@ -29,40 +29,44 @@ class _DetailScreenState extends State<DetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        padding: const .all(0),
-        physics: const AlwaysScrollableScrollPhysics(),
-        child: Column(
-          crossAxisAlignment: .start,
-          children: [
-            
-            Hero(
-              tag: widget.foodDetail.imageTag,
-              child: DetailFoodImage(
-                imageUrl: widget.foodDetail.image,
-                key: ValueKey('detail_${widget.foodDetail.imageTag}'),
-              ),
-            ),
-            Padding(
-              padding: const .only(left: 12,top: 8),
-              child: Hero(
-                tag: widget.foodDetail.titleTag,
-                child: Text(
-                  widget.foodDetail.title,
-                  maxLines: 1,
-                  overflow: .clip,
-                  style: context.titleLarge?.copyWith(fontWeight: .bold),
+      body: ScrollConfiguration(
+        behavior: const ScrollBehavior().copyWith(overscroll: false),
+        child: SingleChildScrollView(
+          
+          padding: const .all(0),
+          physics: const AlwaysScrollableScrollPhysics(),
+          child: Column(
+            crossAxisAlignment: .start,
+            children: [
+              
+              Hero(
+                tag: widget.foodDetail.imageTag,
+                child: DetailFoodImage(
+                  imageUrl: widget.foodDetail.image,
+                  key: ValueKey('detail_${widget.foodDetail.imageTag}'),
                 ),
               ),
-            ),
-    
-            Padding(
-              padding:  .only(bottom: Platform.isAndroid ?  Dimensions.p10 :0),
-              child: DetailFoodDetail(
-                key: ValueKey('detail_food_${widget.foodDetail.titleTag}'),
+              Padding(
+                padding: const .only(left: 12,top: 8),
+                child: Hero(
+                  tag: widget.foodDetail.titleTag,
+                  child: Text(
+                    widget.foodDetail.title,
+                    maxLines: 1,
+                    overflow: .clip,
+                    style: context.titleLarge?.copyWith(fontWeight: .bold),
+                  ),
+                ),
               ),
-            ),
-          ],
+            
+              Padding(
+                padding:  .only(bottom: Platform.isAndroid ?  Dimensions.p10 :0),
+                child: DetailFoodDetail(
+                  key: ValueKey('detail_food_${widget.foodDetail.titleTag}'),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

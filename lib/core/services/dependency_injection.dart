@@ -3,6 +3,12 @@ import 'package:recipe/feature/auth/data/data_sources/remote_data_source/remote_
 import 'package:recipe/feature/details/domain/repo/detail_repo.dart';
 import 'package:recipe/feature/details/domain/usecase/get_detail_usecase.dart';
 import 'package:recipe/feature/home/presentation/bloc/home_backtotop_cubit/bactotop_cubit.dart';
+import 'package:recipe/feature/profile/data/data_source/profile_data_source_repo.dart';
+import 'package:recipe/feature/profile/data/data_source/profile_data_source_repoimpl.dart';
+import 'package:recipe/feature/profile/data/repo_impl/profile_repo_impl.dart';
+import 'package:recipe/feature/profile/domain/repo/profile_rep.dart';
+import 'package:recipe/feature/profile/domain/usecase/profile_usecase.dart';
+import 'package:recipe/feature/profile/presentation/bloc/profile_bloc.dart';
 import 'package:recipe/feature/user_sugestion/domain/repo/user_sugestion_repo.dart';
 import 'package:sqflite/sqflite.dart';
 import 'beral_container.dart';
@@ -64,6 +70,9 @@ class DependencyInjection {
 
     //// ~~~~~~~~~~~~ Search ~~~~~~~~~~~~ implementation
     _search();
+
+    //// ~~~~~~~~~~ Profile ~~~~~~~~~~~ implementation
+    _profile();
   }
 
   static void _auth() {
@@ -255,6 +264,24 @@ class DependencyInjection {
     );
   }
 
+  static void _profile(){
+    sl.registerLazySingleton<ProfileDataSourceRepository>(
+      () => ProfileDataSourceRepoimpl(database: sl<Database>()),
+    );
+
+    sl.registerLazySingleton<ProfileRepository>(
+      () => ProfileRepoImpl(dataSourceRepository: sl<ProfileDataSourceRepository>()),
+    );
+
+    sl.registerFactory<ProfileUsecase>(
+      () => ProfileUsecase(repository: sl<ProfileRepository>()),
+    );
+
+    sl.registerFactory<ProfileBloc>(() =>
+       ProfileBloc(usecase: sl<ProfileUsecase>()),
+    );
+  }
+
   static Widget intialize(Widget child) {
     return MultiBlocProvider(
       providers: [
@@ -269,7 +296,8 @@ class DependencyInjection {
         BlocProvider<HomeRecipeBloc>(create: (context) => sl()),
         BlocProvider<DetailBloc>(create: (context) => sl()),
         BlocProvider<SearchBloc>(create: (context) => sl()),
-        BlocProvider<BactotopCubit>(create: (context) => sl())
+        BlocProvider<BactotopCubit>(create: (context) => sl()),
+        BlocProvider<ProfileBloc>(create: (context) => sl())
       ],
       child: child,
     );

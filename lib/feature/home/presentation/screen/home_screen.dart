@@ -60,7 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: CustomScrollView(
           controller: scrollController,
           slivers: [
-            const HomeHeaderWidget(key: ValueKey("home_header_widget")),
+             const HomeHeaderWidget(key: ValueKey("home_header_widget")),
             HomeSearchWidget(
               key: const ValueKey("home_search_widget"),
               scrollController: scrollController,
@@ -102,6 +102,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   child: Container(
                       height: 50,
+                      margin:const .only(bottom: 20),
                       padding: const .symmetric(horizontal: 14),
                       decoration: BoxDecoration(
                         color: Colors.black,

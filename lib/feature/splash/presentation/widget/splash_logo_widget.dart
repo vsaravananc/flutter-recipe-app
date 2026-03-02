@@ -48,7 +48,7 @@ class _SplashLogoWidgetState extends State<SplashLogoWidget> {
   );
 
   void initalizeMove() {
-    context.pushNamed(AppRouterConfig.dashBoardRoute);
+    context.go(AppRouterConfig.dashBoardRoute);
   }
 
   @override
