@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:recipe/core/extensions/textstyle_extension.dart';
 import 'package:recipe/feature/home/domain/entities/home_category_entities.dart';
@@ -21,6 +22,13 @@ class _HomeScreenState extends State<HomeScreen> {
   late ScrollController scrollController;
   @override
   void initState() {
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        statusBarIconBrightness: Brightness.dark,
+        statusBarBrightness: Brightness.dark,
+      ),
+    );
     super.initState();
     scrollController = ScrollController();
     scrollController.addListener(_listenScrollController);
@@ -47,6 +55,18 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   @override
+  void didChangeDependencies() {
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        statusBarIconBrightness: Brightness.dark,
+        statusBarBrightness: Brightness.dark,
+      ),
+    );
+    super.didChangeDependencies();
+  }
+
+  @override
   void dispose() {
     super.dispose();
     scrollController.dispose();
@@ -60,7 +80,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: CustomScrollView(
           controller: scrollController,
           slivers: [
-             const HomeHeaderWidget(key: ValueKey("home_header_widget")),
+            const HomeHeaderWidget(key: ValueKey("home_header_widget")),
             HomeSearchWidget(
               key: const ValueKey("home_search_widget"),
               scrollController: scrollController,
@@ -95,24 +115,24 @@ class _HomeScreenState extends State<HomeScreen> {
             },
             child: (state is BactotopShow)
                 ? GestureDetector(
-                  onTap: () => scrollController.animateTo(
-                    0,
-                    duration: const Duration(milliseconds: 500),
-                    curve: Curves.easeInOut,
-                  ),
-                  child: Container(
+                    onTap: () => scrollController.animateTo(
+                      0,
+                      duration: const Duration(milliseconds: 500),
+                      curve: Curves.easeInOut,
+                    ),
+                    child: Container(
                       height: 50,
-                      margin:const .only(bottom: 20),
+                      margin: const .only(bottom: 20),
                       padding: const .symmetric(horizontal: 14),
                       decoration: BoxDecoration(
                         color: Colors.black,
                         borderRadius: .circular(25),
                         boxShadow: [
-                         const  BoxShadow(
+                          const BoxShadow(
                             color: Colors.black38,
                             blurRadius: 4,
-                            spreadRadius: 4
-                          )
+                            spreadRadius: 4,
+                          ),
                         ],
                       ),
                       key: const ValueKey("show_button"),
@@ -135,7 +155,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ],
                       ),
                     ),
-                )
+                  )
                 : const SizedBox.shrink(key: ValueKey("hide_button")),
           );
         },

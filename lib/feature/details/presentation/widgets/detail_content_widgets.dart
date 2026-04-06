@@ -15,7 +15,7 @@ class IngredientWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    int length = mealIntegrationCollection.length > mealMeasureCollection.length
+    int length = mealIntegrationCollection.length < mealMeasureCollection.length
         ? mealIntegrationCollection.length
         : mealMeasureCollection.length;
     return Column(

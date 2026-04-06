@@ -15,7 +15,7 @@ class SliverAppBarWidget extends SliverPersistentHeaderDelegate {
     bool overlapsContent,
   ) {
     return Container(
-      height: 200,
+      height: 170,
       width: .infinity,
       decoration: BoxDecoration(
         boxShadow: [
@@ -72,10 +72,10 @@ class SliverAppBarWidget extends SliverPersistentHeaderDelegate {
   }
 
   @override
-  double get maxExtent => 200;
+  double get maxExtent => 170;
 
   @override
-  double get minExtent => 200;
+  double get minExtent => 170;
 
   @override
   bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:recipe/core/extensions/textstyle_extension.dart';
 import 'package:recipe/core/services/dimensions.dart';
@@ -20,10 +21,30 @@ class DetailScreen extends StatefulWidget {
 class _DetailScreenState extends State<DetailScreen> {
   @override
   void initState() {
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        statusBarIconBrightness: Brightness.light,
+        statusBarBrightness: Brightness.light,
+      ),
+    );
+   
     context.read<DetailBloc>().add(
       GetDetailData(detailId: widget.foodDetail.id),
     );
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        statusBarIconBrightness: Brightness.dark,
+        statusBarBrightness: Brightness.dark,
+      ),
+    );
+    super.dispose();
   }
 
   @override
@@ -32,13 +53,11 @@ class _DetailScreenState extends State<DetailScreen> {
       body: ScrollConfiguration(
         behavior: const ScrollBehavior().copyWith(overscroll: false),
         child: SingleChildScrollView(
-          
           padding: const .all(0),
           physics: const AlwaysScrollableScrollPhysics(),
           child: Column(
             crossAxisAlignment: .start,
             children: [
-              
               Hero(
                 tag: widget.foodDetail.imageTag,
                 child: DetailFoodImage(
@@ -47,7 +66,7 @@ class _DetailScreenState extends State<DetailScreen> {
                 ),
               ),
               Padding(
-                padding: const .only(left: 12,top: 8),
+                padding: const .only(left: 12, top: 8),
                 child: Hero(
                   tag: widget.foodDetail.titleTag,
                   child: Text(
@@ -58,9 +77,9 @@ class _DetailScreenState extends State<DetailScreen> {
                   ),
                 ),
               ),
-            
+
               Padding(
-                padding:  .only(bottom: Platform.isAndroid ?  Dimensions.p10 :0),
+                padding: .only(bottom: Platform.isAndroid ? Dimensions.p10 : 0),
                 child: DetailFoodDetail(
                   key: ValueKey('detail_food_${widget.foodDetail.titleTag}'),
                 ),

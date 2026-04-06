@@ -44,11 +44,15 @@ class _SplashLogoWidgetState extends State<SplashLogoWidget> {
       await SystemChannels.textInput.invokeMethod('TextInput.hide');
 
   void changeStatusColor() => SystemChrome.setSystemUIOverlayStyle(
-    const SystemUiOverlayStyle(statusBarColor: Colors.transparent),
+    const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.dark,
+      statusBarBrightness: Brightness.dark,
+    ),
   );
 
   void initalizeMove() {
-    context.go(AppRouterConfig.dashBoardRoute);
+    context.go(AppRouterConfig.welcomeRoute);
   }
 
   @override
