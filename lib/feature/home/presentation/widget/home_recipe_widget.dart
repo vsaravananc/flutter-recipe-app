@@ -12,6 +12,7 @@ import 'package:recipe/feature/details/presentation/bloc/detail_bloc.dart';
 import 'package:recipe/feature/home/domain/entities/home_recipe_entities.dart';
 import 'package:recipe/feature/home/presentation/bloc/home_recipe_bloc/recipe_bloc.dart';
 import 'package:recipe/feature/home/presentation/widget/home_recipe_placeholder_widget.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 
 class HomeRecipeWidget extends StatelessWidget {
   const HomeRecipeWidget({super.key});
@@ -133,7 +134,12 @@ class ImagePlaceHolderWidget extends StatelessWidget {
             ),
           ],
         ),
-      ),
+      ).animate().fadeIn(duration: const Duration(milliseconds: 450)).slideY(
+            begin: 0.1,
+            end: 0,
+            curve: Curves.easeInOut,
+            duration: const Duration(milliseconds: 450),
+          ),
       placeholder: (context, _) => const HomeRecipePlaceholderWidget(
         key: ValueKey("placeholder_recipe_placeHolder_widget"),
       ),

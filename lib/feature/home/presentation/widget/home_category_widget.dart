@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:recipe/core/extensions/color_extension.dart';
 import 'package:recipe/core/extensions/textstyle_extension.dart';
@@ -110,7 +111,12 @@ class _CategoryDisplayWidgetState extends State<CategoryDisplayWidget> {
             );
           },
         ),
-      ),
+      ).animate().fadeIn(duration: const Duration(milliseconds: 450)).slideY(
+            begin: 0.1,
+            end: 0,
+            curve: Curves.easeInOut,
+            duration: const Duration(milliseconds: 450),
+          ),
     );
   }
 }

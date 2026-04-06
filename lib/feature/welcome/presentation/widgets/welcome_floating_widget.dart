@@ -15,7 +15,7 @@ class WelcomeFloatingWidget extends StatelessWidget {
         shape: const CircleBorder(),
         onPressed: state == 2
             ? () {
-                context.pushReplacement(AppRouterConfig.authRoute);
+                context.pushReplacement(AppRouterConfig.dashBoardRoute);
               }
             : () {
                 controller.animateToPage(

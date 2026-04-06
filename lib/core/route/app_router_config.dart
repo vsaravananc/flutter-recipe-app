@@ -26,6 +26,7 @@ class AppRouterConfig {
 
   /// gorouter config of the app
   static GoRouter router = GoRouter(
+    
     routes: [
       GoRoute(
         path: initialRoute,
