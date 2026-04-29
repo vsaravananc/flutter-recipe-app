@@ -55,16 +55,18 @@ class WelcomeDotsHolder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        child,
-        const Positioned(
-          left: 0,
-          right: 0,
-          bottom: kBottomNavigationBarHeight * 3.5,
-          child: WelcomeDotWidget(key: ValueKey('welcome_dots_holder')),
-        ),
-      ],
+    return SafeArea(
+      child: Stack(
+        children: [
+          child,
+          const Positioned(
+            left: 0,
+            right: 0,
+            bottom: kBottomNavigationBarHeight ,
+            child: WelcomeDotWidget(key: ValueKey('welcome_dots_holder')),
+          ),
+        ],
+      ),
     );
   }
 }

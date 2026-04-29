@@ -20,6 +20,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
+      builder: (context, child) {
+        return MediaQuery.withNoTextScaling(child: child!);
+      },
       theme: FlexThemeData.light(
         scheme: FlexScheme.mango,
         extensions: [

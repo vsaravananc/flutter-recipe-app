@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:go_router/go_router.dart';
 import 'package:recipe/core/extensions/color_extension.dart';
 import 'package:recipe/core/extensions/textstyle_extension.dart';
@@ -15,7 +17,7 @@ class SliverAppBarWidget extends SliverPersistentHeaderDelegate {
     bool overlapsContent,
   ) {
     return Container(
-      height: 170,
+      height: Platform.isAndroid ? 170 : 185,
       width: .infinity,
       decoration: BoxDecoration(
         boxShadow: [
@@ -72,7 +74,7 @@ class SliverAppBarWidget extends SliverPersistentHeaderDelegate {
   }
 
   @override
-  double get maxExtent => 170;
+  double get maxExtent => Platform.isAndroid ? 179 : 185;
 
   @override
   double get minExtent => 170;

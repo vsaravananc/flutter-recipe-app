@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:recipe/core/route/app_router_config.dart';
+import 'package:recipe/core/services/dependency_injection.dart';
 import 'package:recipe/feature/welcome/presentation/cubit/pagecurrentindex_cubit.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class WelcomeFloatingWidget extends StatelessWidget {
   final PageController controller;
@@ -15,6 +17,7 @@ class WelcomeFloatingWidget extends StatelessWidget {
         shape: const CircleBorder(),
         onPressed: state == 2
             ? () {
+                sl<SharedPreferences>().setBool("IsLogedIn", true);
                 context.pushReplacement(AppRouterConfig.dashBoardRoute);
               }
             : () {

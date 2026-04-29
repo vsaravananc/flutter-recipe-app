@@ -10,6 +10,7 @@ import 'package:recipe/feature/profile/domain/repo/profile_rep.dart';
 import 'package:recipe/feature/profile/domain/usecase/profile_usecase.dart';
 import 'package:recipe/feature/profile/presentation/bloc/profile_bloc.dart';
 import 'package:recipe/feature/user_sugestion/domain/repo/user_sugestion_repo.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
 import 'beral_container.dart';
 
@@ -21,6 +22,10 @@ class DependencyInjection {
     sl.registerLazySingleton<FirebaseAuth>(() => FirebaseAuth.instance);
     sl.registerLazySingleton<FirebaseFirestore>(
       () => FirebaseFirestore.instance,
+    );
+
+    sl.registerSingletonAsync<SharedPreferences>(
+      () async => await SharedPreferences.getInstance(),
     );
 
     /// ~~~~~ Local database ~~~~~
@@ -264,21 +269,23 @@ class DependencyInjection {
     );
   }
 
-  static void _profile(){
+  static void _profile() {
     sl.registerLazySingleton<ProfileDataSourceRepository>(
       () => ProfileDataSourceRepoimpl(database: sl<Database>()),
     );
 
     sl.registerLazySingleton<ProfileRepository>(
-      () => ProfileRepoImpl(dataSourceRepository: sl<ProfileDataSourceRepository>()),
+      () => ProfileRepoImpl(
+        dataSourceRepository: sl<ProfileDataSourceRepository>(),
+      ),
     );
 
     sl.registerFactory<ProfileUsecase>(
       () => ProfileUsecase(repository: sl<ProfileRepository>()),
     );
 
-    sl.registerFactory<ProfileBloc>(() =>
-       ProfileBloc(usecase: sl<ProfileUsecase>()),
+    sl.registerFactory<ProfileBloc>(
+      () => ProfileBloc(usecase: sl<ProfileUsecase>()),
     );
   }
 
@@ -297,7 +304,7 @@ class DependencyInjection {
         BlocProvider<DetailBloc>(create: (context) => sl()),
         BlocProvider<SearchBloc>(create: (context) => sl()),
         BlocProvider<BactotopCubit>(create: (context) => sl()),
-        BlocProvider<ProfileBloc>(create: (context) => sl())
+        BlocProvider<ProfileBloc>(create: (context) => sl()),
       ],
       child: child,
     );
