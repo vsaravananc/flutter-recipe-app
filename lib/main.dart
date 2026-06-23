@@ -71,7 +71,7 @@ class MyApp extends StatelessWidget {
           ),
         ],
       ),
-      themeMode: ThemeMode.system,
+      themeMode: ThemeMode.light,
       debugShowCheckedModeBanner: false,
       title: "Recipe-book",
       routerConfig: AppRouterConfig.router,

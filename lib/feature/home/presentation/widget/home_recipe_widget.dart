@@ -29,7 +29,7 @@ class HomeRecipeWidget extends StatelessWidget {
               SliverPadding(
                 padding: const .only(bottom: Dimensions.p10),
                 sliver: SliverToBoxAdapter(
-                  child: Text('Recipes', style: context.headlineMedium),
+                  child: Text('Recipes', style: context.headlineSmall),
                 ),
               ),
               if (state is RecipeLoaded)
