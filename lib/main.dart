@@ -5,10 +5,10 @@ import 'package:recipe/core/extensions/color_extension.dart';
 import 'package:recipe/core/route/app_router_config.dart';
 import 'package:recipe/core/services/dependency_injection.dart';
 import 'package:recipe/core/theme/theme_extenstion/gradint_theme_extenstion.dart';
+import 'package:recipe/core/util/app_fonts.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // await Firebase.initializeApp();
   await DependencyInjection.init();
   await sl.allReady();
   runApp(DependencyInjection.intialize(const MyApp()));
@@ -25,6 +25,7 @@ class MyApp extends StatelessWidget {
       },
       theme: FlexThemeData.light(
         scheme: FlexScheme.mango,
+        fontFamily: AppFonts.inter,
         extensions: [
           GradintThemeExtenstion(
             colors: [
@@ -37,6 +38,7 @@ class MyApp extends StatelessWidget {
       ),
       darkTheme: FlexThemeData.dark(
         scheme: FlexScheme.mango,
+        fontFamily: AppFonts.inter,
         subThemesData: const FlexSubThemesData(
           interactionEffects: true,
           tintedDisabledControls: true,
@@ -74,6 +76,7 @@ class MyApp extends StatelessWidget {
       themeMode: ThemeMode.light,
       debugShowCheckedModeBanner: false,
       title: "Recipe-book",
+      
       routerConfig: AppRouterConfig.router,
     );
   }

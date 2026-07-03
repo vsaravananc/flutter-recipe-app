@@ -10,12 +10,14 @@ import 'package:recipe/feature/search/presentation/screen/search_screen.dart';
 import 'package:recipe/feature/splash/presentation/screen/splash_screen.dart';
 import 'package:recipe/feature/user_sugestion/presentation/screen/select_area_screen.dart';
 import 'package:recipe/feature/user_sugestion/presentation/screen/select_category_screen.dart';
+import 'package:recipe/feature/welcome/presentation/screens/get_started_screen.dart';
 import 'package:recipe/feature/welcome/presentation/screens/welcome_screen.dart';
 
 class AppRouterConfig {
   ///  routes of the app
   static const String initialRoute = '/';
-  static const String welcomeRoute = '${initialRoute}welcome';
+  static const String getStarted = '${initialRoute}getStarted';
+  static const String welcomeRoute = '$initialRoute/welcome';
   static const String authRoute = '$welcomeRoute/auth';
   static const String areaRoute = '$authRoute/userprefrence/area';
   static const String categoryRoute = '$areaRoute/userprefrence/category';
@@ -33,6 +35,12 @@ class AppRouterConfig {
         name: initialRoute,
         builder: (context, state) =>
             const SplashScreen(key: ValueKey("Splash_screen")),
+      ),
+        GoRoute(
+        path: getStarted,
+        name: getStarted,
+        builder: (context, state) =>
+            const GetStartedScreen(key: ValueKey("get_started_screen")),
       ),
       GoRoute(
         path: welcomeRoute,

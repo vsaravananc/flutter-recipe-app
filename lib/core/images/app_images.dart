@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 class AppImages {
   static const String logoLight = 'assets/images/logo_light.jpg';
   static const String logoDark = 'assets/images/logo_dark.png';
+  static const String welcome = 'assets/images/welcome.jpg';
   static const String welcome1 = 'assets/images/welcome_1.webp';
   static const String welcome2 = 'assets/images/welcome_2.webp';
   static const String welcome3 = 'assets/images/welcome_3.webp';

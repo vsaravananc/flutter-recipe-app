@@ -78,6 +78,8 @@ class DependencyInjection {
 
     //// ~~~~~~~~~~ Profile ~~~~~~~~~~~ implementation
     _profile();
+
+   
   }
 
   static void _auth() {
