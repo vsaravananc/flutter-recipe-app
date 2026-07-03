@@ -5,13 +5,21 @@ import 'package:mocktail/mocktail.dart';
 import 'package:recipe/core/api/endpoints/api_endpoints.dart';
 import 'package:recipe/core/handler/failer_handler.dart';
 import 'package:recipe/core/handler/success_handler.dart';
-import 'package:recipe/feature/home/data/data_source/local_data_source/local_data_source_repo_impl.dart';
-import 'package:recipe/feature/home/data/data_source/remote_data_source/remote_data_source_repo_impl.dart';
-import 'package:recipe/feature/home/domain/repo/home_repo.dart';
-import 'package:recipe/feature/home/domain/use_cases/home_category.dart';
+import 'package:recipe/core/services/beral_container.dart';
+import 'package:recipe/feature/home/data/data_source/data_source_repo.dart';
 import 'package:sqflite/sqflite.dart';
 
 class MockHomeRepo extends Mock implements HomeRepo {}
+
+/* DATA CALL MOCK */
+
+class MockDataSourceHomeRepoImpl extends Mock implements DataSourceRepo {}
+
+class MockLocalDataSourceHomeRepoImpl extends Mock
+    implements LocalDataSourceHomeRepo {}
+
+class MockRemoteDataSourceHomeRepoImpl extends Mock
+    implements RemoteDataSourceHomeRepo {}
 
 /* DATABSE MOCK */
 class MockDatabase extends Mock implements Database {}
@@ -43,7 +51,7 @@ void main() {
         ),
       ).called(1);
 
-      expect(result.isLeft(), true);
+      expect(result.isLeft(), isTrue);
       expect(
         result.fold((l) => l.message, (_) => null),
         LocalDataBaseFailure("Cache expired or empty").message,
@@ -73,6 +81,64 @@ void main() {
       expect(result.fold((_) => null, (s) => s.data), []);
     },
   );
+
+  test(
+    'Given a DataSourceHomeRepoImpl, when fetchCategoryData is called, then it should return a empty list<HomeCategoryModel> from remote',
+    () async {
+      final mockLocalDataSourceHomeRepoImpl = MockLocalDataSourceHomeRepoImpl();
+
+      final mockRemoteDataSourceHomeRepoImpl =
+          MockRemoteDataSourceHomeRepoImpl();
+
+      final dataSourceHomeRepoImpl = DataSourceHomeRepoImpl(
+        localDataRepo: mockLocalDataSourceHomeRepoImpl,
+        remoteDataRepo: mockRemoteDataSourceHomeRepoImpl,
+      );
+      when(
+        () => mockLocalDataSourceHomeRepoImpl.fetchCategoryData(),
+      ).thenAnswer(
+        (_) async => Left(LocalDataBaseFailure("Cache expired or empty")),
+      );
+      when(
+        () => mockRemoteDataSourceHomeRepoImpl.fetchCategoryData(),
+      ).thenAnswer((_) async => Right(SuccessHandlerImpl([])));
+      when(
+        () => mockLocalDataSourceHomeRepoImpl.addCategoryData([]),
+      ).thenAnswer((_) async {});
+      final result = await dataSourceHomeRepoImpl.fetchCategoryData();
+      verify(
+        () => mockLocalDataSourceHomeRepoImpl.fetchCategoryData(),
+      ).called(1);
+      verify(
+        () => mockRemoteDataSourceHomeRepoImpl.fetchCategoryData(),
+      ).called(1);
+      verify(
+        () => mockLocalDataSourceHomeRepoImpl.addCategoryData([]),
+      ).called(1);
+      expect(result.isRight(), isTrue);
+      expect(result.fold((_) => null, (s) => s.data), []);
+    },
+  );
+
+  test(
+    'Given a HomeRepoImpl class, when fetchCategoryData is called, then it should return a empty list of HomeCategoryEntities',
+    () async {
+      final mockDataSourceHomeRepoImpl = MockDataSourceHomeRepoImpl();
+      final homeRepoImpl = HomeRepoImpl(
+        dataSourceRepo: mockDataSourceHomeRepoImpl,
+      );
+
+      when(
+        () => mockDataSourceHomeRepoImpl.fetchCategoryData(),
+      ).thenAnswer((_) async => Right(SuccessHandlerImpl([])));
+
+      final result = await homeRepoImpl.fetchCategoryData();
+
+      verify(() => mockDataSourceHomeRepoImpl.fetchCategoryData()).called(1);
+      expect(result.isRight(), isTrue);
+      expect(result.fold((_) => null, (s) => s.data), []);
+    },
+  );
   test(
     'Given a HomeCategoryUseCase , when fetchHomeCategories called, then it should return a empty list of home categories',
     () async {
@@ -87,8 +153,8 @@ void main() {
       final result = await useCase.fetchHomeCategories();
       verify(() => mockHomeRepo.fetchCategoryData()).called(1);
 
-      expect(result.isRight(), true);
-      expect(result.getOrElse(() => SuccessHandlerImpl([])).data, []);
+      expect(result.isRight(), isTrue);
+      expect(result.fold((_) => null, (s) => s.data), []);
     },
   );
 }
