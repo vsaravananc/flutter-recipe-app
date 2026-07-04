@@ -54,9 +54,6 @@ class _SplashScreenState extends State<SplashScreen> {
   Future<void> _preCacheImage() async {
     await Future.wait([
       precacheImage(const AssetImage(AppImages.welcome), context),
-      precacheImage(const AssetImage(AppImages.welcome1), context),
-      precacheImage(const AssetImage(AppImages.welcome2), context),
-      precacheImage(const AssetImage(AppImages.welcome3), context),
     ]);
   }
 
