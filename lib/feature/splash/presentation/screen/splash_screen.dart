@@ -39,22 +39,29 @@ class _SplashScreenState extends State<SplashScreen> {
     ),
   );
 
-  void initalizeMove() {
+  void initalizeMove() async {
     if (sl<SharedPreferences>().getBool("IsLogedIn") ?? false) {
       context.pushReplacement(AppRouterConfig.dashBoardRoute);
     } else {
-      _preCacheImage().then((value) {
-        if (mounted) {
+      await _preCacheImage();
+      await Future.delayed(const Duration(seconds: 1));
+      if (mounted) {
           context.go(AppRouterConfig.getStarted);
-        }
-      });
+      }
     }
   }
 
   Future<void> _preCacheImage() async {
-    await Future.wait([
-      precacheImage(const AssetImage(AppImages.welcome), context),
-    ]);
+    final dp = MediaQuery.of(context).devicePixelRatio;
+    final size = MediaQuery.sizeOf(context);
+    await precacheImage(
+      ResizeImage(
+        const AssetImage(AppImages.welcome),
+        height: (size.height * 0.75 * dp).toInt(),
+        width: (size.width * dp).toInt(),
+      ),
+      context,
+    );
   }
 
 

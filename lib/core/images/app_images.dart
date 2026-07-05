@@ -18,5 +18,6 @@ class AppImages {
   static const String avatar5 = 'assets/images/avatar5.png';
   static const String categoryPlaceHolder = 'assets/images/category_holder.jpg';
   static const String recipePlaceHolder = 'assets/images/recipe_placeholder.png';
+  static const String mock ='assets/images/mock1.jpg';
 
 }

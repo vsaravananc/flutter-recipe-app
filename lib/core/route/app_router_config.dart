@@ -17,7 +17,7 @@ class AppRouterConfig {
   ///  routes of the app
   static const String initialRoute = '/';
   static const String getStarted = '${initialRoute}getStarted';
-  static const String welcomeRoute = '$initialRoute/welcome';
+  static const String welcomeRoute = '$getStarted/welcome';
   static const String authRoute = '$welcomeRoute/auth';
   static const String areaRoute = '$authRoute/userprefrence/area';
   static const String categoryRoute = '$areaRoute/userprefrence/category';
