@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:recipe/core/images/app_images.dart';
-import 'package:recipe/core/services/dimensions.dart';
 import 'package:recipe/core/util/app_color.dart';
-import 'package:recipe/feature/welcome/presentation/widgets/welcome_image_widget.dart';
-import 'package:recipe/feature/welcome/presentation/widgets/welcome_info_widget.dart';
 
 class WelcomeOne extends StatelessWidget {
   const WelcomeOne({super.key});
