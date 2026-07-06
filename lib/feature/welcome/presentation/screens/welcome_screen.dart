@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:recipe/core/images/app_images.dart';
 import 'package:recipe/core/services/dimensions.dart';
 import 'package:recipe/core/util/app_color.dart';
 import 'package:recipe/core/util/app_fonts.dart';
-import 'package:recipe/feature/welcome/presentation/screens/sub_screens/welcome_one.dart';
+import 'package:recipe/feature/welcome/presentation/widgets/welcome_bottom_widget.dart';
+import 'package:recipe/feature/welcome/presentation/widgets/welcome_mobile_holder_widget.dart';
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
@@ -156,93 +156,30 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           const SizedBox(height: double.infinity, width: double.infinity),
           Align(
             alignment: AlignmentGeometry.topCenter,
-            child: Stack(
-              alignment: AlignmentGeometry.topCenter,
-              children: [
-                ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 320),
-                  child: Image.asset(AppImages.mock),
-                ),
-                ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 286),
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 13.0),
-                    child: ClipRRect(
-                      borderRadius: const BorderRadiusGeometry.vertical(
-                        top: Radius.elliptical(46, 38),
-                      ),
-                      child: PageView.builder(
-                        controller: pageController2,
-                        itemCount: 3,
-                        pageSnapping: true,
-                        onPageChanged: (index) {
+            child: WelcomeMobileHolderWidget(
+              count: _widgets.length,
+              pageController: pageController2,
+              onChange: (index) {
                           pageController.animateToPage(
                             index,
                             duration: const Duration(milliseconds: 300),
                             curve: Curves.linear,
                           );
-                        },
-                        itemBuilder: (context, index) {
-                          return Container(
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                              color: Colors.orange[(index + 1) * 100],
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  ),
-                ),
-                Positioned(
-                  top: 17,
-                  child: Container(
-                    width: 74,
-                    height: 23,
-                    decoration: BoxDecoration(
-                      color: Colors.black,
-                      borderRadius: BorderRadius.circular(70),
-                    ),
-                  ),
-                ),
-              ],
+              },
             ),
           ),
           Align(
             alignment: AlignmentGeometry.bottomCenter,
-            child: ClipPath(
-              clipper: InvertedTopClipper(),
-              child: Container(
-                height: MediaQuery.of(context).size.height * 0.4,
-                width: double.infinity,
-                decoration: const BoxDecoration(
-                  color: AppColor.scaffoldBackground,
-                ),
-                child: Stack(
-                  alignment: AlignmentGeometry.bottomCenter,
-                  children: [
-                    PageView.builder(
-                      controller: pageController,
-                      itemCount: _widgets.length,
-                      pageSnapping: true,
-                      onPageChanged: (index) {
+            child: WelcomeBottomWidget(
+              widgets: _widgets,
+              onChange: (index) {
                         pageController2.animateToPage(
                           index,
                           duration: const Duration(milliseconds: 300),
                           curve: Curves.linear,
                         );
-                      },
-                      itemBuilder: (context, index) {
-                        return _widgets[index];
-                      },
-                    ),
-                    const Positioned(
-                      bottom: 30,
-                      child: SafeArea(child: Text("dots")),
-                    ),
-                  ],
-                ),
-              ),
+              },
+              pageController: pageController,
             ),
           ),
         ],
@@ -275,10 +212,10 @@ class WelcomeMessageWidget extends StatelessWidget {
               fontFamily: AppFonts.inter,
               fontSize: 14,
               color: AppColor.secondaryTextColor,
-              height: 1.2,
+              height: 1.3,
             ),
           ),
-          const Spacer(flex: 3),
+          const Spacer(),
         ],
       ),
     );
