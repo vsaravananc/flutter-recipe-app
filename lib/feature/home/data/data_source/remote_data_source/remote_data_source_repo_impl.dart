@@ -24,8 +24,7 @@ class RemoteDataSourceHomeRepoImpl implements RemoteDataSourceHomeRepo {
         response.data as Map<String, dynamic>,
       );
       return Right(SuccessHandlerImpl(convertedValue));
-    } on DioException catch (e) {
-      debugPrint("DioException ${e.toString()}");
+    } on DioException catch (_) {
       return Left(
         ServerFailure(
           "Couldn't reach the server. Please check your connection or try again later",
@@ -76,7 +75,6 @@ class RemoteDataSourceHomeRepoImpl implements RemoteDataSourceHomeRepo {
         ),
       );
     } catch (e) {
-      debugPrint("catch ${e.toString()}");
       return Left(
         CacheFailure(
           "We’re unable to reach the server right now. Please check your connection or try again later.",

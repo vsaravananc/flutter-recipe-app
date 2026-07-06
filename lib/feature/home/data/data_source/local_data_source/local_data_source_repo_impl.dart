@@ -30,11 +30,6 @@ class LocalDataSourceHomeRepoImpl implements LocalDataSourceHomeRepo {
           _mapToModelList,
           result,
         );
-        for (HomeCategoryModel i in convertedValue) {
-          debugPrint(
-            "\u001B[32m HomeCategory local model : ${i.id} : ${i.name} : ${i.imageUrl} \u001B[0m",
-          );
-        }
         return Right(SuccessHandlerImpl(convertedValue));
       }
     } on TypeError catch (_) {

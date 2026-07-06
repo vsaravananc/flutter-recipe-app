@@ -21,7 +21,6 @@ class DataSourceHomeRepoImpl implements DataSourceRepo {
   fetchCategoryData() async {
     final localDataResult = await localDataRepo.fetchCategoryData();
     return localDataResult.fold((failer) async {
-      debugPrint("Fetching from remote ${failer.message}");
       final remoteDataResult = await remoteDataRepo.fetchCategoryData();
       return remoteDataResult.fold((failer) => Left(failer), (success) async {
         await localDataRepo.addCategoryData(success.data);
