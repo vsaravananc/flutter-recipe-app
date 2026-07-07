@@ -1,7 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:recipe/core/api/endpoints/api_endpoints.dart';
 import 'package:recipe/feature/home/data/data_source/remote_data_source/remote_data_source_repo_impl.dart';
+import 'package:recipe/feature/home/data/model/home_category_model.dart';
 
 class MockDio extends Mock implements Dio {}
 
@@ -16,12 +18,30 @@ void main() {
 
   group('fetchCategoryData()', () {
     group('failer', () {
+      test('not equal to 200', () async {
+        when(() => dio.get(ApiEndpoints.foodType)).thenAnswer(
+          (_) async => Response(
+            statusCode: 422,
+            requestOptions: RequestOptions(),
+            data: {},
+          ),
+        );
+
+        final result = await remoteDataSourceHomeRepoImpl.fetchCategoryData();
+
+        verify(() => dio.get(ApiEndpoints.foodType)).called(1);
+        expect(result.isLeft(), isTrue);
+        expect(
+          result.fold((f) => f.message, (_) => null),
+          "Oops! Something went wrong.",
+        );
+      });
       test('Dio exception', () async {
         when(
-          () => dio.get(any()),
+          () => dio.get(ApiEndpoints.foodType),
         ).thenThrow(DioException(requestOptions: RequestOptions()));
         final result = await remoteDataSourceHomeRepoImpl.fetchCategoryData();
-        verify(() => dio.get(any())).called(1);
+        verify(() => dio.get(ApiEndpoints.foodType)).called(1);
         expect(result.isLeft(), isTrue);
         expect(
           result.fold((f) => f.message, (_) => null),
@@ -29,7 +49,7 @@ void main() {
         );
       });
       test('Type Error', () async {
-        when(() => dio.get(any())).thenAnswer(
+        when(() => dio.get(ApiEndpoints.foodType)).thenAnswer(
           (_) async => Response(
             statusCode: 200,
             requestOptions: RequestOptions(),
@@ -37,17 +57,60 @@ void main() {
           ),
         );
         final result = await remoteDataSourceHomeRepoImpl.fetchCategoryData();
-        verify(() => dio.get(any())).called(1);
+        verify(() => dio.get(ApiEndpoints.foodType)).called(1);
         expect(result.isLeft(), isTrue);
         expect(
           result.fold((f) => f.message, (_) => null),
           "Unexpected data from server received. Please check your connection or try again later.",
         );
       });
-      test('catch', () async {});
+      test('catch', () async {
+        when(
+          () => dio.get(ApiEndpoints.foodType),
+        ).thenThrow(const FormatException('format expection'));
+
+        final result = await remoteDataSourceHomeRepoImpl.fetchCategoryData();
+
+        verify(() => dio.get(ApiEndpoints.foodType)).called(1);
+        expect(result.isLeft(), isTrue);
+        expect(
+          result.fold((f) => f.message, (_) => null),
+          "We’re unable to reach the server right now. Please check your connection or try again later.",
+        );
+      });
     });
     group('succes', () {
-      test('return list of HomeCategoryModel', () async {});
+      test('return list of HomeCategoryModel', () async {
+        when(() => dio.get(ApiEndpoints.foodType)).thenAnswer(
+          (_) async => Response(
+            statusCode: 200,
+            requestOptions: RequestOptions(),
+            data: {
+              'categories': [
+                {
+                  'idCategory': 'dummy',
+                  'strCategory': 'dummy',
+                  'strCategoryThumb': 'dummy',
+                  'strCategoryDescription': 'dummy',
+                },
+              ],
+            },
+          ),
+        );
+
+        final result = await remoteDataSourceHomeRepoImpl.fetchCategoryData();
+
+        verify(() => dio.get(ApiEndpoints.foodType)).called(1);
+        expect(result.isRight(), isTrue);
+        expect(result.fold((_) => null, (r) => r.data), const [
+          HomeCategoryModel(
+            id: 'dummy',
+            name: 'dummy',
+            imageUrl: 'dummy',
+            description: 'dummy',
+          ),
+        ]);
+      });
     });
   });
 }
