@@ -38,7 +38,7 @@ class RemoteDataSourceHomeRepoImpl implements RemoteDataSourceHomeRepo {
       );
     } catch (_) {
       return Left(
-        CacheFailure(
+        UnKnownFailure(
           "We’re unable to reach the server right now. Please check your connection or try again later.",
         ),
       );
