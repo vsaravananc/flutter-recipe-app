@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:recipe/core/services/dimensions.dart';
 import 'package:recipe/core/util/app_color.dart';
 import 'package:recipe/core/util/app_fonts.dart';
@@ -167,7 +168,21 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                           );
               },
             ),
-          ),
+              )
+              .animate(delay: 200.ms)
+              .fadeIn(duration: 450.ms, curve: Curves.easeOut)
+              .moveY(
+                begin: 50,
+                end: 0,
+                duration: 450.ms,
+                curve: Curves.easeOutQuart,
+              )
+              .scale(
+                begin: const Offset(0.98, 0.98),
+                end: const Offset(1, 1),
+                duration: 450.ms,
+                curve: Curves.easeOutQuart,
+              ),
           Align(
             alignment: AlignmentGeometry.bottomCenter,
             child: WelcomeBottomWidget(

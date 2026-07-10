@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:recipe/core/util/app_color.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -30,7 +31,26 @@ class WelcomeBottomWidget extends StatelessWidget {
               pageSnapping: true,
               onPageChanged: onChange,
               itemBuilder: (context, index) {
-                return widgets[index];
+                return widgets[index]
+                    .animate()
+                    .blur(
+                      begin: const Offset(8, 8),
+                      end: Offset.zero,
+                      duration: 400.ms,
+                      curve: Curves.easeOut,
+                    )
+                    .fadeIn(duration: 350.ms)
+                    .moveY(
+                      begin: 25,
+                      end: 0,
+                      duration: 450.ms,
+                      curve: Curves.easeOutCubic,
+                    )
+                    .scale(
+                      begin: const Offset(0.98, 0.98),
+                      end: const Offset(1, 1),
+                      duration: 450.ms,
+                    );
               },
             ),
             Positioned(
