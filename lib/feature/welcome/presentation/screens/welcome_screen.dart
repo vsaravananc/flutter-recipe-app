@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:recipe/core/services/dimensions.dart';
@@ -16,9 +18,10 @@ class WelcomeScreen extends StatefulWidget {
 class _WelcomeScreenState extends State<WelcomeScreen> {
   PageController pageController = PageController(initialPage: 0);
   PageController pageController2 = PageController(initialPage: 0);
+  late Timer timer;
 
   final List<Widget> _widgets = [
-    WelcomeMessageWidget(
+    _WelcomeMessageWidget(
       widget: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 180),
         child: RichText(
@@ -46,7 +49,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
         ),
       ),
     ),
-    WelcomeMessageWidget(
+    _WelcomeMessageWidget(
       widget: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 180),
         child: RichText(
@@ -90,7 +93,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
         ),
       ),
     ),
-    WelcomeMessageWidget(
+    _WelcomeMessageWidget(
       widget: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 220),
         child: RichText(
@@ -120,11 +123,35 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     ),
   ];
 
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollHint();
+  }
+
+  void _scrollHint() async {
+    double handOffset = 20;
+    await Future.delayed(800.ms);
+    timer = Timer.periodic(1500.ms, (_) {
+      if (pageController.offset < 100) {
+        pageController2.animateTo(
+          handOffset,
+          duration: 600.ms,
+          curve: Curves.fastEaseInToSlowEaseOut,
+        );
+        handOffset = (handOffset + 10).clamp(10, 90);
+      } else {
+        handOffset = 0;
+      }
+    });
+  }
   
   @override
   void dispose() {
     pageController.dispose();
     pageController2.dispose();
+    timer.cancel();
     super.dispose();
   }
 
@@ -197,9 +224,9 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   }
 }
 
-class WelcomeMessageWidget extends StatelessWidget {
+class _WelcomeMessageWidget extends StatelessWidget {
   final Widget widget;
-  const WelcomeMessageWidget({super.key, required this.widget});
+  const _WelcomeMessageWidget({required this.widget});
 
   @override
   Widget build(BuildContext context) {
