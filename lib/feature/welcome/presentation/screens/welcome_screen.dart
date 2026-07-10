@@ -187,13 +187,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             alignment: AlignmentGeometry.bottomCenter,
             child: WelcomeBottomWidget(
               widgets: _widgets,
-              onChange: (index) {
-                        pageController2.animateToPage(
-                          index,
-                          duration: const Duration(milliseconds: 300),
-                          curve: Curves.linear,
-                        );
-              },
+              onChange: (_) {},
               pageController: pageController,
             ),
           ),
@@ -230,7 +224,7 @@ class WelcomeMessageWidget extends StatelessWidget {
               height: 1.3,
             ),
           ),
-          const Spacer(),
+          const Spacer(flex: 2,),
         ],
       ),
     );
