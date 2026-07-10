@@ -22,7 +22,7 @@ class WelcomeMobileHolderWidget extends StatelessWidget {
           child: Image.asset(AppImages.mock),
         ),
         ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 286),
+          constraints: const BoxConstraints(maxWidth: 286,maxHeight: 640),
           child: Padding(
             padding: const EdgeInsets.only(top: 13.0),
             child: ClipRRect(

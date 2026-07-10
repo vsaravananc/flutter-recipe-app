@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:recipe/core/services/dimensions.dart';
 import 'package:recipe/core/util/app_color.dart';
 import 'package:recipe/core/util/app_fonts.dart';
@@ -15,9 +18,10 @@ class WelcomeScreen extends StatefulWidget {
 class _WelcomeScreenState extends State<WelcomeScreen> {
   PageController pageController = PageController(initialPage: 0);
   PageController pageController2 = PageController(initialPage: 0);
+  late Timer timer;
 
   final List<Widget> _widgets = [
-    WelcomeMessageWidget(
+    _WelcomeMessageWidget(
       widget: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 180),
         child: RichText(
@@ -45,7 +49,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
         ),
       ),
     ),
-    WelcomeMessageWidget(
+    _WelcomeMessageWidget(
       widget: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 180),
         child: RichText(
@@ -89,7 +93,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
         ),
       ),
     ),
-    WelcomeMessageWidget(
+    _WelcomeMessageWidget(
       widget: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 220),
         child: RichText(
@@ -119,11 +123,35 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     ),
   ];
 
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollHint();
+  }
+
+  void _scrollHint() async {
+    double handOffset = 20;
+    await Future.delayed(800.ms);
+    timer = Timer.periodic(1500.ms, (_) {
+      if (pageController.offset < 100) {
+        pageController2.animateTo(
+          handOffset,
+          duration: 600.ms,
+          curve: Curves.fastEaseInToSlowEaseOut,
+        );
+        handOffset = (handOffset + 10).clamp(10, 90);
+      } else {
+        handOffset = 0;
+      }
+    });
+  }
   
   @override
   void dispose() {
     pageController.dispose();
     pageController2.dispose();
+    timer.cancel();
     super.dispose();
   }
 
@@ -167,18 +195,26 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                           );
               },
             ),
-          ),
+              )
+              .animate(delay: 200.ms)
+              .fadeIn(duration: 450.ms, curve: Curves.easeOut)
+              .moveY(
+                begin: 50,
+                end: 0,
+                duration: 450.ms,
+                curve: Curves.easeOutQuart,
+              )
+              .scale(
+                begin: const Offset(0.98, 0.98),
+                end: const Offset(1, 1),
+                duration: 450.ms,
+                curve: Curves.easeOutQuart,
+              ),
           Align(
             alignment: AlignmentGeometry.bottomCenter,
             child: WelcomeBottomWidget(
               widgets: _widgets,
-              onChange: (index) {
-                        pageController2.animateToPage(
-                          index,
-                          duration: const Duration(milliseconds: 300),
-                          curve: Curves.linear,
-                        );
-              },
+              onChange: (_) {},
               pageController: pageController,
             ),
           ),
@@ -188,9 +224,9 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   }
 }
 
-class WelcomeMessageWidget extends StatelessWidget {
+class _WelcomeMessageWidget extends StatelessWidget {
   final Widget widget;
-  const WelcomeMessageWidget({super.key, required this.widget});
+  const _WelcomeMessageWidget({required this.widget});
 
   @override
   Widget build(BuildContext context) {
@@ -215,7 +251,7 @@ class WelcomeMessageWidget extends StatelessWidget {
               height: 1.3,
             ),
           ),
-          const Spacer(),
+          const Spacer(flex: 2,),
         ],
       ),
     );

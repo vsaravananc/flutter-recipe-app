@@ -1,3 +1,4 @@
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:recipe/core/route/app_router_config.dart';
@@ -7,63 +8,28 @@ import 'package:recipe/core/util/app_color.dart';
 import 'package:recipe/core/util/app_fonts.dart';
 import 'package:recipe/core/widgets/custom_button_widget.dart';
 
-class WelcomeGreetingAnimationWidget extends StatefulWidget {
+class WelcomeGreetingAnimationWidget extends StatelessWidget {
   const WelcomeGreetingAnimationWidget({super.key});
 
   @override
-  State<WelcomeGreetingAnimationWidget> createState() =>
-      _WelcomeGreetingAnimationWidgetState();
-}
-
-class _WelcomeGreetingAnimationWidgetState
-    extends State<WelcomeGreetingAnimationWidget>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _animationController;
-
-  @override
-  void initState() {
-    _animationController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 400),
-    )..forward();
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _animationController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: _animationController,
-      builder: (context, _) {
-        return FadeTransition(
-          opacity: _animationController,
-          child: SlideTransition(
-            position: Tween<Offset>(
-              begin: const Offset(0, 0.2),
-              end: Offset.zero,
-            ).animate(_animationController),
-            child: Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    Colors.transparent,
-                    AppColor.scaffoldBackground.withValues(alpha: 0.1),
-                    AppColor.scaffoldBackground.withValues(alpha: 0.4),
-                    AppColor.scaffoldBackground.withValues(alpha: 0.8),
-                    AppColor.scaffoldBackground,
-                  ],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                ),
-              ),
-              child: Column(
-                children: [
-                  const Spacer(flex: 3),
+    return Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Colors.transparent,
+                AppColor.scaffoldBackground.withValues(alpha: 0.1),
+                AppColor.scaffoldBackground.withValues(alpha: 0.4),
+                AppColor.scaffoldBackground.withValues(alpha: 0.8),
+                AppColor.scaffoldBackground,
+              ],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            ),
+          ),
+          child: Column(
+            children: [
+              const Spacer(flex: 3),
                   RichText(
                     textAlign: TextAlign.center,
                     maxLines: 2,
@@ -136,12 +102,17 @@ class _WelcomeGreetingAnimationWidgetState
                     ),
                   ),
                   const Spacer(),
-                ],
-              ),
-            ),
+            ],
           ),
-        );
-      },
+)
+        .animate(delay: 200.ms)
+        .fadeIn(duration: 300.ms, curve: Curves.easeOut)
+        .moveY(begin: 30, end: 0, duration: 450.ms, curve: Curves.easeOutCubic)
+        .scale(
+          begin: const Offset(0.98, 0.98),
+          end: const Offset(1, 1),
+          duration: 450.ms,
+          curve: Curves.easeOutQuart,
     );
   }
 }

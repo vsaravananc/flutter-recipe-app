@@ -34,3 +34,7 @@ class LocalDataBaseFailure extends FailerHandler {
 class UnexpectedFailure extends FailerHandler {
   UnexpectedFailure(super.message);
 }
+
+class UnKnownFailure extends FailerHandler{
+  UnKnownFailure(super.message);
+}
