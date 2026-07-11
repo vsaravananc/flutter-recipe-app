@@ -52,9 +52,6 @@ class DependencyInjection {
           "275643301370-r6hmoov7b6qit1rm445ei50tlud0t7jj.apps.googleusercontent.com",
     );
 
-    /// ~~~~ onboarding cubit ~~ implementation
-    sl.registerFactory<PagecurrentindexCubit>(() => PagecurrentindexCubit());
-
     /// ~~~~~~~~~ dio ~~~~~~~~~~~
     sl.registerLazySingleton<DioClient>(() => DioClient());
 
@@ -294,7 +291,6 @@ class DependencyInjection {
   static Widget intialize(Widget child) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<PagecurrentindexCubit>(create: (context) => sl()),
         BlocProvider<AuthUIBloc>(create: (context) => sl()),
         BlocProvider<AuthBloc>(create: (context) => sl()),
         BlocProvider<UserprefrencesBloc>(create: (context) => sl()),
