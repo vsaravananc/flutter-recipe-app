@@ -57,7 +57,6 @@ export 'package:recipe/feature/user_sugestion/domain/use_cases/select_category_u
 export 'package:recipe/feature/user_sugestion/presentation/bloc/userprefrences_bloc.dart';
 export 'package:recipe/feature/user_sugestion/presentation/selected_user_suggestion/area/selectedarea_cubit.dart';
 export 'package:recipe/feature/user_sugestion/presentation/selected_user_suggestion/category/selectedcategory_cubit.dart';
-export 'package:recipe/feature/welcome/presentation/cubit/pagecurrentindex_cubit.dart';
 export 'package:get_it/get_it.dart';
 export 'package:recipe/feature/search/data/repo_impl/search_data_repoimpl.dart';
 export 'package:recipe/feature/search/domain/repo/search_domain_repo.dart';

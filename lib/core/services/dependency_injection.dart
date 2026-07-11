@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:recipe/feature/auth/data/data_sources/remote_data_source/remote_data_impl.dart';
 import 'package:recipe/feature/auth/data/data_sources/remote_data_source/remote_data_repo.dart';
 import 'package:recipe/feature/details/domain/repo/detail_repo.dart';
@@ -19,6 +20,7 @@ final sl = GetIt.instance;
 class DependencyInjection {
   static Future<void> init() async {
     /// ~~~~~ Firebase ~~~~~
+    await Firebase.initializeApp();
     sl.registerLazySingleton<FirebaseAuth>(() => FirebaseAuth.instance);
     sl.registerLazySingleton<FirebaseFirestore>(
       () => FirebaseFirestore.instance,
@@ -51,9 +53,6 @@ class DependencyInjection {
       clientId:
           "275643301370-r6hmoov7b6qit1rm445ei50tlud0t7jj.apps.googleusercontent.com",
     );
-
-    /// ~~~~ onboarding cubit ~~ implementation
-    sl.registerFactory<PagecurrentindexCubit>(() => PagecurrentindexCubit());
 
     /// ~~~~~~~~~ dio ~~~~~~~~~~~
     sl.registerLazySingleton<DioClient>(() => DioClient());
@@ -294,7 +293,6 @@ class DependencyInjection {
   static Widget intialize(Widget child) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<PagecurrentindexCubit>(create: (context) => sl()),
         BlocProvider<AuthUIBloc>(create: (context) => sl()),
         BlocProvider<AuthBloc>(create: (context) => sl()),
         BlocProvider<UserprefrencesBloc>(create: (context) => sl()),

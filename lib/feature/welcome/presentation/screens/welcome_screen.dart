@@ -1,7 +1,8 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:go_router/go_router.dart';
+import 'package:recipe/core/route/app_router_config.dart';
 import 'package:recipe/core/services/dimensions.dart';
 import 'package:recipe/core/util/app_color.dart';
 import 'package:recipe/core/util/app_fonts.dart';
@@ -18,6 +19,7 @@ class WelcomeScreen extends StatefulWidget {
 class _WelcomeScreenState extends State<WelcomeScreen> {
   PageController pageController = PageController(initialPage: 0);
   PageController pageController2 = PageController(initialPage: 0);
+  ValueNotifier<bool> showNext = ValueNotifier(false);
   late Timer timer;
 
   final List<Widget> _widgets = [
@@ -151,6 +153,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   void dispose() {
     pageController.dispose();
     pageController2.dispose();
+    showNext.dispose();
     timer.cancel();
     super.dispose();
   }
@@ -165,15 +168,39 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
         actions: [
           TextButton(
             style: const ButtonStyle(splashFactory: NoSplash.splashFactory),
-            onPressed: () {},
-            child: const Text(
-              'Skip',
-              style: TextStyle(
-                color: AppColor.primary,
-                fontWeight: FontWeight.w500,
-                fontSize: 15,
-              ),
-            ),
+            onPressed: () {
+              if(showNext.value){
+                context.go(AppRouterConfig.authRoute);
+              }
+            },
+            child: AnimatedBuilder(
+              animation: showNext,
+              builder: (context, _) {
+                return AnimatedSwitcher(
+                  duration: 250.ms,
+                  transitionBuilder: (child, animation) {
+                    return FadeTransition(
+                      opacity: animation,
+                      child: child,
+                    ).animate().moveY(
+                      begin: 8,
+                      end: 0,
+                      duration: 250.ms,
+                      curve: Curves.easeOutCubic,
+                    );
+                  },
+                  child: Text(
+                    showNext.value ? 'Next' : 'Skip',
+                    key: ValueKey(showNext.value),
+                    style: const TextStyle(
+                      color: AppColor.primary,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 15,
+                    ),
+                  ),
+                );
+              },
+            )
           ),
         ],
       ),
@@ -193,6 +220,11 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                             duration: const Duration(milliseconds: 300),
                             curve: Curves.linear,
                           );
+                    if (index == 2) {
+                      showNext.value = true;
+                    } else if (index < 2 && showNext.value) {
+                      showNext.value = false;
+                    }
               },
             ),
               )
