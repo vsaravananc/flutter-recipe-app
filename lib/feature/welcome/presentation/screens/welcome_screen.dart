@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:go_router/go_router.dart';
+import 'package:recipe/core/route/app_router_config.dart';
 import 'package:recipe/core/services/dimensions.dart';
 import 'package:recipe/core/util/app_color.dart';
 import 'package:recipe/core/util/app_fonts.dart';
@@ -166,7 +168,11 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
         actions: [
           TextButton(
             style: const ButtonStyle(splashFactory: NoSplash.splashFactory),
-            onPressed: () {},
+            onPressed: () {
+              if(showNext.value){
+                context.go(AppRouterConfig.authRoute);
+              }
+            },
             child: AnimatedBuilder(
               animation: showNext,
               builder: (context, _) {

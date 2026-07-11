@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:recipe/feature/auth/data/data_sources/remote_data_source/remote_data_impl.dart';
 import 'package:recipe/feature/auth/data/data_sources/remote_data_source/remote_data_repo.dart';
 import 'package:recipe/feature/details/domain/repo/detail_repo.dart';
@@ -19,6 +20,7 @@ final sl = GetIt.instance;
 class DependencyInjection {
   static Future<void> init() async {
     /// ~~~~~ Firebase ~~~~~
+    await Firebase.initializeApp();
     sl.registerLazySingleton<FirebaseAuth>(() => FirebaseAuth.instance);
     sl.registerLazySingleton<FirebaseFirestore>(
       () => FirebaseFirestore.instance,
