@@ -15,6 +15,18 @@ A modern, high-performance, and feature-rich Recipe Book application built using
 *   **Detailed Recipe Views**: Beautiful ingredient list displays, step-by-step instructions, in-app YouTube player tutorial integration (`youtube_player_flutter`), and custom screen transitions.
 *   **Premium Theming**: Support for customized light and dark modes powered by **FlexColorScheme** (Mango theme), utilizing rich visual aesthetics, custom icons (`HugeIcons`), and micro-animations (`Flutter Animate`).
 
+## Features
+
+- Recipe Categories
+- Search Recipes
+- Favorite Recipes
+- Offline Storage
+- Responsive UI
+- Clean Architecture
+- Flutter BLoC
+- SQLite Database
+- Dark Mode
+
 ---
 
 ## 🛠 Tech Stack & Key Dependencies
