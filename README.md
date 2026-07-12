@@ -1,4 +1,4 @@
-# Recipe Book Flutter Application
+# Flutter Recipe Book Application
 
 A modern, high-performance, and feature-rich Recipe Book application built using **Flutter**. This application leverages **Clean Architecture** principles to separate concerns, making the codebase highly maintainable, testable, and scalable. It integrates with **TheMealDB API** for recipe data, **Firebase** for cloud services, and **Sqflite** for persistent local caching.
 
