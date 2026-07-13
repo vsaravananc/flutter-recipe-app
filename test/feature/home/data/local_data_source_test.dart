@@ -136,9 +136,13 @@ void main() {
           ),
         ]);
 
-        verify(() => database.batch()).called(1);
-        verify(() => batch.delete('foodtype')).called(1);
-        verify(() => batch.commit(noResult: true)).called(1);
+        verifyInOrder([
+          () => database.batch(),
+          () => batch.delete('foodtype'),
+          () => batch.insert('foodtype', any(), conflictAlgorithm: .replace),
+          () => batch.commit(noResult: true),
+        ]);
+       
       });
     });
   });
