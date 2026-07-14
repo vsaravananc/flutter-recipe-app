@@ -1,0 +1,23 @@
+{
+  "@@locale": "en",
+
+  "appName": "ALL-IN-ONE",
+
+  "login": "Login",
+
+  "logout": "Logout",
+
+  "home": "Home",
+
+  "settings": "Settings",
+
+  "welcome": "Welcome {name}",
+
+  "@welcome": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  }
+}

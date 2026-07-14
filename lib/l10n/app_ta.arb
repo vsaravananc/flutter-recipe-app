@@ -1,0 +1,15 @@
+{
+  "@@locale": "ta",
+
+  "appName": "ALL-IN-ONE",
+
+  "login": "உள்நுழை",
+
+  "logout": "வெளியேறு",
+
+  "home": "முகப்பு",
+
+  "settings": "அமைப்புகள்",
+
+  "welcome": "வரவேற்கிறோம் {name}"
+}
