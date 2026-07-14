@@ -2,6 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:recipe/feature/home/data/data_source/local_data_source/local_data_source_repo_impl.dart';
 import 'package:recipe/feature/home/data/model/home_category_model.dart';
+import 'package:recipe/feature/home/data/model/home_recipe_model.dart';
 import 'package:sqflite/sqlite_api.dart';
 
 class MockDatabase extends Mock implements Database {}
@@ -145,5 +146,38 @@ void main() {
        
       });
     });
+
+    group('when addRecipeData called', () {
+      test('insert into db', () async {
+        when(
+          () => database.query(
+            'foodtype',
+            where: 'strCategory = ?',
+            whereArgs: any(named: 'whereArgs'),
+          ),
+        ).thenAnswer(
+          (_) async => [
+            {'id': 1},
+          ],
+        );
+        when(() => database.batch()).thenReturn(batch);
+        when(() => batch.commit(noResult: true)).thenAnswer((_) async => []);
+        await localDatabSourceHomeRepoImpl.addRecipeData(const [
+          HomeRecipeModel(id: '1', imageUrl: 'dummy', name: 'dummy'),
+        ], '');
+        verifyInOrder([
+          () => database.query(
+            'foodtype',
+            where: 'strCategory = ?',
+            whereArgs: any(named: 'whereArgs'),
+          ),
+          () => database.batch(),
+          () => batch.insert('recipe', any(), conflictAlgorithm: .replace),
+          () => batch.commit(noResult: true),
+        ]);
+      });
+    });
+
+    group('when fetchRecipeData called', () {});
   });
 }
