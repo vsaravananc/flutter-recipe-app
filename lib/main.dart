@@ -6,6 +6,7 @@ import 'package:recipe/core/route/app_router_config.dart';
 import 'package:recipe/core/services/dependency_injection.dart';
 import 'package:recipe/core/theme/theme_extenstion/gradint_theme_extenstion.dart';
 import 'package:recipe/core/util/app_fonts.dart';
+import 'package:recipe/l10n/app_localizations.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,6 +21,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
+      locale: const Locale('ta'),
       builder: (context, child) {
         return MediaQuery.withNoTextScaling(child: child!);
       },
@@ -75,8 +79,7 @@ class MyApp extends StatelessWidget {
       ),
       themeMode: ThemeMode.light,
       debugShowCheckedModeBanner: false,
-      title: "Recipe-book",
-      
+      title: AppLocalizations.of(context)?.appName,
       routerConfig: AppRouterConfig.router,
     );
   }
