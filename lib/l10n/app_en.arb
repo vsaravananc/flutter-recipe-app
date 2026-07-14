@@ -3,6 +3,8 @@
 
   "appName": "ALL-IN-ONE",
 
+  "version":"Version",
+
   "login": "Login",
 
   "logout": "Logout",

@@ -101,6 +101,12 @@ abstract class AppLocalizations {
   /// **'ALL-IN-ONE'**
   String get appName;
 
+  /// No description provided for @version.
+  ///
+  /// In en, this message translates to:
+  /// **'Version'**
+  String get version;
+
   /// No description provided for @login.
   ///
   /// In en, this message translates to:

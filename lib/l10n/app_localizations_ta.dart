@@ -12,6 +12,9 @@ class AppLocalizationsTa extends AppLocalizations {
   String get appName => 'ALL-IN-ONE';
 
   @override
+  String get version => 'பதிப்பு';
+
+  @override
   String get login => 'உள்நுழை';
 
   @override

@@ -12,6 +12,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get appName => 'ALL-IN-ONE';
 
   @override
+  String get version => 'Version';
+
+  @override
   String get login => 'Login';
 
   @override

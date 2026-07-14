@@ -14,4 +14,3 @@ clean:
 
 localization:
 	flutter gen-l10n
-	mv lib/l10n/*.dart lib/generated/

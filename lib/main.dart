@@ -23,6 +23,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp.router(
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
+      locale: const Locale('ta'),
       builder: (context, child) {
         return MediaQuery.withNoTextScaling(child: child!);
       },
@@ -78,8 +79,7 @@ class MyApp extends StatelessWidget {
       ),
       themeMode: ThemeMode.light,
       debugShowCheckedModeBanner: false,
-      title: "Recipe-book",
-      
+      title: AppLocalizations.of(context)?.appName,
       routerConfig: AppRouterConfig.router,
     );
   }

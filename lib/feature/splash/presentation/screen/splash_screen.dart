@@ -6,6 +6,7 @@ import 'package:recipe/core/services/beral_container.dart';
 import 'package:recipe/core/services/dependency_injection.dart';
 import 'package:recipe/core/util/app_color.dart';
 import 'package:recipe/feature/splash/presentation/widget/splash_logo_widget.dart';
+import 'package:recipe/l10n/app_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -78,10 +79,13 @@ class _SplashScreenState extends State<SplashScreen> {
             mainAxisSize: .min,
             spacing: 2,
             children: [
-              const Text(
-                'Version: 1.0.0',
+              Text(
+                '${AppLocalizations.of(context)?.version}: 1.0.0',
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 12, color: AppColor.textDisable),
+                style: const TextStyle(
+                  fontSize: 12,
+                  color: AppColor.textDisable,
+                ),
               ),
               RichText(
                 textAlign: TextAlign.center,
