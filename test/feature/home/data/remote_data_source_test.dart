@@ -123,6 +123,7 @@ void main() {
                 Response(requestOptions: RequestOptions(), statusCode: 400),
           );
           final result = await remoteDataSourceHomeRepoImpl.fetchRecipeData('');
+          verify(() => dio.get(any())).called(1);
           expect(result.isLeft(), isTrue);
           expect(
             result.fold((f) => f.message, (_) => null),
@@ -141,9 +142,57 @@ void main() {
             "Couldn't reach the server. Please check your connection or try again later",
           );
         });
+        test('typeError', () async {
+          when(() => dio.get(any())).thenAnswer(
+            (_) async => Response(
+              requestOptions: RequestOptions(data: {}),
+              statusCode: 200,
+            ),
+          );
+          final result = await remoteDataSourceHomeRepoImpl.fetchRecipeData('');
+          verify(() => dio.get(any())).called(1);
+          expect(result.isLeft(), isTrue);
+          expect(
+            result.fold((f) => f.message, (_) => null),
+            "Unexpected data from server received. Please check your connection or try again later.",
+          );
+        });
+        test('catch', () async {
+          when(() => dio.get(any())).thenThrow(Exception);
+          final result = await remoteDataSourceHomeRepoImpl.fetchRecipeData('');
+          verify(() => dio.get(any())).called(1);
+          expect(result.isLeft(), isTrue);
+          expect(
+            result.fold((f) => f.message, (_) => null),
+            "We’re unable to reach the server right now. Please check your connection or try again later.",
+          );
+        });
       });
-      group('succes', () {});
+      group('succes', () {
+        test('list of HomeRecipeModel', () async {
+          when(() => dio.get(any())).thenAnswer(
+            (_) async => Response(
+              requestOptions: RequestOptions(
+               
+              ),
+              statusCode: 200,
+              data: {
+                'meals': [
+                  {
+                    'idMeal': 'dummy',
+                    'strMeal': 'dummy',
+                    'strMealThumb': 'dummy',
+                  },
+                ],
+              },
+            ),
+          );
+          final result = await remoteDataSourceHomeRepoImpl.fetchRecipeData('');
+          verify(() => dio.get(any())).called(1);
+          expect(result.isRight(), isTrue);
+          expect(result.fold((_) => null, (s) => s.data.length), 1);
+        });
+      });
     });
-
   });
 }

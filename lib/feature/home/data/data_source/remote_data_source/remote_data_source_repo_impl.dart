@@ -72,7 +72,7 @@ class RemoteDataSourceHomeRepoImpl implements RemoteDataSourceHomeRepo {
       );
     } catch (_) {
       return Left(
-        UnexpectedFailure(
+        UnKnownFailure(
           "We’re unable to reach the server right now. Please check your connection or try again later.",
         ),
       );
@@ -93,7 +93,7 @@ List<HomeCategoryModel> _convertCategoryModel(Map<String, dynamic> data) {
 }
 
 List<HomeRecipeModel> _convertRecipeModel(Map<String, dynamic> json) {
-  final List<dynamic> meals = json['meals'];
+  final List<dynamic> meals = json['meals'] ?? [];
   return meals
       .map<HomeRecipeModel>((e) => HomeRecipeModel.fromJson(e))
       .toList();
