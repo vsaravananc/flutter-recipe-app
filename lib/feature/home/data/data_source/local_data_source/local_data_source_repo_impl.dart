@@ -112,7 +112,7 @@ class LocalDataSourceHomeRepoImpl implements LocalDataSourceHomeRepo {
       }
     } on TypeError catch (_) {
       return Left(TypeErrorFailer("Data format is incorrect"));
-    } catch (e) {
+    } catch (_) {
       return Left(CacheFailure("Failed to fetch data from local source"));
     }
   }

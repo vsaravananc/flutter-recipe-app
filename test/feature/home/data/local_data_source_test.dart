@@ -178,6 +178,16 @@ void main() {
       });
     });
 
-    group('when fetchRecipeData called', () {});
+    group('when fetchRecipeData called', () {
+      group('failer', () {
+        test('database query is empty for foodtype table', () async {});
+        test('database query is empty for recipe table', () async {});
+        test('TypeError', () async {});
+        test('Catch', () async {});
+      });
+      group('succes', () {
+        test('list of HomeRecipeModel', () async {});
+      });
+    });
   });
 }
