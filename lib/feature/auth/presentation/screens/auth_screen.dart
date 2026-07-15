@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:recipe/feature/auth/presentation/bloc/auth_ui_bloc/auth_ui_bloc.dart';
 import 'package:recipe/feature/auth/presentation/screens/auth_login_screen.dart';
@@ -12,13 +13,7 @@ class AuthScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Scaffold(
       body: SafeArea(
-        child: SingleChildScrollView(
-          physics: ClampingScrollPhysics(),
-          child: Column(
-            spacing: 30,
-            children: [AuthLogoHolderWidget(), AuthScreenAnimationHolder()],
-          ),
-        ),
+        child: Center(child: AuthScreenAnimationHolder())
       ),
     );
   }
@@ -88,6 +83,10 @@ class _AuthScreenAnimationHolderState extends State<AuthScreenAnimationHolder>
           ),
         );
       },
+    ).animate().fade().scale(
+      begin: const Offset(0.98, 0.98),
+      end: const Offset(1, 1),
+      curve: Curves.easeOut,
     );
   }
 }
