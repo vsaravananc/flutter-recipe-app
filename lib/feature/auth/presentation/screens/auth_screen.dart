@@ -1,19 +1,53 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:recipe/core/util/app_color.dart';
 import 'package:recipe/feature/auth/presentation/bloc/auth_ui_bloc/auth_ui_bloc.dart';
 import 'package:recipe/feature/auth/presentation/screens/auth_login_screen.dart';
 import 'package:recipe/feature/auth/presentation/screens/auth_signup_screen.dart';
-import 'package:recipe/feature/auth/presentation/widgets/auth_logo_holder_widget.dart';
 
 class AuthScreen extends StatelessWidget {
   const AuthScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: SafeArea(
-        child: Center(child: AuthScreenAnimationHolder())
+    return Scaffold(
+      body: const SafeArea(
+        child: AuthLoginInScreen(key: ValueKey('auth_login_holder')),
+      ),
+      bottomNavigationBar: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.only(bottom: 8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              RichText(
+                text: TextSpan(
+                  children: [
+                    TextSpan(
+                      text: "Don’t have an account? ",
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    TextSpan(
+                      text: "Sign Up",
+                      recognizer: TapGestureRecognizer()..onTap = () {},
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        fontWeight: FontWeight.w500,
+                        color: AppColor.primary,
+                        decoration: TextDecoration.underline,
+                        decorationColor: AppColor.primary,
+                        decorationThickness: 1,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

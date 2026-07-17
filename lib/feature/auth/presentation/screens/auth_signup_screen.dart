@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:recipe/core/extensions/padding_extension.dart';
+import 'package:recipe/core/images/app_images.dart';
 import 'package:recipe/core/validator/validation.dart';
 import 'package:recipe/feature/auth/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'package:recipe/feature/auth/presentation/bloc/auth_ui_bloc/auth_ui_bloc.dart';
@@ -118,8 +119,9 @@ class _AuthSignUpScreenState extends State<AuthSignUpScreen> {
             ).paddingOnlyBottom(bottom: 5),
             const AuthDividerHolderWidget(text: "sign up"),
             AuthIconButtonWidget(
+              imagePath: AppImages.facebookSvg,
               onPressed: () {},
-              text: "Continue",
+              text: "Google",
             ).paddingVertical(vertical: 10),
             AuthButtonWidget(
               onPressed: state is AuthLoading

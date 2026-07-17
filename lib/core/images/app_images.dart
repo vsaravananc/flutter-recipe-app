@@ -19,5 +19,7 @@ class AppImages {
   static const String categoryPlaceHolder = 'assets/images/category_holder.jpg';
   static const String recipePlaceHolder = 'assets/images/recipe_placeholder.png';
   static const String mock ='assets/images/mock1.jpg';
+  static const String googleSvg = 'assets/images/google.svg';
+  static const String facebookSvg = 'assets/images/facebook.svg';
 
 }

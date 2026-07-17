@@ -27,15 +27,18 @@ class CustomButtonWidget extends StatelessWidget {
     return GestureDetector(
       onTap: isLoading! ? null : onPressed,
       child: Container(
+        
         constraints: BoxConstraints(
           maxWidth: MediaQuery.of(context).size.width > 360
               ? 360
               : double.infinity,
         ),
         height: 45,
-        decoration: BoxDecoration(
+        decoration: ShapeDecoration(
           color: isLoading! ? AppColor.disable : buttonColor,
-          borderRadius: BorderRadius.circular(8),
+          shape: ContinuousRectangleBorder(
+            borderRadius: BorderRadiusGeometry.circular(28),
+          ),
         ),
         child: isLoading!
             ? const Padding(
