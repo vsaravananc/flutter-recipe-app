@@ -27,7 +27,6 @@ class RemoteDataImpl implements RemoteDataRepo {
   @override
   Future<GetUser> loginWithEmail(LoginWithEmailModel entities) async {
     try {
-      debugPrint("${entities.email} ${entities.password}");
       final result = await firebaseAuth.signInWithEmailAndPassword(
         email: entities.email,
         password: entities.password,
