@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:recipe/core/util/app_color.dart';
+import 'package:recipe/core/extensions/localization_extension.dart';
 import 'package:recipe/feature/auth/presentation/bloc/auth_ui_bloc/auth_ui_bloc.dart';
 import 'package:recipe/feature/auth/presentation/screens/auth_login_screen.dart';
 import 'package:recipe/feature/auth/presentation/screens/auth_signup_screen.dart';
@@ -26,13 +27,13 @@ class AuthScreen extends StatelessWidget {
                 text: TextSpan(
                   children: [
                     TextSpan(
-                      text: "Don’t have an account? ",
+                      text: context.l10n.auth_dont_have_account,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         fontWeight: FontWeight.w500,
                       ),
                     ),
                     TextSpan(
-                      text: "Sign Up",
+                      text: context.l10n.auth_sign_up,
                       recognizer: TapGestureRecognizer()..onTap = () {},
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         fontWeight: FontWeight.w500,

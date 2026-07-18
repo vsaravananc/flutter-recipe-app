@@ -6,6 +6,7 @@ import 'package:hugeicons/hugeicons.dart';
 import 'package:recipe/core/extensions/padding_extension.dart';
 import 'package:recipe/core/images/app_images.dart';
 import 'package:recipe/core/validator/validation.dart';
+import 'package:recipe/core/extensions/localization_extension.dart';
 import 'package:recipe/feature/auth/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'package:recipe/feature/auth/presentation/bloc/auth_ui_bloc/auth_ui_bloc.dart';
 import 'package:recipe/feature/auth/presentation/widgets/auth_button_widget.dart';
@@ -59,16 +60,16 @@ class _AuthSignUpScreenState extends State<AuthSignUpScreen> {
           crossAxisAlignment: .center,
           spacing: 10,
           children: [
-            Text("Sign Up", style: Theme.of(context).textTheme.headlineMedium),
+            Text(context.l10n.auth_sign_up, style: Theme.of(context).textTheme.headlineMedium),
             RichText(
               text: TextSpan(
                 children: [
                   TextSpan(
-                    text: "Already have an account? ",
+                    text: context.l10n.auth_already_have_account,
                     style: Theme.of(context).textTheme.bodySmall,
                   ),
                   TextSpan(
-                    text: "Log In",
+                    text: context.l10n.auth_login_link,
                     recognizer: TapGestureRecognizer()
                       ..onTap = () {
                         _clearText();
@@ -83,9 +84,9 @@ class _AuthSignUpScreenState extends State<AuthSignUpScreen> {
             ),
             AuthTextFormFieldWidget(
               iconData: HugeIcons.strokeRoundedUser,
-              validator: Validation.name,
-              label: "Full Name",
-              hint: "Enter your Full Name",
+              validator: (val) => Validation.name(context, val),
+              label: context.l10n.auth_fullname,
+              hint: context.l10n.auth_hint_fullname,
               isObscure: false,
               focusNode: FocusNode(),
               formates: [],
@@ -94,34 +95,34 @@ class _AuthSignUpScreenState extends State<AuthSignUpScreen> {
             ).paddingOnlyTop(top: 5),
             AuthTextFormFieldWidget(
               iconData: HugeIcons.strokeRoundedMail02,
-              label: "Email",
-              hint: "Enter your email",
+              label: context.l10n.auth_email,
+              hint: context.l10n.auth_hint_email,
               isObscure: false,
               focusNode: FocusNode(),
               formates: [
                 FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z0-9@._-]')),
               ],
-              validator: Validation.email,
+              validator: (val) => Validation.email(context, val),
               inputType: TextInputType.emailAddress,
               controller: _emailController,
             ),
 
             AuthTextFormFieldWidget(
               iconData: HugeIcons.strokeRoundedKey01,
-              validator: Validation.password,
-              label: "Password",
-              hint: "Enter your Password",
+              validator: (val) => Validation.password(context, val),
+              label: context.l10n.auth_password,
+              hint: context.l10n.auth_hint_password,
               isObscure: true,
               focusNode: FocusNode(),
               formates: [],
               inputType: TextInputType.text,
               controller: _passwordController,
             ).paddingOnlyBottom(bottom: 5),
-            const AuthDividerHolderWidget(text: "sign up"),
+            AuthDividerHolderWidget(text: context.l10n.auth_sign_up),
             AuthIconButtonWidget(
               imagePath: AppImages.facebookSvg,
               onPressed: () {},
-              text: "Google",
+              text: context.l10n.auth_google,
             ).paddingVertical(vertical: 10),
             AuthButtonWidget(
               onPressed: state is AuthLoading
@@ -137,7 +138,7 @@ class _AuthSignUpScreenState extends State<AuthSignUpScreen> {
                         );
                       }
                     },
-              text: "Register",
+              text: context.l10n.auth_register,
             ),
           ],
         ),
@@ -145,7 +146,7 @@ class _AuthSignUpScreenState extends State<AuthSignUpScreen> {
       listener: (c, s) {
         if (s is AuthError) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Sucessfully registered as user.")),
+            SnackBar(content: Text(context.l10n.auth_signup_success_msg)),
           );
         }
         if (s is AuthSuccess) {

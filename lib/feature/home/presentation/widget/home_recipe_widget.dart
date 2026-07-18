@@ -7,6 +7,7 @@ import 'package:recipe/core/extensions/color_extension.dart';
 import 'package:recipe/core/extensions/textstyle_extension.dart';
 import 'package:recipe/core/route/app_router_config.dart';
 import 'package:recipe/core/services/dimensions.dart';
+import 'package:recipe/core/extensions/localization_extension.dart';
 import 'package:recipe/feature/details/domain/entities/detail_screenl_entitie.dart';
 import 'package:recipe/feature/details/presentation/bloc/detail_bloc.dart';
 import 'package:recipe/feature/home/domain/entities/home_recipe_entities.dart';
@@ -29,7 +30,7 @@ class HomeRecipeWidget extends StatelessWidget {
               SliverPadding(
                 padding: const .only(bottom: Dimensions.p10),
                 sliver: SliverToBoxAdapter(
-                  child: Text('Recipes', style: context.headlineSmall),
+                  child: Text(context.l10n.home_recipes_title, style: context.headlineSmall),
                 ),
               ),
               if (state is RecipeLoaded)

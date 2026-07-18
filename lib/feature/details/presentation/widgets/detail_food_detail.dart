@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:recipe/core/extensions/localization_extension.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:recipe/core/extensions/textstyle_extension.dart';
 import 'package:recipe/feature/details/domain/entities/detail_entite.dart';
@@ -44,9 +45,9 @@ class DetailFood extends StatelessWidget {
           mealIntegrationCollection: data.mealIntegrationCollection,
           mealMeasureCollection: data.mealMeasureCollection,
         ),
-        Text("Instructions", style: heading(context)),
+        Text(context.l10n.details_instructions, style: heading(context)),
         Text(data.mealInstruction, style: subHeading(context)),
-        Text("Recipe Video", style: heading(context)),
+        Text(context.l10n.details_recipe_video, style: heading(context)),
         RepaintBoundary(
           key: const ValueKey("youtube_video_render"),
           child: YoutubePlayerWidget(

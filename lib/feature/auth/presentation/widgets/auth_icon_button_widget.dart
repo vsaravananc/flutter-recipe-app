@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:recipe/core/images/app_images.dart';
 
 class AuthIconButtonWidget extends StatelessWidget {
   final VoidCallback onPressed;

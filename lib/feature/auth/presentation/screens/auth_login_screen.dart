@@ -7,6 +7,8 @@ import 'package:recipe/core/extensions/padding_extension.dart';
 import 'package:recipe/core/images/app_images.dart';
 import 'package:recipe/core/route/app_router_config.dart';
 import 'package:recipe/core/validator/validation.dart';
+import 'package:recipe/core/extensions/localization_extension.dart';
+import 'package:recipe/core/messages/error_messages.dart';
 import 'package:recipe/feature/auth/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'package:recipe/feature/auth/presentation/widgets/auth_button_widget.dart';
 import 'package:recipe/feature/auth/presentation/widgets/auth_divider_holder_widget.dart';
@@ -68,12 +70,12 @@ class _AuthLoginInScreenState extends State<AuthLoginInScreen> {
                       spacing: 4,
                       children: [
                         Text(
-                          "Hey, Hello 👋",
+                          context.l10n.auth_login_title,
                           style: Theme.of(context).textTheme.headlineSmall
                               ?.copyWith(fontWeight: FontWeight.w700),
                         ),
                         Text(
-                          'Enter your credentials to access your account',
+                          context.l10n.auth_login_subtitle,
                           style: Theme.of(
                             context,
                           ).textTheme.bodyMedium?.copyWith(height: 1.3),
@@ -99,7 +101,7 @@ class _AuthLoginInScreenState extends State<AuthLoginInScreen> {
                               AuthLoginWithGoogleEvent(),
                             );
                           },
-                          text: "Google",
+                          text: context.l10n.auth_google,
                         ),
                       ),
                       Expanded(
@@ -110,39 +112,46 @@ class _AuthLoginInScreenState extends State<AuthLoginInScreen> {
                               AuthLoginWithGoogleEvent(),
                             );
                           },
-                          text: "Facebook",
+                          text: context.l10n.auth_facebook,
                         ),
                       ),
                     ],
                   ),
                 ),
-                const AuthDividerHolderWidget(text: "login"),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 15.0),
+                  child: AuthDividerHolderWidget(text: context.l10n.login),
+                ),
 
                 AuthTextFormFieldWidget(
                   iconData: HugeIcons.strokeRoundedMail02,
-                  label: "Email",
+                  label: context.l10n.auth_email,
                   isObscure: false,
                   focusNode: FocusNode(),
+                  textInputAction: TextInputAction.next,
                   formates: [
                     FilteringTextInputFormatter.allow(
                       RegExp(r'[a-zA-Z0-9@._-]'),
                     ),
                   ],
-                  validator: Validation.email,
+                  validator: (val) => Validation.email(context, val),
                   inputType: TextInputType.emailAddress,
                   controller: _emailController,
                 ).paddingOnlyTop(top: 5),
                 AuthTextFormFieldWidget(
+                  textInputAction: TextInputAction.done,
                   iconData: HugeIcons.strokeRoundedKey01,
-                  validator: Validation.password,
-                  label: "Password",
-                  hint: "Enter your Password",
+                  validator: (val) => Validation.password(context, val),
+                  label: context.l10n.auth_password,
+                  hint: context.l10n.auth_hint_password,
                   isObscure: true,
                   focusNode: FocusNode(),
                   formates: [],
                   inputType: TextInputType.text,
                   controller: _passwordController,
                 ).paddingOnlyBottom(bottom: 5),
+
+                const SizedBox(height: 15),
                
                 AuthButtonWidget(
                   onPressed: state is AuthLoading
@@ -161,9 +170,9 @@ class _AuthLoginInScreenState extends State<AuthLoginInScreen> {
                             );
                           }
                         },
-                  text: "Sign In",
+                  text: context.l10n.auth_sign_in,
                 ),
-                const Spacer(flex: 2),
+                const Spacer(flex: 3),
               ],
             ),
           ),
@@ -173,7 +182,7 @@ class _AuthLoginInScreenState extends State<AuthLoginInScreen> {
         if (s is AuthError) {
           ScaffoldMessenger.of(
             context,
-          ).showSnackBar(SnackBar(content: Text(s.message)));
+          ).showSnackBar(SnackBar(content: Text(ErrorMessages.getLocalizedMessage(context, s.message))));
         }
         if (s is AuthSuccess) {
           context.read<HomecategoryBloc>().add(FetchHomeCategories());

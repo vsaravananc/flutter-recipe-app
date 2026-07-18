@@ -9,6 +9,7 @@ import 'package:recipe/feature/user_sugestion/presentation/selected_user_suggest
 import 'package:recipe/feature/user_sugestion/presentation/widgets/user_sugestion_app_bar_widget.dart';
 import 'package:recipe/feature/user_sugestion/presentation/widgets/user_sugestion_bottom_info_widget.dart';
 import 'package:recipe/feature/user_sugestion/presentation/widgets/user_sugestion_select_button_widget.dart';
+import 'package:recipe/core/extensions/localization_extension.dart';
 
 class SelectAreaScreen extends StatefulWidget {
   const SelectAreaScreen({super.key});
@@ -33,9 +34,9 @@ class _SelectAreaScreenState extends State<SelectAreaScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const AppBarWidget(title: "Select a Country for Recipes"),
-      bottomNavigationBar: const UserSugestionBottomInfoWidget(
-        title: "country",
+      appBar: AppBarWidget(title: context.l10n.suggestion_select_country_title),
+      bottomNavigationBar: UserSugestionBottomInfoWidget(
+        title: context.l10n.suggestion_country,
       ),
       floatingActionButton: BlocBuilder<SelectedareaCubit, SelectedareaState>(
         builder: (context, state) {
@@ -89,7 +90,7 @@ class _SelectAreaScreenState extends State<SelectAreaScreen> {
             return const Center(child: CircularProgressIndicator());
           } else {
             return Center(
-              child: Text("No areas found", style: context.bodyMedium),
+              child: Text(context.l10n.suggestion_no_areas_found, style: context.bodyMedium),
             );
           }
         },

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:hugeicons/hugeicons.dart';
 import 'package:recipe/core/util/app_color.dart';
 
 class AuthTextFormFieldWidget extends StatelessWidget {
@@ -14,6 +13,7 @@ class AuthTextFormFieldWidget extends StatelessWidget {
   final TextInputType inputType;
   final String? Function(String?)? validator;
   final TextEditingController controller;
+  final TextInputAction? textInputAction;
   const AuthTextFormFieldWidget({
     super.key,
     required this.iconData,
@@ -26,6 +26,7 @@ class AuthTextFormFieldWidget extends StatelessWidget {
     required this.inputType,
     this.validator,
     required this.controller,
+    this.textInputAction,
   });
 
   @override
@@ -35,6 +36,7 @@ class AuthTextFormFieldWidget extends StatelessWidget {
       inputFormatters: formates,
       keyboardType: inputType,
       focusNode: focusNode,
+      textInputAction: textInputAction,
       validator: validator,
       controller: controller,
       obscureText: isObscure,
@@ -55,7 +57,7 @@ class AuthTextFormFieldWidget extends StatelessWidget {
           context,
         ).textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.w500),
         isDense: false,
-        contentPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 14),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
       ),
     );

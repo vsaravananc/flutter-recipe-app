@@ -6,6 +6,7 @@ import 'package:recipe/core/route/app_router_config.dart';
 import 'package:recipe/core/services/dimensions.dart';
 import 'package:recipe/core/util/app_color.dart';
 import 'package:recipe/core/util/app_fonts.dart';
+import 'package:recipe/core/extensions/localization_extension.dart';
 import 'package:recipe/feature/welcome/presentation/widgets/welcome_bottom_widget.dart';
 import 'package:recipe/feature/welcome/presentation/widgets/welcome_mobile_holder_widget.dart';
 
@@ -22,7 +23,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   ValueNotifier<bool> showNext = ValueNotifier(false);
   late Timer timer;
 
-  final List<Widget> _widgets = [
+  List<Widget> get _widgets => [
     _WelcomeMessageWidget(
       widget: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 180),
@@ -30,8 +31,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           textAlign: TextAlign.center,
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
-          text: const TextSpan(
-            text: "Save and Organize ",
+          text: TextSpan(
+            text: context.l10n.welcome_slide1_part1,
             style: TextStyle(
               color: AppColor.primary,
               fontWeight: FontWeight.bold,
@@ -39,7 +40,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             ),
             children: [
               TextSpan(
-                text: 'Your Best Recipes.',
+                text: context.l10n.welcome_slide1_part2,
                 style: TextStyle(
                   color: AppColor.textColor,
                   fontWeight: FontWeight.bold,
@@ -58,8 +59,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           textAlign: TextAlign.center,
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
-          text: const TextSpan(
-            text: "Explore a ",
+          text: TextSpan(
+            text: context.l10n.welcome_slide2_part1,
             style: TextStyle(
               color: AppColor.textColor,
               fontWeight: FontWeight.bold,
@@ -67,7 +68,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             ),
             children: [
               TextSpan(
-                text: 'World of ',
+                text: context.l10n.welcome_slide2_part2,
                 style: TextStyle(
                   color: AppColor.primary,
                   fontWeight: FontWeight.bold,
@@ -75,7 +76,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                 ),
               ),
               TextSpan(
-                text: 'Culinary ',
+                text: context.l10n.welcome_slide2_part3,
                 style: TextStyle(
                   color: AppColor.primary,
                   fontWeight: FontWeight.bold,
@@ -83,7 +84,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                 ),
               ),
               TextSpan(
-                text: 'Delights',
+                text: context.l10n.welcome_slide2_part4,
                 style: TextStyle(
                   color: AppColor.textColor,
                   fontWeight: FontWeight.bold,
@@ -102,8 +103,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           textAlign: TextAlign.center,
           maxLines: 3,
           overflow: TextOverflow.ellipsis,
-          text: const TextSpan(
-            text: "Interactive Cooking : ",
+          text: TextSpan(
+            text: context.l10n.welcome_slide3_part1,
             style: TextStyle(
               color: AppColor.textColor,
               fontWeight: FontWeight.bold,
@@ -111,7 +112,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             ),
             children: [
               TextSpan(
-                text: 'Join the Chef in real time.',
+                text: context.l10n.welcome_slide3_part2,
                 style: TextStyle(
                   color: AppColor.primary,
                   fontWeight: FontWeight.bold,
@@ -190,9 +191,9 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     );
                   },
                   child: Text(
-                    showNext.value ? 'Next' : 'Skip',
+                    showNext.value ? context.l10n.common_next : context.l10n.common_skip,
                     key: ValueKey(showNext.value),
-                    style: const TextStyle(
+                    style: TextStyle(
                       color: AppColor.primary,
                       fontWeight: FontWeight.w500,
                       fontSize: 15,
@@ -271,8 +272,8 @@ class _WelcomeMessageWidget extends StatelessWidget {
           const Spacer(),
           widget,
           const SizedBox(height: Dimensions.p20),
-          const Text(
-            'Lorem ipsum dolor sit amet, consectetur adip happy to see you but you\'r',
+          Text(
+            context.l10n.welcome_lorem_ipsum,
             textAlign: TextAlign.center,
             maxLines: 3,
             overflow: TextOverflow.ellipsis,

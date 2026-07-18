@@ -1,25 +1,124 @@
 {
   "@@locale": "en",
-
   "appName": "ALL-IN-ONE",
-
-  "version":"Version",
-
-  "login": "Login",
-
-  "logout": "Logout",
-
+  "auth_already_have_account": "Already have an account? ",
+  "auth_app_title": "Recipe Book",
+  "auth_dont_have_account": "Don’t have an account? ",
+  "auth_email": "Email",
+  "auth_facebook": "Facebook",
+  "auth_fullname": "Full Name",
+  "auth_google": "Google",
+  "auth_hint_email": "Enter your email",
+  "auth_hint_fullname": "Enter your Full Name",
+  "auth_hint_password": "Enter your Password",
+  "auth_login_link": "Log In",
+  "auth_login_subtitle": "Enter your credentials to access your account",
+  "auth_login_title": "Hey, Hello 👋",
+  "auth_password": "Password",
+  "auth_register": "Register",
+  "auth_sign_in": "Sign In",
+  "auth_sign_up": "Sign Up",
+  "auth_signup_success_msg": "Successfully registered as user.",
+  "common_next": "Next",
+  "common_or": "or",
+  "common_skip": "Skip",
+  "dashboard_scanner": "Scanner",
+  "details_ingredients": "Ingredients",
+  "details_instructions": "Instructions",
+  "details_recipe_video": "Recipe Video",
+  "err_account_exists_with_different_credential": "An account already exists with a different sign-in method.",
+  "err_client_config": "App is not configured properly for Google sign-in.",
+  "err_email_already_in_use": "This email is already registered. Please use another email.",
+  "err_invalid_credential": "The login credential has expired or is invalid. Please try again.",
+  "err_invalid_email": "The email address you entered is not valid. Please check and try again.",
+  "err_login_cancelled": "You cancelled the login.",
+  "err_login_interrupted": "Login was interrupted. Please try again.",
+  "err_network_request_failed": "Network error. Check your internet connection and try again.",
+  "err_operation_not_allowed": "Email/Password sign-in is not enabled. Please contact support.",
+  "err_provider_config": "Google login service is not available right now.",
+  "err_requires_recent_login": "For security reasons, please log in again to continue.",
+  "err_something_went_wrong_later": "Something went wrong. Please try again later.",
+  "err_too_many_requests": "Too many login attempts. Please try again later.",
+  "err_ui_unavailable": "Unable to open Google login screen on this device.",
+  "err_user_disabled": "This account has been disabled. Please contact support.",
+  "err_user_mismatch": "This account does not match the currently logged-in user.",
+  "err_user_not_found": "No account found with this email. Please sign up first.",
+  "err_weak_password": "The password is too weak. Please use a stronger password.",
+  "err_wrong_password": "Incorrect password. Please try again.",
+  "err_unknown": "Something went wrong. Please try again.",
   "home": "Home",
-
+  "home_back_to_top": "Back to Top",
+  "home_hello_prefix": "Hello,",
+  "home_quote_goes_into_cooking": " goes into cooking and desire comes to the table.",
+  "home_quote_love": " love",
+  "home_quote_where": "Where",
+  "home_recipes_title": "Recipes",
+  "home_search_hint": "Search any recipe",
+  "home_username": " John Doe!",
+  "login": "Login",
+  "logout": "Logout",
+  "profile_title": "Profile",
+  "scanner_hint": "Scan your barcode",
+  "scanner_home_title": "Scanner Home",
+  "search_hint_example": "Briyani Recipe",
+  "search_title": "Search Recipe",
   "settings": "Settings",
-
+  "splash_created_by": "Created with ❤️ by ",
+  "splash_developer_name": "Saravanan V",
+  "splash_version": "Version: {version}",
+  "@splash_version": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "suggestion_bottom_info": "Choose a {title}. Can be updated later in Settings",
+  "@suggestion_bottom_info": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "suggestion_category": "category",
+  "suggestion_country": "country",
+  "suggestion_no_areas_found": "No areas found",
+  "suggestion_select_category_title": "Select a Category for Recipes",
+  "suggestion_select_country_title": "Select a Country for Recipes",
+  "val_email_invalid": "Enter a valid email",
+  "val_email_required": "Email is required",
+  "val_name_required": "Full Name is required",
+  "val_password_required": "Password is required",
+  "val_password_short": "Password must be at least {length} characters",
+  "@val_password_short": {
+    "placeholders": {
+      "length": {
+        "type": "int"
+      }
+    }
+  },
+  "version": "Version",
   "welcome": "Welcome {name}",
-
   "@welcome": {
     "placeholders": {
       "name": {
         "type": "String"
       }
     }
-  }
+  },
+  "welcome_discover_recipes": "Discover delicious recipes and cooking tips from around the world.",
+  "welcome_get_started": "Get Started",
+  "welcome_lorem_ipsum": "Lorem ipsum dolor sit amet, consectetur adip happy to see you but you'r",
+  "welcome_slide1_part1": "Save and Organize ",
+  "welcome_slide1_part2": "Your Best Recipes.",
+  "welcome_slide2_part1": "Explore a ",
+  "welcome_slide2_part2": "World of ",
+  "welcome_slide2_part3": "Culinary ",
+  "welcome_slide2_part4": "Delights",
+  "welcome_slide3_part1": "Interactive Cooking : ",
+  "welcome_slide3_part2": "Join the Chef in real time.",
+  "welcome_your_recipe_heaven_part1": "Your ",
+  "welcome_your_recipe_heaven_part2": "Recipe Heaven",
+  "welcome_your_recipe_heaven_part3": "\nAwaits Exploration!"
 }

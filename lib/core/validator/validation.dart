@@ -1,29 +1,32 @@
+import 'package:flutter/material.dart';
+import 'package:recipe/core/extensions/localization_extension.dart';
+
 class Validation {
-  static String? email(String? value) {
+  static String? email(BuildContext context, String? value) {
     if (value == null || value.isEmpty) {
-      return 'Email is required';
+      return context.l10n.val_email_required;
     }
     if (!RegExp(
       r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
     ).hasMatch(value)) {
-      return 'Enter a valid email';
+      return context.l10n.val_email_invalid;
     }
     return null;
   }
 
-  static String? name(String? value) {
+  static String? name(BuildContext context, String? value) {
     if (value == null || value.isEmpty) {
-      return 'Full Name is required';
+      return context.l10n.val_name_required;
     }
     return null;
   }
 
-  static String? password(String? value) {
+  static String? password(BuildContext context, String? value) {
     if (value == null || value.isEmpty) {
-      return 'Password is required';
+      return context.l10n.val_password_required;
     }
     if (value.length < 6) {
-      return 'Password must be at least 6 characters';
+      return context.l10n.val_password_short(6);
     }
     return null;
   }

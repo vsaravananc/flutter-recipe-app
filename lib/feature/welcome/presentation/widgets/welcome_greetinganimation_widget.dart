@@ -7,6 +7,7 @@ import 'package:recipe/core/services/dimensions.dart';
 import 'package:recipe/core/util/app_color.dart';
 import 'package:recipe/core/util/app_fonts.dart';
 import 'package:recipe/core/widgets/custom_button_widget.dart';
+import 'package:recipe/core/extensions/localization_extension.dart';
 
 class WelcomeGreetingAnimationWidget extends StatelessWidget {
   const WelcomeGreetingAnimationWidget({super.key});
@@ -34,8 +35,8 @@ class WelcomeGreetingAnimationWidget extends StatelessWidget {
                     textAlign: TextAlign.center,
                     maxLines: 2,
                     overflow: TextOverflow.fade,
-                    text: const TextSpan(
-                      text: "You'r ",
+                    text: TextSpan(
+                      text: context.l10n.welcome_your_recipe_heaven_part1,
                       style: TextStyle(
                         fontFamily: AppFonts.inter,
                         fontSize: 22,
@@ -44,7 +45,7 @@ class WelcomeGreetingAnimationWidget extends StatelessWidget {
                       ),
                       children: [
                         TextSpan(
-                          text: "Recipe Heaven",
+                          text: context.l10n.welcome_your_recipe_heaven_part2,
                           style: TextStyle(
                             fontFamily: AppFonts.inter,
                             fontSize: 22,
@@ -52,15 +53,15 @@ class WelcomeGreetingAnimationWidget extends StatelessWidget {
                             color: AppColor.primary,
                           ),
                         ),
-                        TextSpan(text: "\nAwaits Exploration!"),
+                        TextSpan(text: context.l10n.welcome_your_recipe_heaven_part3),
                       ],
                     ),
                   ),
                   const SizedBox(height: Dimensions.p12),
-                  const Padding(
+                  Padding(
                     padding: EdgeInsets.symmetric(horizontal: 16.0),
                     child: Text(
-                      "Discover delicious recipes and cooking tips from around the world.",
+                      context.l10n.welcome_discover_recipes,
                       textAlign: TextAlign.center,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
@@ -78,12 +79,12 @@ class WelcomeGreetingAnimationWidget extends StatelessWidget {
                       horizontal: Dimensions.p16,
                     ),
                     child: CustomButtonWidget(
-                      widget: const Row(
+                      widget: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         spacing: 4,
                         children: [
                           Text(
-                            "Get Started",
+                            context.l10n.welcome_get_started,
                             style: TextStyle(
                               color: AppColor.onPrimary,
                               fontSize: 16,

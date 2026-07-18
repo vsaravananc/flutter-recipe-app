@@ -4,6 +4,7 @@ import 'package:hugeicons/hugeicons.dart';
 import 'package:recipe/core/extensions/image_extension.dart';
 import 'package:recipe/core/extensions/textstyle_extension.dart';
 import 'package:recipe/core/services/beral_container.dart';
+import 'package:recipe/core/extensions/localization_extension.dart';
 
 class CustomBarCode extends StatelessWidget {
   const CustomBarCode({super.key});
@@ -63,7 +64,7 @@ class PlaceHolderWidget extends StatelessWidget {
             color: Colors.white,
           ),
           Text(
-            "Scann your barcode",
+            context.l10n.scanner_hint,
             style: context.headlineMedium?.copyWith(color: Colors.white),
           ),
         ],

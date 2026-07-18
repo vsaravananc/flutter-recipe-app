@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:recipe/core/extensions/textstyle_extension.dart';
+import 'package:recipe/core/extensions/localization_extension.dart';
 import 'package:recipe/feature/home/domain/entities/home_category_entities.dart';
 import 'package:recipe/feature/home/presentation/bloc/home_backtotop_cubit/bactotop_cubit.dart';
 import 'package:recipe/feature/home/presentation/bloc/home_category_bloc/homecategory_bloc.dart';
@@ -146,7 +147,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             size: 19,
                           ),
                           Text(
-                            "Back to Top",
+                            context.l10n.home_back_to_top,
                             style: context.bodyLarge?.copyWith(
                               color: Colors.white,
                               fontWeight: .w600,
