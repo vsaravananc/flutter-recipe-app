@@ -33,7 +33,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           overflow: TextOverflow.ellipsis,
           text: TextSpan(
             text: context.l10n.welcome_slide1_part1,
-            style: TextStyle(
+            style: const TextStyle(
               color: AppColor.primary,
               fontWeight: FontWeight.bold,
               fontSize: 18,
@@ -41,7 +41,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             children: [
               TextSpan(
                 text: context.l10n.welcome_slide1_part2,
-                style: TextStyle(
+                style: const TextStyle(
                   color: AppColor.textColor,
                   fontWeight: FontWeight.bold,
                   fontSize: 18,
