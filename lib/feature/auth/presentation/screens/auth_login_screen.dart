@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hugeicons/hugeicons.dart';
@@ -19,6 +20,7 @@ import 'package:recipe/feature/home/presentation/bloc/home_category_bloc/homecat
 class AuthLoginInScreen extends StatefulWidget {
   const AuthLoginInScreen({super.key});
 
+
   @override
   State<AuthLoginInScreen> createState() => _AuthLoginInScreenState();
 }
@@ -26,6 +28,8 @@ class AuthLoginInScreen extends StatefulWidget {
 class _AuthLoginInScreenState extends State<AuthLoginInScreen> {
   late TextEditingController _emailController;
   late TextEditingController _passwordController;
+  final FocusNode _emailFocusNode = FocusNode();
+  final FocusNode _passwordFocusNode = FocusNode();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   @override
@@ -90,46 +94,90 @@ class _AuthLoginInScreenState extends State<AuthLoginInScreen> {
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 15.0),
-                    child: Row(
-                      spacing: 8,
-                      children: [
-                        Expanded(
-                          child: AuthIconButtonWidget(
-                            imagePath: AppImages.googleSvg,
-                            onPressed: () {
-                              context.read<AuthBloc>().add(
-                                AuthLoginWithGoogleEvent(),
-                              );
-                            },
-                            text: context.l10n.auth_google,
-                          ),
-                        ),
-                        Expanded(
-                          child: AuthIconButtonWidget(
-                            imagePath: AppImages.facebookSvg,
-                            onPressed: () {
-                              context.read<AuthBloc>().add(
-                                AuthLoginWithGoogleEvent(),
-                              );
-                            },
-                            text: context.l10n.auth_facebook,
-                          ),
-                        ),
-                      ],
-                    ),
+                  AnimatedBuilder(
+                    animation: Listenable.merge([
+                      _emailFocusNode,
+                      _passwordFocusNode,
+                    ]),
+                    builder: (context, _) {
+                      bool isFocused =
+                          (_emailFocusNode.hasFocus ||
+                          _passwordFocusNode.hasFocus);
+                      return AnimatedSwitcher(
+                        duration: 100.ms,
+                        reverseDuration: 200.ms,
+                        transitionBuilder: (child, animation) {
+                          return FadeTransition(
+                            opacity: animation,
+                            child: ScaleTransition(
+                              scale: Tween(
+                                begin: .95,
+                                end: 1.0,
+                              ).animate(animation),
+                              child: SlideTransition(
+                                position: Tween(
+                                  begin: const Offset(0, -0.08),
+                                  end: Offset.zero,
+                                ).animate(animation),
+                                child: child,
+                              ),
+                            ),
+                          );
+                        },
+                        child: isFocused
+                            ? const SizedBox()
+                            : Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                      bottom: 15.0,
+                                    ),
+                                    child: Row(
+                                      spacing: 8,
+                                      children: [
+                                        Expanded(
+                                          child: AuthIconButtonWidget(
+                                            imagePath: AppImages.googleSvg,
+                                            onPressed: () {
+                                              context.read<AuthBloc>().add(
+                                                AuthLoginWithGoogleEvent(),
+                                              );
+                                            },
+                                            text: context.l10n.auth_google,
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child: AuthIconButtonWidget(
+                                            imagePath: AppImages.facebookSvg,
+                                            onPressed: () {
+                                              context.read<AuthBloc>().add(
+                                                AuthLoginWithGoogleEvent(),
+                                              );
+                                            },
+                                            text: context.l10n.auth_facebook,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                      bottom: 15.0,
+                                    ),
+                                    child: AuthDividerHolderWidget(
+                                      text: context.l10n.login,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                      );
+                    },
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 15.0),
-                    child: AuthDividerHolderWidget(text: context.l10n.login),
-                  ),
-
                   AuthTextFormFieldWidget(
                     iconData: HugeIcons.strokeRoundedMail02,
                     label: context.l10n.auth_email,
                     isObscure: false,
-                    focusNode: FocusNode(),
+                    focusNode: _emailFocusNode,
                     textInputAction: TextInputAction.next,
                     formates: [
                       FilteringTextInputFormatter.allow(
@@ -148,7 +196,7 @@ class _AuthLoginInScreenState extends State<AuthLoginInScreen> {
                     label: context.l10n.auth_password,
                     hint: context.l10n.auth_hint_password,
                     isObscure: true,
-                    focusNode: FocusNode(),
+                    focusNode: _passwordFocusNode,
                     formates: [],
                     inputType: TextInputType.text,
                     controller: _passwordController,

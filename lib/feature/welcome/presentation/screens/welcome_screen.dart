@@ -171,7 +171,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             style: const ButtonStyle(splashFactory: NoSplash.splashFactory),
             onPressed: () {
               if(showNext.value){
-                context.push(AppRouterConfig.authRoute);
+                context.go(AppRouterConfig.authRoute);
               }
             },
             child: AnimatedBuilder(
