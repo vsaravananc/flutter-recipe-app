@@ -1,10 +1,13 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:recipe/core/extensions/padding_extension.dart';
+import 'package:recipe/core/images/app_images.dart';
 import 'package:recipe/core/validator/validation.dart';
+import 'package:recipe/core/extensions/localization_extension.dart';
 import 'package:recipe/feature/auth/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'package:recipe/feature/auth/presentation/bloc/auth_ui_bloc/auth_ui_bloc.dart';
 import 'package:recipe/feature/auth/presentation/widgets/auth_button_widget.dart';
@@ -23,6 +26,10 @@ class _AuthSignUpScreenState extends State<AuthSignUpScreen> {
   late TextEditingController _nameController;
   late TextEditingController _emailController;
   late TextEditingController _passwordController;
+
+  final FocusNode _nameFocusNode = FocusNode();
+  final FocusNode _emailFocusNode = FocusNode();
+  final FocusNode _passwordFocusNode = FocusNode();
 
   final GlobalKey<FormState> _form = GlobalKey<FormState>();
 
@@ -50,110 +57,210 @@ class _AuthSignUpScreenState extends State<AuthSignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<AuthBloc, AuthState>(
-      builder: (c, state) => Form(
-        key: _form,
-        child: Column(
-          mainAxisAlignment: .center,
-          crossAxisAlignment: .center,
-          spacing: 10,
-          children: [
-            Text("Sign Up", style: Theme.of(context).textTheme.headlineMedium),
-            RichText(
-              text: TextSpan(
-                children: [
-                  TextSpan(
-                    text: "Already have an account? ",
-                    style: Theme.of(context).textTheme.bodySmall,
+    return Material(
+      color: Theme.of(context).scaffoldBackgroundColor,
+      shape: const ContinuousRectangleBorder(
+        borderRadius: BorderRadiusGeometry.vertical(top: Radius.circular(60)),
+      ),
+      elevation: 4,
+      child: BlocConsumer<AuthBloc, AuthState>(
+        builder: (c, state) => Form(
+          key: _form,
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+            child: Column(
+              mainAxisAlignment: .center,
+              crossAxisAlignment: .center,
+              children: [
+                Text(
+                  context.l10n.auth_sign_up,
+                  style: Theme.of(context).textTheme.headlineMedium,
+                ),
+                RichText(
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
+                        text: context.l10n.auth_already_have_account,
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
+                      TextSpan(
+                        text: context.l10n.auth_login_link,
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            _clearText();
+                            context.read<AuthUIBloc>().add(AuthChangeLogIn());
+                          },
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                      ),
+                    ],
                   ),
-                  TextSpan(
-                    text: "Log In",
-                    recognizer: TapGestureRecognizer()
-                      ..onTap = () {
-                        _clearText();
-                        context.read<AuthUIBloc>().add(AuthChangeLogIn());
-                      },
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            AuthTextFormFieldWidget(
-              iconData: HugeIcons.strokeRoundedUser,
-              validator: Validation.name,
-              label: "Full Name",
-              hint: "Enter your Full Name",
-              isObscure: false,
-              focusNode: FocusNode(),
-              formates: [],
-              inputType: TextInputType.text,
-              controller: _nameController,
-            ).paddingOnlyTop(top: 5),
-            AuthTextFormFieldWidget(
-              iconData: HugeIcons.strokeRoundedMail02,
-              label: "Email",
-              hint: "Enter your email",
-              isObscure: false,
-              focusNode: FocusNode(),
-              formates: [
-                FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z0-9@._-]')),
-              ],
-              validator: Validation.email,
-              inputType: TextInputType.emailAddress,
-              controller: _emailController,
-            ),
+                ),
+                const SizedBox(height: 15),
 
-            AuthTextFormFieldWidget(
-              iconData: HugeIcons.strokeRoundedKey01,
-              validator: Validation.password,
-              label: "Password",
-              hint: "Enter your Password",
-              isObscure: true,
-              focusNode: FocusNode(),
-              formates: [],
-              inputType: TextInputType.text,
-              controller: _passwordController,
-            ).paddingOnlyBottom(bottom: 5),
-            const AuthDividerHolderWidget(text: "sign up"),
-            AuthIconButtonWidget(
-              onPressed: () {},
-              text: "Continue",
-            ).paddingVertical(vertical: 10),
-            AuthButtonWidget(
-              onPressed: state is AuthLoading
-                  ? null
-                  : () {
-                      if (_form.currentState!.validate()) {
-                        context.read<AuthBloc>().add(
-                          AuthSignUpEvent(
-                            name: _nameController.text.trim(),
-                            email: _emailController.text.trim(),
-                            password: _passwordController.text.trim(),
+                AnimatedBuilder(
+                  animation: Listenable.merge([
+                    _nameFocusNode,
+                    _emailFocusNode,
+                    _passwordFocusNode,
+                  ]),
+                  builder: (context, _) {
+                    bool isFocused =
+                        (_nameFocusNode.hasFocus ||
+                        _emailFocusNode.hasFocus ||
+                        _passwordFocusNode.hasFocus);
+                    return AnimatedSwitcher(
+                      duration: 100.ms,
+                      reverseDuration: 200.ms,
+                      transitionBuilder: (child, animation) {
+                        return FadeTransition(
+                          opacity: animation,
+                          child: ScaleTransition(
+                            scale: Tween(
+                              begin: .95,
+                              end: 1.0,
+                            ).animate(animation),
+                            child: SlideTransition(
+                              position: Tween(
+                                begin: const Offset(0, -0.08),
+                                end: Offset.zero,
+                              ).animate(animation),
+                              child: child,
+                            ),
                           ),
                         );
-                      }
-                    },
-              text: "Register",
+                      },
+                      child: isFocused
+                          ? const SizedBox()
+                          : Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(bottom: 15.0),
+                                  child: Row(
+                                    spacing: 8,
+                                    children: [
+                                      Expanded(
+                                        child: AuthIconButtonWidget(
+                                          imagePath: AppImages.googleSvg,
+                                          onPressed: () {
+                                            context.read<AuthBloc>().add(
+                                              AuthLoginWithGoogleEvent(),
+                                            );
+                                          },
+                                          text: context.l10n.auth_google,
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: AuthIconButtonWidget(
+                                          imagePath: AppImages.facebookSvg,
+                                          onPressed: () {
+                                            context.read<AuthBloc>().add(
+                                              AuthLoginWithGoogleEvent(),
+                                            );
+                                          },
+                                          text: context.l10n.auth_facebook,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(bottom: 15.0),
+                                  child: AuthDividerHolderWidget(
+                                    text: context.l10n.login,
+                                  ),
+                                ),
+                              ],
+                            ),
+                    );
+                  },
+                ),
+
+              
+
+                AuthTextFormFieldWidget(
+                  iconData: HugeIcons.strokeRoundedUser,
+                  validator: (val) => Validation.name(context, val),
+                  label: context.l10n.auth_fullname,
+                  hint: context.l10n.auth_hint_fullname,
+                  isObscure: false,
+                  focusNode: _nameFocusNode,
+                  formates: [],
+                  inputType: TextInputType.text,
+                  controller: _nameController,
+                ).paddingOnlyTop(top: 5),
+                const SizedBox(height: 15),
+
+                AuthTextFormFieldWidget(
+                  iconData: HugeIcons.strokeRoundedMail02,
+                  label: context.l10n.auth_email,
+                  hint: context.l10n.auth_hint_email,
+                  isObscure: false,
+                  focusNode: _emailFocusNode,
+                  formates: [
+                    FilteringTextInputFormatter.allow(
+                      RegExp(r'[a-zA-Z0-9@._-]'),
+                    ),
+                  ],
+                  validator: (val) => Validation.email(context, val),
+                  inputType: TextInputType.emailAddress,
+                  controller: _emailController,
+                ),
+                const SizedBox(height: 15),
+
+                AuthTextFormFieldWidget(
+                  iconData: HugeIcons.strokeRoundedKey01,
+                  validator: (val) => Validation.password(context, val),
+                  label: context.l10n.auth_password,
+                  hint: context.l10n.auth_hint_password,
+                  isObscure: true,
+                  focusNode: _passwordFocusNode,
+                  formates: [],
+                  inputType: TextInputType.text,
+                  controller: _passwordController,
+                ).paddingOnlyBottom(bottom: 5),
+                const SizedBox(height: 15),
+
+                AuthButtonWidget(
+                  onPressed: state is AuthLoading
+                      ? null
+                      : () {
+                          if (_form.currentState!.validate()) {
+                            context.read<AuthBloc>().add(
+                              AuthSignUpEvent(
+                                name: _nameController.text.trim(),
+                                email: _emailController.text.trim(),
+                                password: _passwordController.text.trim(),
+                              ),
+                            );
+                          }
+                        },
+                  text: context.l10n.auth_register,
+                ),
+             
+
+                const Spacer(flex: 4),
+             
+              ],
             ),
-          ],
+          ),
         ),
+        listener: (c, s) {
+          if (s is AuthError) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(context.l10n.auth_signup_success_msg)),
+            );
+          }
+          if (s is AuthSuccess) {
+            _clearText();
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text(s.user.uid)));
+            context.read<AuthUIBloc>().add(AuthChangeLogIn());
+          }
+        },
       ),
-      listener: (c, s) {
-        if (s is AuthError) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Sucessfully registered as user.")),
-          );
-        }
-        if (s is AuthSuccess) {
-          _clearText();
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text(s.user.uid)));
-          context.read<AuthUIBloc>().add(AuthChangeLogIn());
-        }
-      },
     );
   }
 }

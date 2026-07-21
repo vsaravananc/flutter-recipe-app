@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:recipe/core/util/app_color.dart';
 
 class AuthButtonWidget extends StatelessWidget {
   final VoidCallback? onPressed;
@@ -9,25 +10,32 @@ class AuthButtonWidget extends StatelessWidget {
     required this.text,
   });
 
+
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      key: ValueKey(text),
-      style: ElevatedButton.styleFrom(
-        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        minimumSize: const Size.fromHeight(50),
-        elevation: 1,
-        shadowColor: Theme.of(context).shadowColor,
-        splashFactory: InkRipple.splashFactory,
-        overlayColor: Theme.of( context).colorScheme.onPrimaryContainer,
-      ),
-      onPressed: onPressed,
-      child: Text(
-        text,
-        style: Theme.of(
-          context,
-        ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+    return GestureDetector(
+      onTap: onPressed,
+      child: Container(
+        key: ValueKey(text),
+        decoration: ShapeDecoration(
+          color: AppColor.primary,
+          shape: ContinuousRectangleBorder(
+            borderRadius: BorderRadius.circular(24),
+          ),
+        ),
+        constraints: const BoxConstraints(
+          minHeight: 48,
+          minWidth: double.infinity,
+        ),
+        child: Center(
+          child: Text(
+            text,
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+              fontWeight: FontWeight.w600,
+              color: Theme.of(context).colorScheme.onPrimary,
+            ),
+          ),
+        ),
       ),
     );
   }

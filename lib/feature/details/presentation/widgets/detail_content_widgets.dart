@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:recipe/core/extensions/localization_extension.dart';
 import 'package:recipe/core/extensions/textstyle_extension.dart';
 import 'package:recipe/feature/details/domain/entities/detail_entite.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
@@ -22,7 +23,7 @@ class IngredientWidget extends StatelessWidget {
       crossAxisAlignment: .start,
       spacing: 5,
       children: [
-        Text("Ingredients", style: heading(context)),
+        Text(context.l10n.details_ingredients, style: heading(context)),
         ListView.builder(
           padding: const .only(left: 5, top: 0),
           itemBuilder: (c, i) {

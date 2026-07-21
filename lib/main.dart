@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp.router(
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
-      locale: const Locale('ta'),
+      locale: const Locale('en'),
       builder: (context, child) {
         return MediaQuery.withNoTextScaling(child: child!);
       },

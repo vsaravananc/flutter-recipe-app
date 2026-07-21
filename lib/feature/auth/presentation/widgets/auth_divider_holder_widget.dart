@@ -9,11 +9,35 @@ class AuthDividerHolderWidget extends StatelessWidget {
     return Row(
       mainAxisAlignment: .center,
       crossAxisAlignment: .center,
-      spacing: 8,
+      spacing: 6,
       children: [
-        Expanded(child: Divider(color: Theme.of(context).dividerColor)),
-        Text("Or $text with", style: Theme.of(context).textTheme.bodySmall),
-        Expanded(child: Divider(color: Theme.of(context).dividerColor)),
+        Expanded(
+          child: Container(
+            height: 1,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Colors.transparent,
+                  Theme.of(context).colorScheme.outline,
+                ],
+              ),
+            ),
+          ),
+        ),
+        Text("or", style: Theme.of(context).textTheme.bodyMedium),
+        Expanded(
+          child: Container(
+            height: 1,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Theme.of(context).colorScheme.outline,
+                  Colors.transparent,
+                ],
+              ),
+            ),
+          ),
+        ),
       ],
     );
   }

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:hugeicons/hugeicons.dart';
+import 'package:recipe/core/util/app_color.dart';
 
 class AuthTextFormFieldWidget extends StatelessWidget {
   final List<List<dynamic>> iconData;
   final String label;
-  final String hint;
+  final String? hint;
   final VoidCallback? onpressed;
   final bool isObscure;
   final FocusNode focusNode;
@@ -13,11 +13,12 @@ class AuthTextFormFieldWidget extends StatelessWidget {
   final TextInputType inputType;
   final String? Function(String?)? validator;
   final TextEditingController controller;
+  final TextInputAction? textInputAction;
   const AuthTextFormFieldWidget({
     super.key,
     required this.iconData,
     required this.label,
-    required this.hint,
+    this.hint,
     this.onpressed,
     required this.isObscure,
     required this.focusNode,
@@ -25,20 +26,47 @@ class AuthTextFormFieldWidget extends StatelessWidget {
     required this.inputType,
     this.validator,
     required this.controller,
+    this.textInputAction,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      key: ValueKey(label + hint),
+      key: ValueKey(label),
       inputFormatters: formates,
       keyboardType: inputType,
       focusNode: focusNode,
+      textInputAction: textInputAction,
       validator: validator,
       controller: controller,
       obscureText: isObscure,
       onTapOutside: (_) => FocusManager.instance.primaryFocus?.unfocus(),
+      cursorHeight: 18,
+      cursorWidth: 2.1,
+      style: Theme.of(
+        context,
+      ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
       decoration: InputDecoration(
+        label: Text(label),
+        hintText: hint,
+        floatingLabelStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(
+          fontWeight: FontWeight.w600,
+          color: AppColor.primary,
+        ),
+        labelStyle: Theme.of(
+          context,
+        ).textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.w500),
+        isDense: false,
+        contentPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+      ),
+    );
+  }
+}
+
+
+/**
+ *  decoration: InputDecoration(
         label: Text(label),
         hintText: hint,
         suffixIcon: GestureDetector(
@@ -49,6 +77,4 @@ class AuthTextFormFieldWidget extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-}
+ */

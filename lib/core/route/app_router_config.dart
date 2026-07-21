@@ -45,14 +45,78 @@ class AppRouterConfig {
       GoRoute(
         path: welcomeRoute,
         name: welcomeRoute,
-        builder: (context, state) =>
-            const WelcomeScreen(key: ValueKey("welcome_screen")),
+        pageBuilder: (context, state) {
+          return CustomTransitionPage(
+            transitionDuration: const Duration(milliseconds: 350),
+            reverseTransitionDuration: const Duration(milliseconds: 350),
+            child: const WelcomeScreen(key: ValueKey("welcome_screen")),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+                  return AnimatedBuilder(
+                    animation: secondaryAnimation,
+                    builder: (context, _) {
+                      print(secondaryAnimation.value);
+
+                      return Transform.scale(
+                        scale: 1 - (secondaryAnimation.value * 0.3),
+                        child: child,
+                      );
+                    },
+                  );
+                },
+          );
+        }
       ),
       GoRoute(
         path: authRoute,
         name: authRoute,
-        builder: (context, state) =>
-            const AuthScreen(key: ValueKey("auth_screen")),
+        pageBuilder: (context, state) {
+          return CustomTransitionPage(
+            transitionDuration: const Duration(milliseconds: 350),
+            reverseTransitionDuration: const Duration(milliseconds: 350),
+            child: const AuthScreen(key: ValueKey("auth_screen")),
+            transitionsBuilder: (context, a, b, child) {
+              final radiusAnimation = Tween<double>(
+                begin: 24,
+                end: 0,
+              ).animate(CurvedAnimation(parent: a, curve: Curves.easeOut));
+              return SlideTransition(
+                position:
+                    Tween<Offset>(
+                      begin: const Offset(0, 0.07),
+                      end: const Offset(0, 0),
+                    ).animate(
+                      CurvedAnimation(
+                        parent: a,
+                        curve: Curves.fastEaseInToSlowEaseOut,
+                      ),
+                    ),
+                child: FadeTransition(
+                  opacity: Tween<double>(begin: 0.85, end: 1).animate(
+                    CurvedAnimation(
+                      parent: a,
+                      curve: Curves.fastEaseInToSlowEaseOut,
+                    ),
+                  ),
+                  child: ScaleTransition(
+                    scale: Tween<double>(begin: 0.98, end: 1).animate(
+                      CurvedAnimation(
+                        parent: a,
+                        curve: Curves.fastEaseInToSlowEaseOut,
+                      ),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadiusGeometry.vertical(
+                        top: Radius.circular(radiusAnimation.value),
+                      ),
+                      child: child,
+                    ),
+                  ),
+                ),
+              );
+            },
+          );
+        },
       ),
       GoRoute(
         path: areaRoute,

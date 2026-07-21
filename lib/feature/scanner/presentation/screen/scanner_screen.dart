@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:recipe/core/extensions/color_extension.dart';
 import 'package:recipe/core/extensions/textstyle_extension.dart';
 import 'package:recipe/feature/scanner/presentation/widget/custom_bar_code.dart';
+import 'package:recipe/core/extensions/localization_extension.dart';
 
 class ScannerScreen extends StatefulWidget {
   final DraggableScrollableController controller;
@@ -39,7 +40,7 @@ class _ScannerScreenState extends State<ScannerScreen> {
                   );
                 } 
               },
-              child: Text("Scanner Home", style: context.headlineMedium),
+              child: Text(context.l10n.scanner_home_title, style: context.headlineMedium),
             ),
           ),
           const SizedBox(height: 16),

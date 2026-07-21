@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:recipe/feature/profile/presentation/widget/profile_image_picker_widget.dart';
+import 'package:recipe/core/extensions/localization_extension.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -15,7 +16,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Profile'),
+        title: Text(context.l10n.profile_title),
       ),
       body: const Column(
         crossAxisAlignment: .center,

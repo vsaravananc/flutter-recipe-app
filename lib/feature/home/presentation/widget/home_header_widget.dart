@@ -5,6 +5,7 @@ import 'package:recipe/core/extensions/color_extension.dart';
 import 'package:recipe/core/extensions/textstyle_extension.dart';
 import 'package:recipe/core/route/app_router_config.dart';
 import 'package:recipe/core/services/dimensions.dart';
+import 'package:recipe/core/extensions/localization_extension.dart';
 import 'package:recipe/feature/profile/presentation/bloc/profile_bloc.dart';
 
 class HomeHeaderWidget extends StatelessWidget {
@@ -74,9 +75,9 @@ class GreetingText extends StatelessWidget {
     return RichText(
       text: TextSpan(
         children: [
-          TextSpan(text: 'Hello,', style: context.titleMedium),
+          TextSpan(text: context.l10n.home_hello_prefix, style: context.titleMedium),
           TextSpan(
-            text: ' John Doe!',
+            text: context.l10n.home_username,
             style: context.titleMedium?.copyWith(color: context.primary),
           ),
         ],
@@ -95,16 +96,16 @@ class HeaderDescription extends StatelessWidget {
       strutStyle: const StrutStyle(forceStrutHeight: true, height: 2.3),
       text: TextSpan(
         children: [
-          TextSpan(text: 'Where', style: context.titleLarge),
+          TextSpan(text: context.l10n.home_quote_where, style: context.titleLarge),
           TextSpan(
-            text: ' love',
+            text: context.l10n.home_quote_love,
             style: context.titleLarge?.copyWith(
               color: context.primary,
               fontWeight: FontWeight.bold,
             ),
           ),
           TextSpan(
-            text: ' goes into cooking and desire comes to the table.',
+            text: context.l10n.home_quote_goes_into_cooking,
             style: context.titleLarge,
           ),
         ],

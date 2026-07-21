@@ -6,7 +6,7 @@ import 'package:recipe/core/services/beral_container.dart';
 import 'package:recipe/core/services/dependency_injection.dart';
 import 'package:recipe/core/util/app_color.dart';
 import 'package:recipe/feature/splash/presentation/widget/splash_logo_widget.dart';
-import 'package:recipe/l10n/app_localizations.dart';
+import 'package:recipe/core/extensions/localization_extension.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -80,7 +80,7 @@ class _SplashScreenState extends State<SplashScreen> {
             spacing: 2,
             children: [
               Text(
-                '${AppLocalizations.of(context)?.version}: 1.0.0',
+                context.l10n.splash_version('1.0.0'),
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                   fontSize: 12,
@@ -89,12 +89,12 @@ class _SplashScreenState extends State<SplashScreen> {
               ),
               RichText(
                 textAlign: TextAlign.center,
-                text: const TextSpan(
-                  text: 'Crated with ❤️ by ',
+                text: TextSpan(
+                  text: context.l10n.splash_created_by,
                   style: TextStyle(color: Colors.black, fontSize: 13),
                   children: <TextSpan>[
                     TextSpan(
-                      text: 'Saravanan V',
+                      text: context.l10n.splash_developer_name,
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,

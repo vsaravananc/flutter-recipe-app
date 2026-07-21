@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:recipe/core/extensions/color_extension.dart';
 import 'package:recipe/core/extensions/textstyle_extension.dart';
 import 'package:recipe/core/services/beral_container.dart';
+import 'package:recipe/core/extensions/localization_extension.dart';
 
 class SliverAppBarWidget extends SliverPersistentHeaderDelegate {
   InputBorder _inputBorder(BuildContext context) => OutlineInputBorder(
@@ -41,7 +42,7 @@ class SliverAppBarWidget extends SliverPersistentHeaderDelegate {
               onPressed: () => context.pop(),
               icon: const Icon(Icons.arrow_back),
             ),
-            title: Text("Search Recipe", style: context.titleLarge),
+            title: Text(context.l10n.search_title, style: context.titleLarge),
             centerTitle: true,
           ),
 
@@ -59,7 +60,7 @@ class SliverAppBarWidget extends SliverPersistentHeaderDelegate {
                 }
               },
               decoration: InputDecoration(
-                hintText: "Briyani Recipe",
+                hintText: context.l10n.search_hint_example,
                 border: _inputBorder(context),
                 enabledBorder: _inputBorder(context),
                 disabledBorder: _inputBorder(context),

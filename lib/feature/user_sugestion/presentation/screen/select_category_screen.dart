@@ -9,6 +9,7 @@ import 'package:recipe/feature/user_sugestion/presentation/selected_user_suggest
 import 'package:recipe/feature/user_sugestion/presentation/widgets/user_sugestion_app_bar_widget.dart';
 import 'package:recipe/feature/user_sugestion/presentation/widgets/user_sugestion_bottom_info_widget.dart';
 import 'package:recipe/feature/user_sugestion/presentation/widgets/user_sugestion_select_button_widget.dart';
+import 'package:recipe/core/extensions/localization_extension.dart';
 
 class SelectCategoryScreen extends StatelessWidget {
   const SelectCategoryScreen({super.key});
@@ -16,12 +17,12 @@ class SelectCategoryScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const AppBarWidget(
-        title: "Select a Category for Recipes",
+      appBar: AppBarWidget(
+        title: context.l10n.suggestion_select_category_title,
         leadingIcon: true,
       ),
-      bottomNavigationBar: const UserSugestionBottomInfoWidget(
-        title: "category",
+      bottomNavigationBar: UserSugestionBottomInfoWidget(
+        title: context.l10n.suggestion_category,
       ),
       floatingActionButton:
           BlocBuilder<SelectedcategoryCubit, SelectedcategoryState>(
@@ -82,7 +83,7 @@ class SelectCategoryScreen extends StatelessWidget {
             return const Center(child: CircularProgressIndicator());
           } else {
             return Center(
-              child: Text("No areas found", style: context.bodyMedium),
+              child: Text(context.l10n.suggestion_no_areas_found, style: context.bodyMedium),
             );
           }
         },

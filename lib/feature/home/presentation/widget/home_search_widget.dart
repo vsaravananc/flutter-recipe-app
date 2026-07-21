@@ -6,6 +6,7 @@ import 'package:recipe/core/extensions/textstyle_extension.dart';
 import 'package:recipe/core/route/app_router_config.dart';
 import 'package:recipe/core/services/beral_container.dart';
 import 'package:recipe/core/services/dimensions.dart';
+import 'package:recipe/core/extensions/localization_extension.dart';
 
 class HomeSearchWidget extends SliverPersistentHeader {
   final ScrollController scrollController;
@@ -66,7 +67,7 @@ class HomeSearchDelegate extends SliverPersistentHeaderDelegate {
                 mainAxisAlignment: .spaceBetween,
                 children: [
                   Text(
-                    "Search any recipe",
+                    context.l10n.home_search_hint,
                     style: context.titleMedium?.copyWith(
                       color: context.hintColor,
                     ),

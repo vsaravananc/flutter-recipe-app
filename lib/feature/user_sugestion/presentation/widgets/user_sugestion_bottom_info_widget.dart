@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:recipe/core/extensions/localization_extension.dart';
 
 class UserSugestionBottomInfoWidget extends StatelessWidget {
   final String title;
@@ -21,7 +22,7 @@ class UserSugestionBottomInfoWidget extends StatelessWidget {
           spacing: 10,
           children: [
            const Icon(Icons.info_outlined),
-            Text("Choose a $title. Can be updated later in Settings"),
+            Text(context.l10n.suggestion_bottom_info(title)),
           ],
         ),
       ),

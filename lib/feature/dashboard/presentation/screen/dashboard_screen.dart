@@ -4,6 +4,7 @@ import 'package:hugeicons/hugeicons.dart';
 import 'package:recipe/feature/dashboard/presentation/dashboard/dashboard_cubit.dart';
 import 'package:recipe/feature/home/presentation/screen/home_screen.dart';
 import 'package:recipe/feature/scanner/presentation/screen/scanner_screen.dart';
+import 'package:recipe/core/extensions/localization_extension.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -59,13 +60,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
             },
 
             items: [
-              const BottomNavigationBarItem(
+              BottomNavigationBarItem(
                 icon: HugeIcon(icon: HugeIcons.strokeRoundedHome01),
-                label: 'Home',
+                label: context.l10n.home,
               ),
-              const BottomNavigationBarItem(
+              BottomNavigationBarItem(
                 icon: HugeIcon(icon: HugeIcons.strokeRoundedBarcodeScan),
-                label: 'Scanner',
+                label: context.l10n.dashboard_scanner,
               ),
             ],
           ),
