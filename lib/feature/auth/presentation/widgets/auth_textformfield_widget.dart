@@ -14,6 +14,8 @@ class AuthTextFormFieldWidget extends StatelessWidget {
   final String? Function(String?)? validator;
   final TextEditingController controller;
   final TextInputAction? textInputAction;
+  final TextCapitalization textCapitalization;
+  final Iterable<String>? autofillHints;
   const AuthTextFormFieldWidget({
     super.key,
     required this.iconData,
@@ -27,13 +29,17 @@ class AuthTextFormFieldWidget extends StatelessWidget {
     this.validator,
     required this.controller,
     this.textInputAction,
+    this.textCapitalization = TextCapitalization.none,
+    this.autofillHints
   });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      autofillHints: autofillHints,
       key: ValueKey(label),
       inputFormatters: formates,
+      textCapitalization: textCapitalization,
       keyboardType: inputType,
       focusNode: focusNode,
       textInputAction: textInputAction,
@@ -43,6 +49,7 @@ class AuthTextFormFieldWidget extends StatelessWidget {
       onTapOutside: (_) => FocusManager.instance.primaryFocus?.unfocus(),
       cursorHeight: 18,
       cursorWidth: 2.1,
+      
       style: Theme.of(
         context,
       ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),

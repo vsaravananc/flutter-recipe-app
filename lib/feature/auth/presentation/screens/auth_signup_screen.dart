@@ -186,6 +186,11 @@ class _AuthSignUpScreenState extends State<AuthSignUpScreen> {
                   hint: context.l10n.auth_hint_fullname,
                   isObscure: false,
                   focusNode: _nameFocusNode,
+                  textCapitalization: .words,
+                  autofillHints: [
+                    AutofillHints.name
+                  ],
+                  textInputAction: .next,
                   formates: [],
                   inputType: TextInputType.text,
                   controller: _nameController,
@@ -198,6 +203,10 @@ class _AuthSignUpScreenState extends State<AuthSignUpScreen> {
                   hint: context.l10n.auth_hint_email,
                   isObscure: false,
                   focusNode: _emailFocusNode,
+                  textInputAction: .next,
+                  autofillHints: [
+                    AutofillHints.email
+                  ],
                   formates: [
                     FilteringTextInputFormatter.allow(
                       RegExp(r'[a-zA-Z0-9@._-]'),
