@@ -2,6 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:recipe/core/services/beral_container.dart';
 import 'package:recipe/feature/auth/data/data_sources/remote_data_source/remote_data_impl.dart';
+import 'package:recipe/feature/auth/data/data_sources/remote_data_source/remote_data_repo.dart';
 import 'package:recipe/feature/auth/data/model/login_with_email_model.dart';
 
 class MockFireBaseAuth extends Mock implements FirebaseAuth {}
@@ -10,12 +11,34 @@ class MockFireBaseFireStore extends Mock implements FirebaseFirestore {}
 
 class MockGoogleSignIn extends Mock implements GoogleSignIn {}
 
+class MockUserCredential extends Mock implements UserCredential {
+  @override
+  User? get user {
+    return MockUser();
+  }
+}
+
+class MockUser extends Mock implements User {
+  @override
+  String get uid {
+    return 'dummy';
+  }
+}
+
+class MockCollectionReference extends Mock
+    implements CollectionReference<Map<String, dynamic>> {}
+
+class MockDocumentReference extends Mock
+    implements DocumentReference<Map<String, dynamic>> {}
+
+class MockDocumentSnapshot extends Mock
+    implements DocumentSnapshot<Map<String, dynamic>> {}
 void main() {
   late MockFireBaseAuth mockFireBaseAuth;
   late MockFireBaseFireStore mockFireBaseFireStore;
   late MockGoogleSignIn mockGoogleSignIn;
   late LoginWithEmailModel login;
-  late RemoteDataImpl testRemoteDataImp;
+  late RemoteDataRepo testRemoteDataImp;
 
   setUp(() {
     mockFireBaseAuth = MockFireBaseAuth();
@@ -144,26 +167,58 @@ void main() {
           });
         });
 
-        group('catch', () async {
-          when(
-            () => mockFireBaseAuth.signInWithEmailAndPassword(
-              email: any(named: 'email'),
-              password: any(named: 'password'),
-            ),
-          ).thenThrow(Exception());
-          final result = await testRemoteDataImp.loginWithEmail(login);
+        group('catch', () {
+          test('exception', () async {
+            when(
+              () => mockFireBaseAuth.signInWithEmailAndPassword(
+                email: any(named: 'email'),
+                password: any(named: 'password'),
+              ),
+            ).thenThrow(Exception());
+            final result = await testRemoteDataImp.loginWithEmail(login);
 
-          verify(
-            () => mockFireBaseAuth.signInWithEmailAndPassword(
-              email: any(named: 'email'),
-              password: any(named: 'password'),
-            ),
-          ).called(1);
-          expect(result.isLeft(), isTrue);
-          expect(
-            result.fold((f) => f.message, (_) => null),
-            'We’re unable to reach the server right now. Please check your connection or try again later.',
-          );
+            verify(
+              () => mockFireBaseAuth.signInWithEmailAndPassword(
+                email: any(named: 'email'),
+                password: any(named: 'password'),
+              ),
+            ).called(1);
+            expect(result.isLeft(), isTrue);
+            expect(
+              result.fold((f) => f.message, (_) => null),
+              'We’re unable to reach the server right now. Please check your connection or try again later.',
+            );
+          });
+
+          test('No such user found', () async {
+            when(
+              () => mockFireBaseAuth.signInWithEmailAndPassword(
+                email: any(named: 'email'),
+                password: any(named: 'password'),
+              ),
+            ).thenAnswer((_) async => MockUserCredential());
+
+            when(
+              () => mockFireBaseFireStore.collection("users").doc(any()).get(),
+            ).thenAnswer(
+              (_) async =>
+                  MockDocumentSnapshot(),
+            );
+
+            final result = await testRemoteDataImp.loginWithEmail(login);
+
+            verify(
+              () => mockFireBaseAuth.signInWithEmailAndPassword(
+                email: any(named: 'email'),
+                password: any(named: 'password'),
+              ),
+            ).called(1);
+            expect(result.isLeft(), isTrue);
+            expect(
+              result.fold((f) => f.message, (_) => null),
+              'No such user found',
+            );
+          });
         });
       });
       group('succes', () {});
