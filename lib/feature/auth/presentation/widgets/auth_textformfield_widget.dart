@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hugeicons/hugeicons.dart';
 import 'package:recipe/core/util/app_color.dart';
 
 class AuthTextFormFieldWidget extends StatelessWidget {
@@ -16,6 +17,7 @@ class AuthTextFormFieldWidget extends StatelessWidget {
   final TextInputAction? textInputAction;
   final TextCapitalization textCapitalization;
   final Iterable<String>? autofillHints;
+  final List<List<dynamic>>? suffixWidgetIcon;
   const AuthTextFormFieldWidget({
     super.key,
     required this.iconData,
@@ -30,7 +32,8 @@ class AuthTextFormFieldWidget extends StatelessWidget {
     required this.controller,
     this.textInputAction,
     this.textCapitalization = TextCapitalization.none,
-    this.autofillHints
+    this.autofillHints,
+    this.suffixWidgetIcon,
   });
 
   @override
@@ -49,11 +52,17 @@ class AuthTextFormFieldWidget extends StatelessWidget {
       onTapOutside: (_) => FocusManager.instance.primaryFocus?.unfocus(),
       cursorHeight: 18,
       cursorWidth: 2.1,
-      
+
       style: Theme.of(
         context,
-      ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
+      ).textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.w600),
       decoration: InputDecoration(
+        suffix: suffixWidgetIcon != null
+            ? Transform.translate(
+                offset: const Offset(0, 6.5),
+                child: HugeIcon(icon: suffixWidgetIcon!),
+              )
+            : null,
         label: Text(label),
         hintText: hint,
         floatingLabelStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(
@@ -64,7 +73,7 @@ class AuthTextFormFieldWidget extends StatelessWidget {
           context,
         ).textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.w500),
         isDense: false,
-        contentPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 14),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
       ),
     );

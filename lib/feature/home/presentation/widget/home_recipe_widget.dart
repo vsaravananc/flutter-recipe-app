@@ -43,7 +43,10 @@ class HomeRecipeWidget extends StatelessWidget {
                   ),
                   itemCount: state.recipeList.length,
                   itemBuilder: (context, i) =>
-                      ImagePlaceHolderWidget(recipe: state.recipeList[i]),
+                      ImagePlaceHolderWidget(
+                    recipe: state.recipeList[i],
+                    key: ValueKey(i),
+                  ),
                 )
               else
                 SliverToBoxAdapter(

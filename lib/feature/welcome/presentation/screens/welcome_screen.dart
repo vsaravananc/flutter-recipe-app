@@ -61,7 +61,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           overflow: TextOverflow.ellipsis,
           text: TextSpan(
             text: context.l10n.welcome_slide2_part1,
-            style: TextStyle(
+            style: const TextStyle(
               color: AppColor.textColor,
               fontWeight: FontWeight.bold,
               fontSize: 18,
@@ -69,7 +69,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             children: [
               TextSpan(
                 text: context.l10n.welcome_slide2_part2,
-                style: TextStyle(
+                style: const TextStyle(
                   color: AppColor.primary,
                   fontWeight: FontWeight.bold,
                   fontSize: 18,
@@ -171,7 +171,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             style: const ButtonStyle(splashFactory: NoSplash.splashFactory),
             onPressed: () {
               if(showNext.value){
-                context.go(AppRouterConfig.authRoute);
+                context.go(AppRouterConfig.dashBoardRoute);
               }
             },
             child: AnimatedBuilder(
@@ -193,7 +193,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   child: Text(
                     showNext.value ? context.l10n.common_next : context.l10n.common_skip,
                     key: ValueKey(showNext.value),
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: AppColor.primary,
                       fontWeight: FontWeight.w500,
                       fontSize: 15,

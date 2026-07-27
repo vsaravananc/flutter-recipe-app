@@ -36,10 +36,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get auth_hint_email => 'Enter your email';
 
   @override
-  String get auth_hint_fullname => 'Enter your Full Name';
+  String get auth_hint_fullname => 'Enter your full name';
 
   @override
-  String get auth_hint_password => 'Enter your Password';
+  String get auth_hint_password => 'Enter your password';
 
   @override
   String get auth_login_link => 'Log In';

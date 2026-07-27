@@ -187,6 +187,7 @@ class _AuthSignUpScreenState extends State<AuthSignUpScreen> {
                   isObscure: false,
                   focusNode: _nameFocusNode,
                   textCapitalization: .words,
+                  suffixWidgetIcon: HugeIcons.strokeRoundedUser,
                   autofillHints: [
                     AutofillHints.name
                   ],
@@ -202,6 +203,7 @@ class _AuthSignUpScreenState extends State<AuthSignUpScreen> {
                   label: context.l10n.auth_email,
                   hint: context.l10n.auth_hint_email,
                   isObscure: false,
+                  suffixWidgetIcon: HugeIcons.strokeRoundedMail02,
                   focusNode: _emailFocusNode,
                   textInputAction: .next,
                   autofillHints: [
@@ -220,6 +222,7 @@ class _AuthSignUpScreenState extends State<AuthSignUpScreen> {
 
                 AuthTextFormFieldWidget(
                   iconData: HugeIcons.strokeRoundedKey01,
+                  suffixWidgetIcon: HugeIcons.strokeRoundedKey01,
                   validator: (val) => Validation.password(context, val),
                   label: context.l10n.auth_password,
                   hint: context.l10n.auth_hint_password,
