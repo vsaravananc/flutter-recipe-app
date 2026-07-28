@@ -9,6 +9,7 @@ import 'package:recipe/feature/home/domain/entities/home_category_entities.dart'
 import 'package:recipe/feature/home/presentation/bloc/home_category_bloc/homecategory_bloc.dart';
 import 'package:recipe/feature/home/presentation/bloc/home_recipe_bloc/recipe_bloc.dart';
 import 'package:recipe/feature/home/presentation/widget/home_category_placeholder_widget.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class HomeCategoryWidget extends StatelessWidget {
   const HomeCategoryWidget({super.key});
@@ -47,24 +48,25 @@ class CategoryPlaceHolderWidget extends StatelessWidget {
     return SliverToBoxAdapter(
       child: SizedBox(
         height: 100,
-        child: ListView.builder(
-          padding: const .only(left: Dimensions.p8),
-          itemBuilder: (c, i) => Column(
-            mainAxisAlignment: .center,
-            children: [
-              Container(
+        child: Skeletonizer(
+          enabled: true,
+          justifyMultiLineText: true,
+          child: ListView.builder(
+            padding: const .only(left: Dimensions.p8),
+            itemBuilder: (c, i) => Center(
+              child: Container(
                 margin: const .symmetric(horizontal: 5.0),
                 height: 65,
                 width: 65,
                 decoration: BoxDecoration(
-                  color: context.secondary,
+                  color: context.cardColor,
                   borderRadius: .circular(35),
                 ),
               ),
-            ],
+            ),
+            itemCount: 6,
+            scrollDirection: Axis.horizontal,
           ),
-          itemCount: 5,
-          scrollDirection: Axis.horizontal,
         ),
       ),
     );

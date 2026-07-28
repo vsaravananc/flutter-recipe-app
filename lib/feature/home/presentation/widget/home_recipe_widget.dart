@@ -1,5 +1,4 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -14,6 +13,7 @@ import 'package:recipe/feature/home/domain/entities/home_recipe_entities.dart';
 import 'package:recipe/feature/home/presentation/bloc/home_recipe_bloc/recipe_bloc.dart';
 import 'package:recipe/feature/home/presentation/widget/home_recipe_placeholder_widget.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class HomeRecipeWidget extends StatelessWidget {
   const HomeRecipeWidget({super.key});
@@ -49,12 +49,24 @@ class HomeRecipeWidget extends StatelessWidget {
                   ),
                 )
               else
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: const .only(top: 20),
-                    child: CupertinoActivityIndicator(
-                      color: context.primary,
-                      radius: 16,
+                Skeletonizer.sliver(
+                  enabled: true,
+                  justifyMultiLineText: true,
+                  child: SliverGrid.builder(
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          childAspectRatio: 0.7,
+                          crossAxisSpacing: 10,
+                          mainAxisSpacing: 10,
+                        ),
+                    itemCount: 6,
+                    itemBuilder: (context, i) => const ImagePlaceHolderWidget(
+                      recipe: HomeRecipeEntities(
+                        id: '',
+                        name: "",
+                        imageUrl: "",
+                      ),
                     ),
                   ),
                 ),
