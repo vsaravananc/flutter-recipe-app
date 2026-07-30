@@ -8,7 +8,7 @@ class GetStartedScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dp = MediaQuery.of(context).devicePixelRatio;
+    final dp = MediaQuery.devicePixelRatioOf(context);
     final size = MediaQuery.sizeOf(context);
     return Scaffold(
       backgroundColor: AppColor.scaffoldBackground,

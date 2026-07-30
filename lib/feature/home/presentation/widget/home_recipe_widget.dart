@@ -86,83 +86,100 @@ class ImagePlaceHolderWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CachedNetworkImage(
-      imageUrl: recipe.imageUrl,
-      fit: .cover,
-      imageBuilder: (context, imageProvider) => GestureDetector(
-        onTap: () {
-          context.read<DetailBloc>().add(JustChangeState());
-          DetailScreenlEntitie detail = DetailScreenlEntitie(
-            id: recipe.id,
-            title: recipe.name,
-            titleTag: "recipe_title${recipe.id}",
-            image: recipe.imageUrl,
-            imageTag: "recipe_image${recipe.id}",
-          );
-          context.push(AppRouterConfig.detailsRoute, extra: detail);
-        },
-        child: Stack(
-          children: [
-            Hero(
-              tag: "recipe_image${recipe.id}",
-              child: Container(
-                decoration: BoxDecoration(
-                  color: context.cardColor,
-                  borderRadius: .circular(Dimensions.p16),
-                  image: DecorationImage(image: imageProvider, fit: .cover),
-                ),
-                child: Container(
-                  height: .infinity,
-                  width: .infinity,
-                  decoration: BoxDecoration(
-                    borderRadius: .circular(Dimensions.p16),
-                    gradient: LinearGradient(
-                      colors: context.gradint,
-                      begin: .topCenter,
-                      end: .bottomCenter,
-                    ),
-                  ),
-                ),
-              ),
-            ),
+    return LayoutBuilder(
+      builder: (context, constraint) {
+        final dpr = MediaQuery.devicePixelRatioOf(context);
+        return CachedNetworkImage(
+          memCacheWidth: (constraint.maxWidth * dpr).toInt(),
+          memCacheHeight: (constraint.maxHeight * dpr).toInt(),
+          imageUrl: recipe.imageUrl,
+          fit: .cover,
+          imageBuilder: (context, imageProvider) =>
+              GestureDetector(
+                    onTap: () {
+                      context.read<DetailBloc>().add(JustChangeState());
+                      DetailScreenlEntitie detail = DetailScreenlEntitie(
+                        id: recipe.id,
+                        title: recipe.name,
+                        titleTag: "recipe_title${recipe.id}",
+                        image: recipe.imageUrl,
+                        imageTag: "recipe_image${recipe.id}",
+                      );
+                      context.push(AppRouterConfig.detailsRoute, extra: detail);
+                    },
+                    child: Stack(
+                      children: [
+                        Hero(
+                          tag: "recipe_image${recipe.id}",
+                          child: Container(
+                            decoration: BoxDecoration(
 
-            Padding(
-              padding: const .symmetric(horizontal: 4),
-              child: Align(
-                alignment: const Alignment(0.0, 0.9),
-                child: Hero(
-                  tag: "recipe_title${recipe.id}",
-                  transitionOnUserGestures: true,
-                  child: Material(
-                    color: context.transprent,
-                    child: Text(
-                      recipe.name,
-                      maxLines: 1,
-                      style: context.titleLarge?.copyWith(
-                        color: context.onPrimary,
-                        fontWeight: .bold,
-                      ),
-                      textAlign: .center,
+                              color: context.cardColor,
+                              borderRadius: .circular(Dimensions.p16),
+                              image: DecorationImage(
+                                image: imageProvider,
+                                fit: .cover,
+                              ),
+                            ),
+                            child: Container(
+                              height: .infinity,
+                              width: .infinity,
+                              decoration: BoxDecoration(
+                                borderRadius: .circular(Dimensions.p16),
+                                gradient: LinearGradient(
+                                  colors: context.gradint,
+                                  begin: .topCenter,
+                                  end: .bottomCenter,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+
+                        Padding(
+                          padding: const .symmetric(horizontal: 4),
+                          child: Align(
+                            alignment: const Alignment(0.0, 0.9),
+                            child: Hero(
+                              tag: "recipe_title${recipe.id}",
+                              transitionOnUserGestures: true,
+                              child: Material(
+                                color: context.transprent,
+                                child: Text(
+                                  recipe.name,
+                                  maxLines: 1,
+                                  style: context.titleLarge?.copyWith(
+                                    color: context.onPrimary,
+                                    fontWeight: .bold,
+                                  ),
+                                  textAlign: .center,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
+                  )
+                  .animate()
+                  .fadeIn(duration: const Duration(milliseconds: 450))
+                  .slideY(
+                    begin: 0.1,
+                    end: 0,
+                    curve: Curves.easeInOut,
+                    duration: const Duration(milliseconds: 450),
                   ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ).animate().fadeIn(duration: const Duration(milliseconds: 450)).slideY(
-            begin: 0.1,
-            end: 0,
-            curve: Curves.easeInOut,
-            duration: const Duration(milliseconds: 450),
+          placeholder: (context, _) => HomeRecipePlaceholderWidget(
+            height: (constraint.maxHeight * dpr).toInt(),
+            width: (constraint.maxWidth * dpr).toInt(),
           ),
-      placeholder: (context, _) => const HomeRecipePlaceholderWidget(
-        key: ValueKey("placeholder_recipe_placeHolder_widget"),
-      ),
 
-      errorWidget: (context, url, error) => const HomeRecipePlaceholderWidget(
-        key: ValueKey("error_recipe_placeHolder_widget"),
-      ),
+          errorWidget: (context, url, error) => HomeRecipePlaceholderWidget(
+            height: (constraint.maxHeight * dpr).toInt(),
+            width: (constraint.maxWidth * dpr).toInt(),
+          ),
+        );
+      }
     );
   }
 }

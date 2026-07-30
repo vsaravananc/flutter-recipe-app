@@ -137,6 +137,7 @@ class IndividualCategoryItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final dpr = MediaQuery.devicePixelRatioOf(context);
     return BlocBuilder<HomecategoryBloc, HomecategoryState>(
       builder: (context, selectedCategory) {
         final HomeCategoryEntities selected =
@@ -163,6 +164,8 @@ class IndividualCategoryItem extends StatelessWidget {
               spacing: 5,
               children: [
                 CachedNetworkImage(
+                  memCacheWidth: (55 * dpr).toInt(),
+                  memCacheHeight: (55 * dpr).toInt(),
                   imageBuilder: (context, imageProvider) => Container(
                     padding: const EdgeInsets.all(5),
                     decoration: BoxDecoration(
@@ -180,19 +183,18 @@ class IndividualCategoryItem extends StatelessWidget {
                         image: DecorationImage(
                           image: imageProvider,
                           fit: BoxFit.cover,
+                              
                         ),
                       ),
                     ),
                   ),
-                  placeholder: (context, url) => 
+                  placeholder: (context, url) =>
                       const HomeCategoryPlaceholderWidget(
-                        key: ValueKey("placeholder_homecategory_placeholder"),
-                      ),
+                          ),
 
                   errorWidget: (context, url, error) =>
                       const HomeCategoryPlaceholderWidget(
-                        key: ValueKey("error_homecategory_placeholder"),
-                      ),
+                          ),
 
                   imageUrl: category.imageUrl,
                   fit: BoxFit.cover,
@@ -200,6 +202,7 @@ class IndividualCategoryItem extends StatelessWidget {
                 Text(category.name, style: context.bodyMedium),
               ],
             ),
+            
           ),
         );
       },
